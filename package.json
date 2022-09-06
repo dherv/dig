@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@heroicons/react": "^1.0.6",
+    "@react-hooks-library/core": "^0.3.6",
     "@supabase/auth-helpers-nextjs": "^0.2.7",
     "@supabase/auth-helpers-react": "^0.2.3",
     "@supabase/supabase-js": "^1.35.6",

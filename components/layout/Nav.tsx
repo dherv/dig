@@ -5,6 +5,7 @@ import Link from "next/link";
 import { FC, useEffect, useState } from "react";
 import useSWR from "swr";
 import { BrandTitle } from "../base/BrandTitle";
+import { Search } from "../base/Search";
 
 export const Nav: FC = () => {
   const [avatarUrl, setAvatarUrl] = useState<string>();
@@ -44,6 +45,10 @@ export const Nav: FC = () => {
     if (data && data.username) setUsername(data.username);
   }, [data]);
 
+  const handleSearchMovie = (query: string) => {
+    console.log({ query });
+  };
+
   return (
     <nav className="flex justify-between items-center">
       <div className="flex items-center">
@@ -64,6 +69,7 @@ export const Nav: FC = () => {
           </Link>
         </div>
       </div>
+      <Search />
       <div className="flex">
         <p>{username}</p>
         {avatarUrl ? (

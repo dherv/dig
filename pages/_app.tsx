@@ -4,14 +4,15 @@ import type { AppProps } from "next/app";
 import { SWRConfig } from "swr";
 import { Layout } from "../components/layout/Layout";
 import "../styles/globals.css";
-function MyApp({ Component, pageProps }: AppProps) {
+import * as SWR from "../utils/swr";
+
+function App({ Component, pageProps }: AppProps) {
   return (
     <>
       <SWRConfig
         value={{
           refreshInterval: 10000,
-          fetcher: (resource, init) =>
-            fetch(resource, init).then((res) => res.json()),
+          fetcher: SWR.fetcher,
         }}
       >
         <UserProvider supabaseClient={supabaseClient}>
@@ -24,4 +25,4 @@ function MyApp({ Component, pageProps }: AppProps) {
   );
 }
 
-export default MyApp;
+export default App;

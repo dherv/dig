@@ -144,6 +144,18 @@
     "@nodelib/fs.scandir" "2.1.5"
     fastq "^1.6.0"
 
+"@react-hooks-library/core@^0.3.6":
+  version "0.3.6"
+  resolved "https://registry.yarnpkg.com/@react-hooks-library/core/-/core-0.3.6.tgz#b8509fcd1cfd1c9bb8d2b7cee8bad74f442c791b"
+  integrity sha512-glCilhVfVUjnEsX+YQU+ukxbR9pefg1trEBuQCaAHo6zSbqRXupB2/2nXoOTyJZBD8A+MAWbtAQNpKy46hrkNw==
+  dependencies:
+    "@react-hooks-library/shared" "0.3.6"
+
+"@react-hooks-library/shared@0.3.6":
+  version "0.3.6"
+  resolved "https://registry.yarnpkg.com/@react-hooks-library/shared/-/shared-0.3.6.tgz#1e6b1f89a78f032f504f89cbf148a94d59f4d4de"
+  integrity sha512-K+8iSq2GcTECoV87zYZsgiLg9rDCDScb5basCR18cVbHyWDJ1sdaHRW23R7kvumWHZv6GeavQT/DwGCr3SUSKA==
+
 "@rushstack/eslint-patch@1.0.8":
   version "1.0.8"
   resolved "https://registry.yarnpkg.com/@rushstack/eslint-patch/-/eslint-patch-1.0.8.tgz#be3e914e84eacf16dbebd311c0d0b44aa1174c64"

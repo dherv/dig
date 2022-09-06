@@ -2,8 +2,8 @@ import { User, withPageAuth } from "@supabase/auth-helpers-nextjs";
 
 import { add, format, startOfMonth } from "date-fns";
 import type { NextPage } from "next";
-import { FilterPill } from "../components/base/FilterPill";
-import { NetworkMovieGroup } from "../components/base/NetworkMovieGroup";
+import { FilterPill } from "../../components/base/FilterPill";
+import { NetworkMovieGroup } from "../../components/base/NetworkMovieGroup";
 interface Props {
   user: User;
   data: any;
