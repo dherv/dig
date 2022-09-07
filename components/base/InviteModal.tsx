@@ -23,8 +23,9 @@ export const InviteModal = forwardRef<HTMLDivElement, Props>(
     };
 
     const handleInviteSend = () => {
-      clearEmails();
+      console.log({ emails });
       onInviteSend(emails);
+      clearEmails();
     };
 
     const handleInviteCancel = () => {
