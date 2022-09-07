@@ -12,8 +12,10 @@ export const Search: FC = () => {
   const debouncedSearch = useDebounce(searchQuery, 1000);
   const ref = useRef(null);
 
+  const closeSearch = () => setSearchQuery("");
+
   useClickOutside(ref, () => {
-    setSearchQuery("");
+    closeSearch();
   });
 
   const { data: shows } = useSWR(
@@ -25,6 +27,7 @@ export const Search: FC = () => {
   };
 
   const handleClickShow = (mediaType: MediaType, showId: number) => {
+    closeSearch();
     router.push(`/shows/${showId}?mediaType=${mediaType}`);
   };
 

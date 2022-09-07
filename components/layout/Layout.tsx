@@ -1,7 +1,8 @@
-import Head from 'next/head';
-import { FC, ReactElement } from 'react';
-import { Footer } from './Footer';
-import { Nav } from './Nav';
+import Head from "next/head";
+import { FC, ReactElement } from "react";
+import { Footer } from "./Footer";
+import { Nav } from "./Nav";
+import { Sidebar } from "./Sidebar";
 
 export const Layout: FC<{ children: ReactElement }> = ({ children }) => {
   return (
@@ -19,7 +20,14 @@ export const Layout: FC<{ children: ReactElement }> = ({ children }) => {
         <header>
           <Nav />
         </header>
-        <main>{children}</main>
+        <main>
+          <div className="flex">
+            <section className="overflow-hidden">{children}</section>
+            <aside>
+              <Sidebar />
+            </aside>
+          </div>
+        </main>
         <Footer />
       </div>
     </>
