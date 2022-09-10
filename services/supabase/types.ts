@@ -3,3 +3,8 @@ export enum FriendshipStatus {
   Invited = 2,
   Cancelled = 3,
 }
+
+export interface Friends {
+  id: string;
+  username: string;
+}
