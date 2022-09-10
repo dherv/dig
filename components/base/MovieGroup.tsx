@@ -1,6 +1,6 @@
 import { useRouter } from "next/router";
 import { FC } from "react";
-import { Movie } from "../../utils/tmdb/types";
+import { Movie } from "../../services/tmdb/types";
 import { MovieCard } from "./MovieCard";
 
 interface Props {

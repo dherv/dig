@@ -1,9 +1,9 @@
 import { User, withPageAuth } from "@supabase/auth-helpers-nextjs";
 import type { NextPage } from "next";
 import Image from "next/image";
-import * as SWR from "../../utils/swr";
-import * as TMDB from "../../utils/tmdb";
-import { MediaType, Show } from "../../utils/tmdb/types";
+import * as SWR from "../../services/swr";
+import * as TMDB from "../../services/tmdb";
+import { MediaType, Show } from "../../services/tmdb/types";
 
 interface Props {
   user: User;

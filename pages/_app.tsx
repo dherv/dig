@@ -4,8 +4,8 @@ import type { AppProps } from "next/app";
 import React from "react";
 import { SWRConfig } from "swr";
 import { Layout } from "../components/layout/Layout";
+import * as SWR from "../services/swr";
 import "../styles/globals.css";
-import * as SWR from "../utils/swr";
 
 function App({ Component, pageProps, ...appProps }: AppProps) {
   // prevent loading the layout for the login page

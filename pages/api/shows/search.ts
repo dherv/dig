@@ -1,6 +1,6 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from "next";
-import * as TMDB from "../../../utils/tmdb";
+import * as TMDB from "../../../services/tmdb";
 
 type Data = {
   name: string;

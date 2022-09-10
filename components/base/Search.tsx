@@ -3,8 +3,8 @@ import Image from "next/image";
 import { useRouter } from "next/router";
 import { ChangeEvent, FC, useRef, useState } from "react";
 import useSWR from "swr";
-import * as TMDB from "../../utils/tmdb";
-import { MediaType, Show } from "../../utils/tmdb/types";
+import * as TMDB from "../../services/tmdb";
+import { MediaType, Show } from "../../services/tmdb/types";
 
 export const Search: FC = () => {
   const router = useRouter();

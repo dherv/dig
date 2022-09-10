@@ -4,8 +4,8 @@ import {
   withApiAuth,
 } from "@supabase/auth-helpers-nextjs";
 import { NextApiRequest, NextApiResponse } from "next";
-import { supabaseServer } from "../../../utils/supabase/supabase";
-import { FriendshipStatus } from "../../../utils/supabase/types";
+import { supabaseServer } from "../../../services/supabase/supabase";
+import { FriendshipStatus } from "../../../services/supabase/types";
 
 const createFriendshipInvited = async (req: NextApiRequest, user: User) => {
   try {
