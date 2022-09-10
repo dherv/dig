@@ -2,6 +2,7 @@ import { supabaseClient } from "@supabase/auth-helpers-nextjs";
 import { useUser } from "@supabase/auth-helpers-react";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import { FC, useEffect, useState } from "react";
 import useSWR from "swr";
 import { BrandTitle } from "../base/BrandTitle";
@@ -10,10 +11,11 @@ import { Search } from "../base/Search";
 export const Nav: FC = () => {
   const [avatarUrl, setAvatarUrl] = useState<string>();
   const [username, setUsername] = useState<string>();
+  const router = useRouter();
 
   const { user, error: errorUser } = useUser();
   const { data, error: errorProfile } = useSWR(
-    () => `/api/profile/${user?.id}`
+    user?.id ? `/api/profile/${user?.id}` : null
   );
 
   // TODO: find a better way to get avatar in Layout Nav on first load: localStorage / store / swr cache
@@ -36,11 +38,14 @@ export const Nav: FC = () => {
     }
   }
 
+  // TODO: find a way to handle logout differently. redirect not working properly with helpers
   const handleSignOut = async () => {
     await supabaseClient.auth.signOut();
+    router.push("/login");
   };
 
   useEffect(() => {
+    console.log({ data });
     if (data && data.avatar_url) downloadImage(data.avatar_url);
     if (data && data.username) setUsername(data.username);
   }, [data]);
@@ -48,6 +53,16 @@ export const Nav: FC = () => {
   const handleSearchMovie = (query: string) => {
     console.log({ query });
   };
+
+  useEffect(() => {
+    console.log({ user });
+    const session = supabaseClient.auth.session();
+    console.log({ session });
+    if (!session?.user) {
+      console.log(session?.expires_in);
+      supabaseClient.auth.refreshSession();
+    }
+  }, [user]);
 
   return (
     <nav className="flex justify-between items-center">

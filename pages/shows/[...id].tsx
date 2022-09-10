@@ -43,7 +43,7 @@ const getShow = async (type?: string, showId?: string | string[]) => {
 };
 
 export const getServerSideProps = withPageAuth({
-  redirectTo: "/",
+  redirectTo: "/login",
   async getServerSideProps(ctx) {
     if (typeof ctx.query.mediaType === "string") {
       return await getShow(ctx.query.mediaType, ctx.params?.id);

@@ -10,4 +10,4 @@ export default function Profile({ user }: { user: User }) {
   );
 }
 
-export const getServerSideProps = withPageAuth();
+export const getServerSideProps = withPageAuth({ redirectTo: "/login" });

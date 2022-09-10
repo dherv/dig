@@ -1,17 +1,60 @@
-import { withApiAuth } from "@supabase/auth-helpers-nextjs";
+import {
+  supabaseServerClient,
+  User,
+  withApiAuth,
+} from "@supabase/auth-helpers-nextjs";
 import { NextApiRequest, NextApiResponse } from "next";
 import { supabaseServer } from "../../../utils/supabase/supabase";
+import { FriendshipStatus } from "../../../utils/supabase/types";
 
+const createFriendshipInvited = async (req: NextApiRequest, user: User) => {
+  try {
+    // TODO: replace by database function ? how to handle failure ?
+    const { data, error } = await supabaseServer.from("friendships").insert([
+      {
+        user_1: user.user_metadata.inviter,
+        user_2: user.id,
+        status: FriendshipStatus.Invited,
+      },
+    ]);
+
+    console.log({ data });
+    return data;
+  } catch (e) {
+    console.error({ e });
+  }
+};
 export default withApiAuth(async function Invite(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
   try {
-    const body = JSON.parse(req.body);
-    for (const email of body.emails as string[]) {
-      await supabaseServer.auth.api.inviteUserByEmail(email);
+    const { user } = await supabaseServerClient({
+      req,
+      res,
+    }).auth.api.getUserByCookie(req);
+
+    if (user) {
+      const body = JSON.parse(req.body);
+      for (const email of body.emails as string[]) {
+        // invite by email
+        const { data: invitedUser, error } =
+          await supabaseServer.auth.api.inviteUserByEmail(email, {
+            data: {
+              inviter: user?.id,
+            },
+          });
+        console.log({ invitedUser, error });
+
+        if (invitedUser) {
+          await createFriendshipInvited(req, invitedUser);
+        } else {
+          throw new Error("no user data received from invite");
+        }
+
+        return res.status(200).json({ data: { message: "invite successful" } });
+      }
     }
-    return res.status(200).json({ data: { message: "invite successful" } });
   } catch (e) {
     console.log("caught", e);
     return res.status(500).json({ message: error.message });

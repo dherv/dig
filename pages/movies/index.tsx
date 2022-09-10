@@ -73,7 +73,7 @@ const getMovies = async () => {
 };
 
 export const getServerSideProps = withPageAuth({
-  redirectTo: "/",
+  redirectTo: "/login",
   async getServerSideProps(ctx) {
     return await getMovies();
   },
