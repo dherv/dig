@@ -14,12 +14,12 @@ export default withApiAuth(async function Accepted(
       // TODO: see if we can find a query to select depending on user_1 = user.id or user_2 = user.id instead of 2 queries
       const { data: data1 } = await supabaseServer
         .from("friendships")
-        .select(`id, user_1(username)`)
+        .select(`id, user_1(id, username)`)
         .eq(`user_2`, user.id);
 
       const { data: data2 } = await supabaseServer
         .from("friendships")
-        .select(`id, user_2(username)`)
+        .select(`id, user_2(id, username)`)
         .eq(`user_1`, user.id);
 
       const data = {

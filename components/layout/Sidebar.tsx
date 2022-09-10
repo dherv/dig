@@ -5,6 +5,8 @@ import { InviteContainer } from "../base/InviteContainer";
 
 export const Sidebar: FC = () => {
   const { data, error: errorProfile } = useSWR(`/api/friendship`);
+
+  // TODO: move friends and friendships to cutom hook
   const [friends, setFriends] = useState<Friends[]>([]);
 
   useEffect(() => {

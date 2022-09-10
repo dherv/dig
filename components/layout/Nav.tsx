@@ -4,11 +4,13 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { FC, useEffect, useState } from "react";
-import useSWR from "swr";
+import useSWR, { useSWRConfig } from "swr";
 import { BrandTitle } from "../base/BrandTitle";
 import { Search } from "../base/Search";
 
 export const Nav: FC = () => {
+  const { cache } = useSWRConfig();
+
   const [avatarUrl, setAvatarUrl] = useState<string>();
   const [username, setUsername] = useState<string>();
   const router = useRouter();
@@ -41,6 +43,7 @@ export const Nav: FC = () => {
   // TODO: find a way to handle logout differently. redirect not working properly with helpers
   const handleSignOut = async () => {
     await supabaseClient.auth.signOut();
+    cache.clear();
     router.push("/login");
   };
 
