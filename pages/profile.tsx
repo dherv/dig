@@ -7,7 +7,7 @@ import {
 } from "@supabase/auth-helpers-nextjs";
 import { useState } from "react";
 import { useSWRConfig } from "swr";
-import Avatar from "../components/base/Avatar";
+import Avatar from "../components/layout/Avatar";
 import { getProfile } from "./api/profile/[...id]";
 
 export default function Profile({

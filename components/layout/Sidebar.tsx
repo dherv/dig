@@ -1,7 +1,7 @@
 import { FC, useEffect, useState } from "react";
 import useSWR from "swr";
 import { Friends } from "../../services/supabase/types";
-import { InviteContainer } from "../base/InviteContainer";
+import { InviteContainer } from "../features/invite/InviteContainer";
 
 export const Sidebar: FC = () => {
   const { data, error: errorProfile } = useSWR(`/api/friendship`);
