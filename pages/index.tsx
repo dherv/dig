@@ -1,6 +1,6 @@
+import { MovieCard } from "@/features/movie/MovieCard";
 import { User, withPageAuth } from "@supabase/auth-helpers-nextjs";
 import useSWR from "swr";
-import { MovieCard } from "../components/base/MovieCard";
 
 const SuggestionsPage = ({ user }: { user: User }) => {
   const { data: friendshipData, error: errorProfile } =

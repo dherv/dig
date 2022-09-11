@@ -1,5 +1,5 @@
+import { Movie } from "@/services/tmdb/types";
 import { FC } from "react";
-import { Movie } from "../../services/tmdb/types";
 import { MovieCard } from "./MovieCard";
 
 interface Props {

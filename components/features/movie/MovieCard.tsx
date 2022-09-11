@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { useRouter } from "next/router";
 import { FC } from "react";
-import { MediaType } from "../../services/tmdb/types";
+import { MediaType } from "services/tmdb/types";
 
 interface Props {
   movie: any;

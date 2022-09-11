@@ -1,3 +1,5 @@
+import { Search } from "@/features/search/Search";
+import { BrandTitle } from "@/layout/BrandTitle";
 import { supabaseClient } from "@supabase/auth-helpers-nextjs";
 import { useUser } from "@supabase/auth-helpers-react";
 import Image from "next/image";
@@ -5,8 +7,6 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { FC, useEffect, useState } from "react";
 import useSWR, { useSWRConfig } from "swr";
-import { BrandTitle } from "../base/BrandTitle";
-import { Search } from "../base/Search";
 
 export const Nav: FC = () => {
   const { cache } = useSWRConfig();
