@@ -18,7 +18,6 @@ const createFriendshipInvited = async (req: NextApiRequest, user: User) => {
       },
     ]);
 
-    console.log({ data });
     return data;
   } catch (e) {
     console.error({ e });
@@ -44,7 +43,6 @@ export default withApiAuth(async function Invite(
               inviter: user?.id,
             },
           });
-        console.log({ invitedUser, error });
 
         if (invitedUser) {
           await createFriendshipInvited(req, invitedUser);
@@ -56,7 +54,6 @@ export default withApiAuth(async function Invite(
       }
     }
   } catch (e) {
-    console.log("caught", e);
     return res.status(500).json({ message: error.message });
   }
 });

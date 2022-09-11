@@ -7,7 +7,6 @@ interface Props {
   movie: any;
 }
 export const MovieCard: FC<Props> = ({ movie }) => {
-  console.log({ movie });
   const router = useRouter();
   const handleClickShow = (showId: number, mediaType: MediaType) => {
     router.push(`/shows/${showId}?mediaType=${mediaType}`);

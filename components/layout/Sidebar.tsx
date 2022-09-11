@@ -10,7 +10,6 @@ export const Sidebar: FC = () => {
   const [friends, setFriends] = useState<Friends[]>([]);
 
   useEffect(() => {
-    console.log({ data }, "here");
     if (data) {
       setFriends(data.friends);
     }

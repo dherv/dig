@@ -23,7 +23,6 @@ export const InviteModal = forwardRef<HTMLDivElement, Props>(
     };
 
     const handleInviteSend = () => {
-      console.log({ emails });
       onInviteSend(emails);
       clearEmails();
     };

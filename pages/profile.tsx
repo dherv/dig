@@ -25,11 +25,9 @@ export default function Profile({
 
   // const removePreviousAvatar = async (url: string) => {
   //   try {
-  //     console.log(url);
-  //     const blobl = await supabaseClient.storage
+  //      await supabaseClient.storage
   //       .from("avatars")
   //       .remove([`/${url}`]);
-  //     console.log({ blobl });
   //   } catch (e) {
   //     console.error(e);
   //   }
@@ -69,7 +67,6 @@ export default function Profile({
   };
 
   const handleUpload = async (url: string) => {
-    console.log({ url, avatar_url });
     try {
       setAvatarUrl(url);
       setLoading(false);
@@ -112,7 +109,6 @@ export const getServerSideProps = withPageAuth({
       const { user, error } = await supabaseServerClient(
         ctx
       ).auth.api.getUserByCookie(ctx.req);
-      console.log({ user, error });
 
       if (error) {
         console.error(error);

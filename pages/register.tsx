@@ -13,7 +13,6 @@ const RegisterPage = () => {
   }>({ password: "", username: "" });
 
   useEffect(() => {
-    console.log({ user });
     if (user) {
       fetch(`/api/friendship/accepted`);
     }
@@ -30,7 +29,6 @@ const RegisterPage = () => {
     e.preventDefault();
     const { password, username } = userData;
     if (password && username && user) {
-      console.log({ password, username, user });
       const { data: passwordData, error: passwordError } =
         await supabaseClient.auth.update({
           password: password,
@@ -43,7 +41,6 @@ const RegisterPage = () => {
       if (!error && !passwordError) {
         router.push("/");
       }
-      console.log({ data, passwordData, error, passwordError });
     }
   };
   return (

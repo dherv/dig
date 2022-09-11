@@ -11,7 +11,6 @@ export default async function handler(
       const { showId, showMediaType, userId, friendshipId } = JSON.parse(
         req.body
       );
-      console.log({ showMediaType });
       const { data, error } = await supabaseServer.from("suggestions").insert([
         {
           show_id: showId,
@@ -21,7 +20,6 @@ export default async function handler(
           friendship_id: friendshipId,
         },
       ]);
-      console.log({ data, error });
       return res.status(200).json(data);
     } catch (error) {
       console.error({ error });

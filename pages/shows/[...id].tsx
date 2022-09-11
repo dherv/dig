@@ -38,7 +38,6 @@ const MoviePage: NextPage<Props> = ({
 
   const handleSuggest = async () => {
     try {
-      console.log("media", data);
       const res = await fetch(`/api/suggestions`, {
         method: "POST",
         body: JSON.stringify({
@@ -49,7 +48,6 @@ const MoviePage: NextPage<Props> = ({
       });
 
       const newSuggestion = await res.json();
-      console.log({ newSuggestion });
     } catch (error) {
       console.error({ error });
     }
@@ -83,7 +81,6 @@ export const getServerSideProps = withPageAuth({
   redirectTo: "/login",
   async getServerSideProps(ctx) {
     if (typeof ctx.query.mediaType === "string") {
-      console.log(ctx.query);
       const data = await TMDB.getShow(ctx.query.mediaType, ctx.params?.id);
       return { props: { data, type: ctx.query.mediaType } };
     }

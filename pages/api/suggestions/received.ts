@@ -17,8 +17,6 @@ export default async function handler(
       )
       .or(`friendship_id.in.(${friendshipIds}), user_id.in.(${friendIds})`);
 
-    // query movie
-    console.log({ suggestions }, "OI");
     const data = await Promise.all(
       suggestions?.map(async (suggestion) => ({
         user: suggestion.user_id,

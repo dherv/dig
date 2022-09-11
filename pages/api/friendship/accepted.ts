@@ -19,8 +19,6 @@ const handleCreateFriendship = async (newUser: User) => {
         user_1: newUser.user_metadata.inviter,
         user_2: newUser.id,
       });
-
-    console.log({ friendData });
   } catch (e) {
     console.error({ e });
   }

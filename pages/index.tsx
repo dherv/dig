@@ -23,7 +23,6 @@ const SuggestionsPage = ({ user }: { user: User }) => {
     `/api/suggestions/sent?userId=${user.id}`
   );
 
-  console.log({ received: suggestionsReceived, sent: suggestionsSent });
   return (
     <div>
       {suggestionsSent ? (

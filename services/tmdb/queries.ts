@@ -9,7 +9,6 @@ export const searchMovieService = async (query: string) => {
 };
 
 export const getShow = async (type?: string, showId?: string | string[]) => {
-  console.log(type, showId);
   const url = TMDB.url(`/${type}/${showId}`);
   const data = await SWR.fetcher(url);
   return { ...data, type };

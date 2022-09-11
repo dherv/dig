@@ -20,8 +20,6 @@ export const Nav: FC = () => {
     user?.id ? `/api/profile/${user?.id}` : null
   );
 
-  console.log({ data, errorProfile });
-
   // TODO: find a better way to get avatar in Layout Nav on first load: localStorage / store / swr cache
   async function downloadImage(path: string) {
     try {
@@ -50,21 +48,13 @@ export const Nav: FC = () => {
   };
 
   useEffect(() => {
-    console.log({ data });
     if (data && data.avatar_url) downloadImage(data.avatar_url);
     if (data && data.username) setUsername(data.username);
   }, [data]);
 
-  const handleSearchMovie = (query: string) => {
-    console.log({ query });
-  };
-
   useEffect(() => {
-    console.log({ user });
     const session = supabaseClient.auth.session();
-    console.log({ session });
     if (!session?.user) {
-      console.log(session?.expires_in);
       supabaseClient.auth.refreshSession();
     }
   }, [user]);
