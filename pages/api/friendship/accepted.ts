@@ -4,6 +4,7 @@ import {
   withApiAuth,
 } from "@supabase/auth-helpers-nextjs";
 import { NextApiRequest, NextApiResponse } from "next";
+import { ErrorService } from "../../../services/error";
 import { supabaseServer } from "../../../services/supabase/supabase";
 import { FriendshipStatus } from "../../../services/supabase/types";
 
@@ -19,8 +20,8 @@ const handleCreateFriendship = async (newUser: User) => {
         user_1: newUser.user_metadata.inviter,
         user_2: newUser.id,
       });
-  } catch (e) {
-    console.error({ e });
+  } catch (error) {
+    ErrorService.catchError(error);
   }
 };
 

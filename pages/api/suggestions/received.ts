@@ -1,4 +1,5 @@
 import { NextApiRequest, NextApiResponse } from "next";
+import { ErrorService } from "../../../services/error";
 import { supabaseServer } from "../../../services/supabase/supabase";
 import * as TMDB from "../../../services/tmdb";
 
@@ -32,7 +33,8 @@ export default async function handler(
     }
     return res.status(200).json(data);
   } catch (error) {
-    console.error({ error });
-    return res.status(500).json({ message: error.message });
+    const message = ErrorService.getErrorMessage(error);
+    ErrorService.reportError({ message });
+    return res.status(500).json({ message });
   }
 }

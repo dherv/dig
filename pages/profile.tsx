@@ -1,4 +1,8 @@
 // pages/profile.js
+
+import { getProfile } from "@/api/profile/[...id]";
+import Avatar from "@/layout/Avatar";
+import { ErrorService } from "@/services/error";
 import {
   supabaseClient,
   supabaseServerClient,
@@ -7,8 +11,6 @@ import {
 } from "@supabase/auth-helpers-nextjs";
 import { useState } from "react";
 import { useSWRConfig } from "swr";
-import Avatar from "../components/layout/Avatar";
-import { getProfile } from "./api/profile/[...id]";
 
 export default function Profile({
   user,
@@ -29,7 +31,7 @@ export default function Profile({
   //       .from("avatars")
   //       .remove([`/${url}`]);
   //   } catch (e) {
-  //     console.error(e);
+  //     ErrorService.catchError(error);
   //   }
   // };
 
@@ -60,7 +62,7 @@ export default function Profile({
       // TODO: remove previous avatar
       // removePreviousAvatar(previousAvatar);
     } catch (error) {
-      console.error(error.message);
+      ErrorService.catchError(error);
     } finally {
       setLoading(false);
     }
@@ -70,8 +72,8 @@ export default function Profile({
     try {
       setAvatarUrl(url);
       setLoading(false);
-    } catch (e) {
-      console.error(e);
+    } catch (error) {
+      ErrorService.catchError(error);
     }
   };
 
@@ -111,7 +113,7 @@ export const getServerSideProps = withPageAuth({
       ).auth.api.getUserByCookie(ctx.req);
 
       if (error) {
-        console.error(error);
+        ErrorService;
         return { props: { profile: null } };
       }
 
@@ -119,8 +121,8 @@ export const getServerSideProps = withPageAuth({
         const profile = await getProfile(user?.id);
         return { props: { profile } };
       }
-    } catch (e) {
-      console.error(e);
+    } catch (error) {
+      ErrorService.catchError(error);
       return { props: { profile: null } };
     }
   },

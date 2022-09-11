@@ -1,5 +1,6 @@
 import { useClickOutside } from "@react-hooks-library/core";
 import { FC, useRef, useState } from "react";
+import { ErrorService } from "../../../services/error";
 import { InviteModal } from "./InviteModal";
 
 export const InviteContainer: FC = () => {
@@ -22,7 +23,7 @@ export const InviteContainer: FC = () => {
           closeModal();
         }
       })
-      .catch((error) => console.error({ error }));
+      .catch((error) => ErrorService.catchError(error));
   };
 
   const handleInviteCancel = () => {

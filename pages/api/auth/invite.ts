@@ -1,11 +1,12 @@
+import { ErrorService } from "@/services/error";
+import { supabaseServer } from "@/services/supabase/supabase";
+import { FriendshipStatus } from "@/services/supabase/types";
 import {
   supabaseServerClient,
   User,
   withApiAuth,
 } from "@supabase/auth-helpers-nextjs";
 import { NextApiRequest, NextApiResponse } from "next";
-import { supabaseServer } from "../../../services/supabase/supabase";
-import { FriendshipStatus } from "../../../services/supabase/types";
 
 const createFriendshipInvited = async (req: NextApiRequest, user: User) => {
   try {
@@ -19,8 +20,8 @@ const createFriendshipInvited = async (req: NextApiRequest, user: User) => {
     ]);
 
     return data;
-  } catch (e) {
-    console.error({ e });
+  } catch (error) {
+    ErrorService.catchError(error);
   }
 };
 export default withApiAuth(async function Invite(
@@ -53,7 +54,8 @@ export default withApiAuth(async function Invite(
         return res.status(200).json({ data: { message: "invite successful" } });
       }
     }
-  } catch (e) {
-    return res.status(500).json({ message: error.message });
+  } catch (error) {
+    const message = ErrorService.getErrorMessage(error);
+    return res.status(500).json({ message });
   }
 });

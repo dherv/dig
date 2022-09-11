@@ -1,5 +1,6 @@
 import { supabaseClient } from "@supabase/auth-helpers-nextjs";
 import { useEffect, useState } from "react";
+import { ErrorService } from "../../services/error";
 
 export default function Avatar({ url, size, onUploadLoading, onUpload }) {
   const [avatarUrl, setAvatarUrl] = useState(null);
@@ -20,7 +21,7 @@ export default function Avatar({ url, size, onUploadLoading, onUpload }) {
       const url = URL.createObjectURL(data);
       setAvatarUrl(url);
     } catch (error) {
-      console.log("Error downloading image: ", error.message);
+      ErrorService.catchError(error);
     }
   }
 

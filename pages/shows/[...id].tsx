@@ -3,6 +3,7 @@ import type { NextPage } from "next";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import useSWR from "swr";
+import { ErrorService } from "../../services/error";
 import { Friends } from "../../services/supabase/types";
 import * as TMDB from "../../services/tmdb";
 import { MediaType, Show } from "../../services/tmdb/types";
@@ -49,7 +50,7 @@ const MoviePage: NextPage<Props> = ({
 
       const newSuggestion = await res.json();
     } catch (error) {
-      console.error({ error });
+      ErrorService.catchError(error);
     }
   };
 
