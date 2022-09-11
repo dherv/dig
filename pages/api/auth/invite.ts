@@ -1,6 +1,6 @@
 import { ErrorService } from "@/services/error";
 import { supabaseServer } from "@/services/supabase/supabase";
-import { FriendshipStatus } from "@/services/supabase/types";
+import { FriendshipStatus } from "@/services/supabase/types.app";
 import {
   supabaseServerClient,
   User,

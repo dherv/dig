@@ -1,7 +1,7 @@
+import { ErrorService } from "@/services/error";
+import { supabaseServer } from "@/services/supabase/supabase";
+import { ShowMediaType } from "@/services/supabase/types.app";
 import { NextApiRequest, NextApiResponse } from "next";
-import { ErrorService } from "../../../services/error";
-import { supabaseServer } from "../../../services/supabase/supabase";
-import { ShowMediaType } from "../../../services/types/database";
 
 export default async function handler(
   req: NextApiRequest,
@@ -21,11 +21,12 @@ export default async function handler(
           friendship_id: friendshipId,
         },
       ]);
+      if (error) {
+        throw error;
+      }
       return res.status(200).json(data);
     } catch (error) {
-      const message = ErrorService.getErrorMessage(error);
-      ErrorService.reportError({ message });
-      return res.status(500).json({ message });
+      return ErrorService.apiError(error, res);
     }
   }
 }

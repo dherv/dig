@@ -1,7 +1,7 @@
 import { supabaseClient } from "@supabase/auth-helpers-nextjs";
 import { useUser } from "@supabase/auth-helpers-react";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { ChangeEvent, MouseEvent, useEffect, useState } from "react";
 
 const RegisterPage = () => {
   const { user, error } = useUser();
@@ -18,15 +18,15 @@ const RegisterPage = () => {
     }
   }, [user]);
 
-  const handleChange = (e) => {
+  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     setUserData((prev) => ({
       ...prev,
-      [e.target.name]: e.target.value,
+      [event.target.name]: event.target.value,
     }));
   };
 
-  const handleUpdatePassword = async (e) => {
-    e.preventDefault();
+  const handleUpdatePassword = async (event: MouseEvent) => {
+    event.preventDefault();
     const { password, username } = userData;
     if (password && username && user) {
       const { data: passwordData, error: passwordError } =
@@ -65,11 +65,6 @@ const RegisterPage = () => {
 
         <button onClick={handleUpdatePassword}>update</button>
       </form>
-      {/* <Auth
-        supabaseClient={supabaseClient}
-        view="update_password"
-        redirectTo="/"
-      /> */}
     </>
   );
 };

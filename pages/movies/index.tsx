@@ -1,12 +1,12 @@
-import { User, withPageAuth } from "@supabase/auth-helpers-nextjs";
-
-import { NetworkMovieGroup } from "@/features/movie/NetworkMovieGroup";
+import { MovieGroup } from "@/features/movie/MovieGroup";
 import { FilterPill } from "@/layout/FilterPill";
+import { MediaType, Show } from "@/services/tmdb/types";
+import { User, withPageAuth } from "@supabase/auth-helpers-nextjs";
 import { add, format, startOfMonth } from "date-fns";
 import type { NextPage } from "next";
 interface Props {
   user: User;
-  data: any;
+  data: Show[];
 }
 // TODO: consider using styled components with twin.macro to avoid too many <div> wrappers
 const Movies: NextPage<Props> = ({ user, data }) => {
@@ -16,13 +16,7 @@ const Movies: NextPage<Props> = ({ user, data }) => {
         <FilterPill />
       </div>
       <div className="my-6">
-        <NetworkMovieGroup data={data} />
-      </div>
-      <div className="my-6">
-        <NetworkMovieGroup data={data} />
-      </div>
-      <div className="my-6">
-        <NetworkMovieGroup data={data} />
+        <MovieGroup movies={data} mediaType={MediaType.Movie} />
       </div>
     </div>
   );
@@ -51,7 +45,7 @@ const getMovies = async () => {
 
   const url = urlMovie;
   const res = await fetch(url);
-  const result = await res.json();
+  const { results } = await res.json();
 
   let data;
   if (url === urlSerie) {
@@ -63,10 +57,10 @@ const getMovies = async () => {
         serieData.seasons[serieData.seasons.length - 1].air_date;
       return { ...serie, release_date: currentSeasonAirDate };
     };
-    const serieMapped = await Promise.all(result.results.map(getSeasonAirDate));
+    const serieMapped = await Promise.all(results.map(getSeasonAirDate));
     data = { results: serieMapped };
   } else {
-    data = result;
+    data = results;
   }
   // Pass data to the page via props
   return { props: { data } };

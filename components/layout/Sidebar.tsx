@@ -1,6 +1,6 @@
 import { FC, useEffect, useState } from "react";
 import useSWR from "swr";
-import { Friends } from "../../services/supabase/types";
+import { Friends } from "../../services/supabase/types.app";
 import { InviteContainer } from "../features/invite/InviteContainer";
 
 export const Sidebar: FC = () => {

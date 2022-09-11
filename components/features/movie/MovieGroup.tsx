@@ -1,18 +1,18 @@
-import { Movie } from "@/services/tmdb/types";
+import { MediaType, Show } from "@/services/tmdb/types";
 import { FC } from "react";
 import { MovieCard } from "./MovieCard";
 
 interface Props {
-  data: any;
+  movies: Show[];
+  mediaType: MediaType;
 }
 
-export const MovieGroup: FC<Props> = ({ data }) => {
-  const movies = data.results;
-
+export const MovieGroup: FC<Props> = ({ movies, mediaType }) => {
+  console.log({ movies });
   return (
     <ul className="flex -ml-2 -mr-2 my-2 overflow-scroll">
-      {movies.map((movie: Movie) => (
-        <MovieCard movie={movie} key={movie.id} />
+      {movies.map((movie) => (
+        <MovieCard movie={movie} key={movie.id} mediaType={mediaType} />
       ))}
     </ul>
   );

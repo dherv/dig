@@ -1,25 +1,35 @@
 import { supabaseClient } from "@supabase/auth-helpers-nextjs";
-import { useEffect, useState } from "react";
+import Image from "next/image";
+import { ChangeEvent, FC, useEffect, useState } from "react";
 import { ErrorService } from "../../services/error";
 
-export default function Avatar({ url, size, onUploadLoading, onUpload }) {
-  const [avatarUrl, setAvatarUrl] = useState(null);
+type Props = {
+  url: string;
+  size: number;
+  onUploadLoading: (status: boolean) => void;
+  onUpload: (path: string) => void;
+};
+export const Avatar: FC<Props> = ({ url, size, onUploadLoading, onUpload }) => {
+  const [avatarUrl, setAvatarUrl] = useState<string>();
   const [uploading, setUploading] = useState(false);
 
   useEffect(() => {
     if (url) downloadImage(url);
   }, [url]);
 
-  async function downloadImage(path) {
+  async function downloadImage(path: string) {
     try {
       const { data, error } = await supabaseClient.storage
         .from("avatars")
         .download(path);
+
       if (error) {
         throw error;
       }
-      const url = URL.createObjectURL(data);
-      setAvatarUrl(url);
+      if (data) {
+        const url = URL.createObjectURL(data);
+        setAvatarUrl(url);
+      }
     } catch (error) {
       ErrorService.catchError(error);
     }
@@ -27,7 +37,7 @@ export default function Avatar({ url, size, onUploadLoading, onUpload }) {
 
   // TODO: add delete before
   // TODO: add cancel functionality
-  async function uploadAvatar(event) {
+  async function uploadAvatar(event: ChangeEvent<HTMLInputElement>) {
     try {
       onUploadLoading(true);
 
@@ -50,7 +60,7 @@ export default function Avatar({ url, size, onUploadLoading, onUpload }) {
 
       onUpload(filePath);
     } catch (error) {
-      alert(error.message);
+      ErrorService.catchError(error);
     } finally {
       setUploading(false);
       onUploadLoading(false);
@@ -60,15 +70,16 @@ export default function Avatar({ url, size, onUploadLoading, onUpload }) {
   return (
     <div>
       {avatarUrl ? (
-        <img
+        <Image
           src={avatarUrl}
           alt="Avatar"
           className="avatar image"
-          style={{ height: size, width: size }}
+          height={size}
+          width={size}
         />
       ) : (
         <div
-          className="avatar no-image"
+          className="avatar no-image bg-gray-100"
           style={{ height: size, width: size }}
         />
       )}
@@ -90,4 +101,4 @@ export default function Avatar({ url, size, onUploadLoading, onUpload }) {
       </div>
     </div>
   );
-}
+};

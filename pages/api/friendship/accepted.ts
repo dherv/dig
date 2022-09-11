@@ -6,7 +6,7 @@ import {
 import { NextApiRequest, NextApiResponse } from "next";
 import { ErrorService } from "../../../services/error";
 import { supabaseServer } from "../../../services/supabase/supabase";
-import { FriendshipStatus } from "../../../services/supabase/types";
+import { FriendshipStatus } from "../../../services/supabase/types.app";
 
 const handleCreateFriendship = async (newUser: User) => {
   try {
@@ -39,8 +39,7 @@ export default withApiAuth(async function Accepted(
       handleCreateFriendship(newUser);
     }
     return res.status(200).json({ data: { message: "sign out successful" } });
-  } catch (e) {
-    console.log("caught", e);
-    return res.status(500).json({ message: error.message });
+  } catch (error) {
+    ErrorService.apiError(error, res);
   }
 });

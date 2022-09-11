@@ -1,10 +1,12 @@
 import { MovieCard } from "@/features/movie/MovieCard";
+import { FriendshipData, Suggestion } from "@/services/supabase/types.app";
 import { User, withPageAuth } from "@supabase/auth-helpers-nextjs";
 import useSWR from "swr";
 
 const SuggestionsPage = ({ user }: { user: User }) => {
-  const { data: friendshipData, error: errorProfile } =
-    useSWR(`/api/friendship`);
+  const { data: friendshipData } = useSWR(`/api/friendship`) as {
+    data: FriendshipData;
+  };
   const { data: suggestionsReceived } = useSWR(
     friendshipData
       ? [
@@ -18,11 +20,13 @@ const SuggestionsPage = ({ user }: { user: User }) => {
           },
         ]
       : null
-  );
+  ) as { data: Suggestion[] };
+
   const { data: suggestionsSent } = useSWR(
     `/api/suggestions/sent?userId=${user.id}`
-  );
+  ) as { data: Suggestion[] };
 
+  console.log({ suggestionsReceived, suggestionsSent });
   return (
     <div>
       {suggestionsSent ? (
@@ -31,7 +35,10 @@ const SuggestionsPage = ({ user }: { user: User }) => {
           <ul>
             {suggestionsSent.map((suggestion, index) => (
               <li key={`${suggestion.id}-${index}`}>
-                <MovieCard movie={suggestion.show} />
+                <MovieCard
+                  movie={suggestion.show}
+                  mediaType={suggestion.show.media_type}
+                />
               </li>
             ))}
           </ul>
@@ -43,8 +50,11 @@ const SuggestionsPage = ({ user }: { user: User }) => {
           <ul>
             {suggestionsReceived.map((suggestion, index) => (
               <li key={`${suggestion.id}-${index}`}>
-                <MovieCard movie={suggestion.show} />
-                <span>{`suggested by: ${suggestion.user.username}`}</span>
+                <MovieCard
+                  movie={suggestion.show}
+                  mediaType={suggestion.show.media_type}
+                />
+                <span>{`suggested by: ${suggestion.user?.username}`}</span>
               </li>
             ))}
           </ul>
@@ -56,15 +66,5 @@ const SuggestionsPage = ({ user }: { user: User }) => {
 
 export const getServerSideProps = withPageAuth({
   redirectTo: "/login",
-  // async getServerSideProps(ctx) {
-  //   // TODO: move to useSwr
-  //   const sent = await fetch(`/api/suggestions/sent?`);
-  //   const sentData = await sent.json();
-
-  //   const received = await fetch(`/api/suggestions/received?friendIds=${}&friendshipIds=${}`);
-  //   const receivedData = await received.json();
-
-  //   return { props: { data: { sent: sentData, received: receivedData } } };
-  // },
 });
 export default SuggestionsPage;

@@ -1,7 +1,5 @@
-// pages/profile.js
-
 import { getProfile } from "@/api/profile/[...id]";
-import Avatar from "@/layout/Avatar";
+import { Avatar } from "@/layout/Avatar";
 import { ErrorService } from "@/services/error";
 import {
   supabaseClient,
@@ -25,19 +23,15 @@ export default function Profile({
   const [avatar_url, setAvatarUrl] = useState<string>(profile?.avatar_url);
   const [loading, setLoading] = useState(false);
 
-  // const removePreviousAvatar = async (url: string) => {
-  //   try {
-  //      await supabaseClient.storage
-  //       .from("avatars")
-  //       .remove([`/${url}`]);
-  //   } catch (e) {
-  //     ErrorService.catchError(error);
-  //   }
-  // };
-
   // NOTE: can also read state variables directly instead of passing them as args
   // https://reactjs.org/docs/hooks-faq.html#why-am-i-seeing-stale-props-or-state-inside-my-function
-  const updateProfile = async ({ username, avatar_url }) => {
+  const updateProfile = async ({
+    username,
+    avatar_url,
+  }: {
+    username: string;
+    avatar_url: string;
+  }) => {
     try {
       setLoading(true);
 
@@ -113,7 +107,7 @@ export const getServerSideProps = withPageAuth({
       ).auth.api.getUserByCookie(ctx.req);
 
       if (error) {
-        ErrorService;
+        ErrorService.catchError(error);
         return { props: { profile: null } };
       }
 
@@ -121,6 +115,7 @@ export const getServerSideProps = withPageAuth({
         const profile = await getProfile(user?.id);
         return { props: { profile } };
       }
+      return { props: { profile: null } };
     } catch (error) {
       ErrorService.catchError(error);
       return { props: { profile: null } };

@@ -1,7 +1,8 @@
 import { withApiAuth } from "@supabase/auth-helpers-nextjs";
 import { NextApiRequest, NextApiResponse } from "next";
-import error from "next/error";
+import { ErrorService } from "../../../services/error";
 import { supabaseServer } from "../../../services/supabase/supabase";
+import { definitions } from "../../../services/supabase/types.database";
 
 export default withApiAuth(async function Accepted(
   req: NextApiRequest,
@@ -12,28 +13,32 @@ export default withApiAuth(async function Accepted(
 
     if (user) {
       // TODO: see if we can find a query to select depending on user_1 = user.id or user_2 = user.id instead of 2 queries
-      const { data: data1 } = await supabaseServer
-        .from("friendships")
+      const { data: friendshipFromColUser1 } = await supabaseServer
+        .from<definitions["friendships"]>("friendships")
         .select(`id, user_1(id, username)`)
         .eq(`user_2`, user.id);
 
-      const { data: data2 } = await supabaseServer
-        .from("friendships")
+      const { data: friendshipFromColUser2 } = await supabaseServer
+        .from<definitions["friendships"]>("friendships")
         .select(`id, user_2(id, username)`)
         .eq(`user_1`, user.id);
 
       const data = {
-        friendships: [...data1?.map((f) => f.id), ...data2?.map((f) => f.id)],
+        friendships: [
+          ...(friendshipFromColUser1?.map((friendship) => friendship.id) ?? []),
+          ...(friendshipFromColUser2?.map((friendship) => friendship.id) ?? []),
+        ],
         friends: [
-          ...data1?.map((f) => f.user_1),
-          ...data2?.map((f) => f.user_2),
+          ...(friendshipFromColUser1?.map((friendship) => friendship.user_1) ??
+            []),
+          ...(friendshipFromColUser2?.map((friendship) => friendship.user_2) ??
+            []),
         ],
       };
 
       return res.status(200).json({ ...data });
     }
-  } catch (e) {
-    console.log("caught", e);
-    return res.status(500).json({ message: error.message });
+  } catch (error) {
+    ErrorService.apiError(error, res);
   }
 });

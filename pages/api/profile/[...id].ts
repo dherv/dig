@@ -28,15 +28,15 @@ export default async function Profile(
 ) {
   // refresh the token
   // TODO: add to middleware? - move to page middleware
-  const { user, accessToken } = await getUser({ req, res });
+  const { accessToken } = await getUser({ req, res });
   try {
     // TODO - add refresh token in middleware
-    await supabaseServerClient({ req, res }).auth.setAuth(accessToken);
-    const data = await getProfile(req.query.id);
-    return res.status(200).json(data);
+    if (accessToken) {
+      supabaseServerClient({ req, res }).auth.setAuth(accessToken);
+      const data = await getProfile(req.query.id);
+      return res.status(200).json(data);
+    }
   } catch (error) {
-    const message = ErrorService.getErrorMessage(error);
-    ErrorService.reportError({ message });
-    return res.status(500).json({ message });
+    return ErrorService.apiError(error, res);
   }
 }

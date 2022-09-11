@@ -1,7 +1,13 @@
+import { ErrorService } from "@/services/error";
+import { supabaseServer } from "@/services/supabase/supabase";
+import {
+  Suggestion,
+  SuggestionSchemaWithRelations,
+} from "@/services/supabase/types.app";
+import { definitions } from "@/services/supabase/types.database";
+import * as TMDB from "@/services/tmdb";
+import { PostgrestError } from "@supabase/supabase-js";
 import { NextApiRequest, NextApiResponse } from "next";
-import { ErrorService } from "../../../services/error";
-import { supabaseServer } from "../../../services/supabase/supabase";
-import * as TMDB from "../../../services/tmdb";
 
 // TODO: 1 - recevied and sent are pretty similar - see if can combine
 // TODO: 2 - need to group by movie to get suggestion list of friends
@@ -11,30 +17,40 @@ export default async function handler(
 ) {
   try {
     const { friendshipIds, friendIds } = JSON.parse(req.body);
-    const { data: suggestions, error } = await supabaseServer
-      .from("suggestions")
+
+    // TODO: see if types for relations can be handled differently
+    const { data: suggestions, error } = (await supabaseServer
+      .from<definitions["suggestions"]>("suggestions")
       .select(
-        `id, show_id, user_id(username, avatar_url), show_media_type(type)`
+        `id, show_id, user:user_id(username, avatar_url), show_media_type(type)`
       )
-      .or(`friendship_id.in.(${friendshipIds}), user_id.in.(${friendIds})`);
+      .or(
+        `friendship_id.in.(${friendshipIds}), user_id.in.(${friendIds})`
+      )) as unknown as {
+      data: SuggestionSchemaWithRelations[];
+      error: PostgrestError | null;
+    };
 
-    const data = await Promise.all(
-      suggestions?.map(async (suggestion) => ({
-        user: suggestion.user_id,
-        show: await TMDB.getShow(
-          suggestion.show_media_type.type,
-          suggestion.show_id
-        ),
-      }))
-    );
+    // TODO: user_id will refer to the user join from select above. find a way around that match TS
+    // user:user_id(username, avatar_url) works but cause TS error - or renmae column user_id to user ?
+    const suggestionMapper = async (
+      suggestion: SuggestionSchemaWithRelations
+    ): Promise<Suggestion> => ({
+      id: suggestion.id,
+      user: suggestion.user,
+      show: await TMDB.getShow(
+        suggestion.show_media_type.type,
+        suggestion.show_id
+      ),
+    });
 
-    if (error) {
-      return res.status(500).json({ message: error.message });
+    if (suggestions) {
+      const data = await Promise.all(suggestions.map(suggestionMapper));
+      return res.status(200).json(data);
+    } else {
+      return res.status(200).json({ data: [] });
     }
-    return res.status(200).json(data);
   } catch (error) {
-    const message = ErrorService.getErrorMessage(error);
-    ErrorService.reportError({ message });
-    return res.status(500).json({ message });
+    return ErrorService.apiError(error, res);
   }
 }
