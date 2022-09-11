@@ -20,6 +20,8 @@ export const Nav: FC = () => {
     user?.id ? `/api/profile/${user?.id}` : null
   );
 
+  console.log({ data, errorProfile });
+
   // TODO: find a better way to get avatar in Layout Nav on first load: localStorage / store / swr cache
   async function downloadImage(path: string) {
     try {

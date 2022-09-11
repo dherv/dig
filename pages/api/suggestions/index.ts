@@ -16,9 +16,7 @@ export default async function handler(
         {
           show_id: showId,
           show_media_type:
-            showMediaType === "movie"
-              ? ShowMediaType.Movie
-              : ShowMediaType.Serie,
+            showMediaType === "movie" ? ShowMediaType.Movie : ShowMediaType.TV,
           user_id: userId,
           friendship_id: friendshipId,
         },

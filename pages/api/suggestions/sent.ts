@@ -26,6 +26,8 @@ export default async function handler(
         }))
       );
 
+      console.dir(data, { depth: null });
+
       if (error) {
         return res.status(500).json({ message: error.message });
       }

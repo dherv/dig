@@ -83,6 +83,7 @@ export const getServerSideProps = withPageAuth({
   redirectTo: "/login",
   async getServerSideProps(ctx) {
     if (typeof ctx.query.mediaType === "string") {
+      console.log(ctx.query);
       const data = await TMDB.getShow(ctx.query.mediaType, ctx.params?.id);
       return { props: { data, type: ctx.query.mediaType } };
     }

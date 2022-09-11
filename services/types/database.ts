@@ -8,5 +8,5 @@ export interface Suggestion {
 
 export enum ShowMediaType {
   Movie = 1,
-  Serie = 2,
+  TV = 2,
 }
