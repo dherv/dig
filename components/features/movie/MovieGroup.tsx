@@ -1,6 +1,6 @@
+import { MovieCard } from "@/features/movie/MovieCard";
 import { MediaType, Show } from "@/services/tmdb/types";
 import { FC } from "react";
-import { MovieCard } from "./MovieCard";
 
 interface Props {
   movies: Show[];

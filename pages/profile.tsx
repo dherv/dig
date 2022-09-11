@@ -1,5 +1,5 @@
 import { getProfile } from "@/api/profile/[...id]";
-import { Avatar } from "@/layout/Avatar";
+import { ProfileAvatar } from "@/components/layout/ProfileAvatar";
 import { ErrorService } from "@/services/error";
 import {
   supabaseClient,
@@ -82,7 +82,7 @@ export default function Profile({
         onChange={(event) => setUsername(event?.target.value)}
       />
 
-      <Avatar
+      <ProfileAvatar
         url={avatar_url}
         size={150}
         onUpload={handleUpload}

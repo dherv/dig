@@ -1,20 +1,24 @@
-import { MovieCard } from "@/features/movie/MovieCard";
+import { FriendsSuggestions } from "@/components/features/suggestions/FriendSuggestions";
+import { UserSuggestions } from "@/components/features/suggestions/UserSuggetions";
 import { FriendshipData, Suggestion } from "@/services/supabase/types.app";
 import { User, withPageAuth } from "@supabase/auth-helpers-nextjs";
+import { useState } from "react";
 import useSWR from "swr";
 
 const SuggestionsPage = ({ user }: { user: User }) => {
+  const [showUserSuggestions, setShowUserSuggestions] = useState(false);
   const { data: friendshipData } = useSWR(`/api/friendship`) as {
     data: FriendshipData;
   };
-  const { data: suggestionsReceived } = useSWR(
+
+  const { data: friendSuggestions } = useSWR(
     friendshipData
       ? [
           `/api/suggestions/received`,
           {
             method: "POST",
             body: JSON.stringify({
-              friendIds: friendshipData.friends?.map((f) => f.id),
+              friendIds: friendshipData.friends?.map((friend) => friend.id),
               friendshipIds: friendshipData.friendships,
             }),
           },
@@ -22,42 +26,21 @@ const SuggestionsPage = ({ user }: { user: User }) => {
       : null
   ) as { data: Suggestion[] };
 
-  const { data: suggestionsSent } = useSWR(
+  const { data: userSuggestions } = useSWR(
     `/api/suggestions/sent?userId=${user.id}`
   ) as { data: Suggestion[] };
 
-  console.log({ suggestionsReceived, suggestionsSent });
   return (
     <div>
-      {suggestionsSent ? (
+      <h2>friend suggestions</h2>
+      <FriendsSuggestions suggestions={friendSuggestions}></FriendsSuggestions>
+      <button onClick={() => setShowUserSuggestions((prev) => !prev)}>
+        toggle my suggestions
+      </button>
+      {showUserSuggestions ? (
         <>
           <h2>my suggestions</h2>
-          <ul>
-            {suggestionsSent.map((suggestion, index) => (
-              <li key={`${suggestion.id}-${index}`}>
-                <MovieCard
-                  movie={suggestion.show}
-                  mediaType={suggestion.show.media_type}
-                />
-              </li>
-            ))}
-          </ul>
-        </>
-      ) : null}
-      {suggestionsReceived && suggestionsReceived.length > 0 ? (
-        <>
-          <h2>friend suggestions</h2>
-          <ul>
-            {suggestionsReceived.map((suggestion, index) => (
-              <li key={`${suggestion.id}-${index}`}>
-                <MovieCard
-                  movie={suggestion.show}
-                  mediaType={suggestion.show.media_type}
-                />
-                <span>{`suggested by: ${suggestion.user?.username}`}</span>
-              </li>
-            ))}
-          </ul>
+          <UserSuggestions suggestions={userSuggestions} />
         </>
       ) : null}
     </div>
