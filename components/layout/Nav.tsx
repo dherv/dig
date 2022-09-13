@@ -60,7 +60,7 @@ export const Nav: FC = () => {
   }, [user]);
 
   return (
-    <nav className="flex justify-between items-center">
+    <nav className="flex justify-between items-center p-4 border border-gray-400 ">
       <div className="flex items-center">
         <BrandTitle />
         <div className="ml-6">

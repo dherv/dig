@@ -5,15 +5,19 @@ import { FC } from "react";
 interface Props {
   movies: Show[];
   mediaType: MediaType;
+  count: number;
 }
 
-export const MovieGroup: FC<Props> = ({ movies, mediaType }) => {
+export const MovieGroup: FC<Props> = ({ movies, mediaType, count }) => {
   console.log({ movies });
   return (
-    <ul className="flex -ml-2 -mr-2 my-2 overflow-scroll">
+    <ul
+      className={`pr-[6%] pb-10 overflow-visible whitespace-nowrap w-full z-${count}`}
+    >
       {movies.map((movie) => (
         <MovieCard movie={movie} key={movie.id} mediaType={mediaType} />
       ))}
+      <button className="fixed right-0">next</button>
     </ul>
   );
 };

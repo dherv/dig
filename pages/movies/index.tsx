@@ -15,8 +15,13 @@ const Movies: NextPage<Props> = ({ user, data }) => {
       <div className="my-6">
         <FilterPill />
       </div>
-      <div className="my-6">
-        <MovieGroup movies={data} mediaType={MediaType.Movie} />
+      <h2>Movies</h2>
+      <div className="my-6 w-full relative z-10">
+        <MovieGroup movies={data} mediaType={MediaType.Movie} count={2} />
+      </div>
+      <h2>Series</h2>
+      <div className="my-6 w-full relative z-10">
+        <MovieGroup movies={data} mediaType={MediaType.Movie} count={1} />
       </div>
     </div>
   );
@@ -58,7 +63,7 @@ const getMovies = async () => {
       return { ...serie, release_date: currentSeasonAirDate };
     };
     const serieMapped = await Promise.all(results.map(getSeasonAirDate));
-    data = { results: serieMapped };
+    data = serieMapped;
   } else {
     data = results;
   }

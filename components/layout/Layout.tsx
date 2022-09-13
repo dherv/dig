@@ -16,20 +16,19 @@ export const Layout: FC<{ children: ReactElement }> = ({ children }) => {
         />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <div className="container mx-auto py-2 px-2">
-        <header>
-          <Nav />
-        </header>
-        <main>
-          <div className="flex">
-            <section className="overflow-hidden">{children}</section>
-            <aside>
-              <Sidebar />
-            </aside>
-          </div>
-        </main>
-        <Footer />
-      </div>
+
+      <header>
+        <Nav />
+      </header>
+      <main className="py-2 px-2">
+        <div className="flex">
+          <section className="p-4 overflow-hidden w-full">{children}</section>
+          <aside>
+            <Sidebar />
+          </aside>
+        </div>
+      </main>
+      <Footer />
     </>
   );
 };

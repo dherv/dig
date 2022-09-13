@@ -5,6 +5,7 @@ import Image from "next/image";
 import { useRouter } from "next/router";
 import { FC } from "react";
 import { MediaType, Show } from "services/tmdb/types";
+import { MovieTitle } from "../movie/MovieTitle";
 
 interface Props {
   suggestion: Suggestion;
@@ -38,12 +39,7 @@ export const SuggestionCard: FC<Props> = ({ suggestion, movie, mediaType }) => {
         width={533}
         height={300}
       />
-      <div className="flex justify-between items-center">
-        <h4 className="font-medium text-lg mt-2">{movie.original_title}</h4>
-        <span className="font-medium text-lg mt-2">
-          {movie.vote_average.toFixed(1)}
-        </span>
-      </div>
+      <MovieTitle title={movie.original_title} vote={movie.vote_average} />
     </li>
   );
 };
