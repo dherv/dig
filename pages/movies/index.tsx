@@ -15,13 +15,13 @@ const Movies: NextPage<Props> = ({ user, data }) => {
       <div className="my-6">
         <FilterPill />
       </div>
-      <h2>Movies</h2>
-      <div className="my-6 w-full relative z-10">
-        <MovieGroup movies={data} mediaType={MediaType.Movie} count={2} />
+      <h2 className="font-bold text-lg">Movies</h2>
+      <div className="my-6 w-full">
+        <MovieGroup movies={data} mediaType={MediaType.Movie} />
       </div>
-      <h2>Series</h2>
-      <div className="my-6 w-full relative z-10">
-        <MovieGroup movies={data} mediaType={MediaType.Movie} count={1} />
+      <h2 className="font-bold text-lg">Series</h2>
+      <div className="my-6 w-full">
+        <MovieGroup movies={data} mediaType={MediaType.Movie} />
       </div>
     </div>
   );

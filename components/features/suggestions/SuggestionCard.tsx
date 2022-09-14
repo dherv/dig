@@ -39,7 +39,11 @@ export const SuggestionCard: FC<Props> = ({ suggestion, movie, mediaType }) => {
         width={533}
         height={300}
       />
-      <MovieTitle title={movie.original_title} vote={movie.vote_average} />
+      <MovieTitle
+        title={movie.original_title}
+        vote={movie.vote_average}
+        release_date={movie.release_date}
+      />
     </li>
   );
 };
