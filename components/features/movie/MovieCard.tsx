@@ -20,10 +20,11 @@ export const MovieCard: FC<Props> = ({ movie, mediaType }) => {
   const backdrop = `https://image.tmdb.org/t/p/w780${movie.backdrop_path}`;
 
   // TODO: fix the confusion between mediaType and type
+  // TODO: make the styles more generic to reuse the card
   return (
     <li
       ref={ref}
-      className="inline-block cursor-pointer hover:scale-105 transition-transform mr-4 w-1/4 overflow-visible"
+      className="inline-block cursor-pointer hover:scale-105 transition-transform mr-5 w-[calc(25%_-_1rem)] overflow-visible"
       onClick={() => handleClickShow(movie.id, mediaType)}
     >
       <div className="shadow-lg">
@@ -33,7 +34,7 @@ export const MovieCard: FC<Props> = ({ movie, mediaType }) => {
           layout="responsive"
           width={"16%"}
           height={"9%"}
-          className="rounded "
+          className="rounded"
         />
       </div>
 

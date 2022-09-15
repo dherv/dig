@@ -1,5 +1,6 @@
 import { MovieCard } from "@/features/movie/MovieCard";
 import { MediaType, Show } from "@/services/tmdb/types";
+import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/solid";
 import { FC, useEffect, useRef, useState } from "react";
 
 interface Props {
@@ -17,14 +18,12 @@ export const MovieGroup: FC<Props> = ({ movies, mediaType }) => {
   }, [movies]);
 
   const handleNext = () => {
-    console.log(maxSlides.current);
     if (maxSlides.current && currentRow <= maxSlides.current) {
       setCurrentRow((prev) => prev + 1);
     }
   };
 
   const handlePrev = () => {
-    console.log(maxSlides.current);
     if (maxSlides.current && currentRow <= maxSlides.current) {
       setCurrentRow((prev) => prev - 1);
     }
@@ -48,7 +47,7 @@ export const MovieGroup: FC<Props> = ({ movies, mediaType }) => {
         ref.current.scrollTo({
           top: 0,
           // offset of the first element of next group + section padding (16px) + wrapper padding (8px)
-          left: child.offsetLeft - 24,
+          left: child.offsetLeft - 8,
           behavior: "smooth",
         });
       }
@@ -65,24 +64,26 @@ export const MovieGroup: FC<Props> = ({ movies, mediaType }) => {
   }, [currentRow]);
 
   return (
-    <>
-      <p>{currentRow}</p>
-      {currentRow > 0 ? (
-        <button className="fixed right-0" onClick={handlePrev}>
-          prev
-        </button>
-      ) : null}
+    <div className="relative pr-[6%]">
       <ul
         ref={ref}
-        className={`pr-[6%] pt-2 pb-10 whitespace-nowrap w-full overflow-hidden`}
+        className={`pt-2 mb-10 whitespace-nowrap w-full overflow-hidden`}
       >
         {movies.map((movie) => (
           <MovieCard movie={movie} key={movie.id} mediaType={mediaType} />
         ))}
       </ul>
-      <button className="fixed right-0" onClick={handleNext}>
-        next
-      </button>
-    </>
+
+      <div className="absolute top-1/3 right-10 flex items-center  bg-black bg-opacity-70">
+        {currentRow > 0 ? (
+          <button className={` w-10 h-10`} onClick={handlePrev}>
+            <ChevronLeftIcon className=" text-white opacity-100" />
+          </button>
+        ) : null}
+        <button className={` w-10 h-10`} onClick={handleNext}>
+          <ChevronRightIcon className=" text-white opacity-100" />
+        </button>
+      </div>
+    </div>
   );
 };

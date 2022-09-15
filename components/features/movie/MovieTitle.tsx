@@ -36,7 +36,7 @@ export const MovieTitle: FC<Props> = ({ title, vote, release_date }) => {
 
       <div className="flex flex-col items-center">
         {Component}
-        <p className="font-light leading-6 text-xs mr-[1px]">
+        <p className="font-medium leading-6 text-xs mr-[1px]">
           {vote.toFixed(1)}
         </p>
       </div>
