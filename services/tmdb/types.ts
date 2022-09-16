@@ -24,6 +24,7 @@ export interface Show extends Movie {
   adult: boolean;
   backdrop_path: string;
   genre_ids: number[];
+  genres: Genre[];
   id: number;
   original_language: string;
   overview: string;
@@ -36,6 +37,28 @@ export interface Show extends Movie {
   name: string;
   origin_country: string[];
   original_name: string;
+  videos: {
+    results: Video[];
+  };
 }
 
 export interface TV extends Show {}
+
+// TODO: add enums - check if library exists already
+export interface Video {
+  iso_639_1: string;
+  iso_3166_1: string;
+  name: string;
+  key: string;
+  site: string;
+  size: number;
+  type: string;
+  official: boolean;
+  published_at: string;
+  id: string;
+}
+
+export interface Genre {
+  id: number;
+  name: string;
+}

@@ -47,7 +47,7 @@ export const MovieGroup: FC<Props> = ({ movies, mediaType }) => {
         ref.current.scrollTo({
           top: 0,
           // offset of the first element of next group + section padding (16px) + wrapper padding (8px)
-          left: child.offsetLeft - 8,
+          left: child.offsetLeft,
           behavior: "smooth",
         });
       }
@@ -67,14 +67,14 @@ export const MovieGroup: FC<Props> = ({ movies, mediaType }) => {
     <div className="relative pr-[6%]">
       <ul
         ref={ref}
-        className={`pt-2 mb-10 whitespace-nowrap w-full overflow-hidden`}
+        className={`pt-2 mb-10 pr-3 whitespace-nowrap w-full overflow-hidden`}
       >
         {movies.map((movie) => (
           <MovieCard movie={movie} key={movie.id} mediaType={mediaType} />
         ))}
       </ul>
 
-      <div className="absolute top-1/3 right-10 flex items-center  bg-black bg-opacity-70">
+      <div className="absolute top-1/3 right-10 flex items-center bg-black bg-opacity-70">
         {currentRow > 0 ? (
           <button className={` w-10 h-10`} onClick={handlePrev}>
             <ChevronLeftIcon className=" text-white opacity-100" />

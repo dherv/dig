@@ -1,5 +1,6 @@
 import { User, withPageAuth } from "@supabase/auth-helpers-nextjs";
 import type { NextPage } from "next";
+import dynamic from "next/dynamic";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import useSWR from "swr";
@@ -7,7 +8,7 @@ import { ErrorService } from "../../services/error";
 import { Friends, Suggestion } from "../../services/supabase/types.app";
 import * as TMDB from "../../services/tmdb";
 import { MediaType, Show } from "../../services/tmdb/types";
-
+const ReactPlayer = dynamic(() => import("react-player/lazy"), { ssr: false });
 interface Props {
   user: User;
   data: Show | null;
@@ -52,20 +53,54 @@ const MoviePage: NextPage<Props> = ({ user, data, type }) => {
   );
 
   return data ? (
-    <article>
-      <div>
+    <article className="relative my-4 mx-auto max-w-[960px]">
+      <h2 className="font-medium text-3xl">
         {type === MediaType.Movie ? data.original_title : data.original_name}
+      </h2>
+      <div className="relative flex my-4">
+        <div className="mr-1 w-1/4 relative">
+          <Image
+            src={TMDB.posterPath(data.poster_path, { size: "w780" })}
+            alt="backdrop of the movie or serie"
+            width={"280"}
+            height={"420"}
+            layout="responsive"
+          />
+        </div>
+        <div className="w-full">
+          <ReactPlayer
+            light={true}
+            width="100%"
+            height="100%"
+            onClickPreview={() => console.log("click preview")}
+            url={`https://www.youtube.com/watch?v=${data.videos.results[0]?.key}`}
+          />
+        </div>
       </div>
-      <Image
-        src={TMDB.posterPath(data.backdrop_path, { size: "w780" })}
-        alt="backdrop of the movie or serie"
-        width={533}
-        height={300}
-      />
-      <p>{data.overview}</p>
-      <button onClick={handleSuggest} disabled={isAlreadySuggested}>
-        {isAlreadySuggested ? "already did it!" : "suggest it!"}
-      </button>
+
+      <div className="flex justify-between items-start">
+        <div>
+          <div className="my-4">
+            {data.genres.map((genre) => (
+              <strong
+                key={genre.id}
+                className="mr-2 border text-gray-500 border-current uppercase px-5 py-1.5 rounded-full text-[10px] tracking-wide"
+              >
+                {genre.name}
+              </strong>
+            ))}
+            <p className="max-w-[600px] my-4">{data.overview}</p>
+          </div>
+        </div>
+
+        <button
+          onClick={handleSuggest}
+          disabled={isAlreadySuggested}
+          className="inline-block px-12 py-3 text-sm font-medium text-white bg-pink-600 border border-pink-600 rounded active:text-pink-500 hover:bg-transparent hover:text-pink-600 focus:outline-none focus:ring"
+        >
+          {isAlreadySuggested ? "already did it!" : "suggest it!"}
+        </button>
+      </div>
     </article>
   ) : null;
 };

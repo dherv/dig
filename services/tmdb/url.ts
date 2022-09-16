@@ -7,7 +7,7 @@ interface ImageOptions {
 }
 
 export const url = (path: string, options: Options = { query: "" }) => {
-  return `${process.env.NEXT_PUBLIC_TMDB_URI}${path}?api_key=${process.env.NEXT_PUBLIC_TMDB_KEY}&language=en-US&query=${options.query}&page=1&include_adult=false`;
+  return `${process.env.NEXT_PUBLIC_TMDB_URI}${path}?api_key=${process.env.NEXT_PUBLIC_TMDB_KEY}&language=en-US&query=${options.query}&page=1&include_adult=false&append_to_response=videos,images`;
 };
 
 export const posterPath = (
