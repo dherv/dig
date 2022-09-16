@@ -2,7 +2,6 @@ import Head from "next/head";
 import { FC, ReactElement } from "react";
 import { Footer } from "./Footer";
 import { Nav } from "./Nav";
-import { Sidebar } from "./Sidebar";
 
 export const Layout: FC<{ children: ReactElement }> = ({ children }) => {
   return (
@@ -20,12 +19,12 @@ export const Layout: FC<{ children: ReactElement }> = ({ children }) => {
       <header>
         <Nav />
       </header>
-      <main className="py-2 px-2">
+      <main className="py-2 ">
         <div className="flex">
-          <section className="px-2 overflow-hidden w-full">{children}</section>
-          <aside>
+          <section className=" overflow-hidden w-full">{children}</section>
+          {/* <aside>
             <Sidebar />
-          </aside>
+          </aside> */}
         </div>
       </main>
       <Footer />

@@ -1,9 +1,9 @@
-export const Rank1on5 = () => {
+export const Rank1on5 = ({ size = 24 }) => {
   const color = "#f87171";
   return (
     <svg
-      width="24"
-      height="24"
+      width={size}
+      height={size}
       viewBox="0 0 128 128"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
