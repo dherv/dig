@@ -11,7 +11,20 @@ type Props = {
   release_date: string;
 };
 
-export const MovieTitle: FC<Props> = ({ title, vote, release_date }) => {
+export const MovieTitle: FC<{ title: string; className?: string }> = ({
+  title,
+  className,
+}) => {
+  return (
+    <h4
+      className={`${className} font-bold leading-6 mt-2 text-ellipsis overflow-hidden`}
+    >
+      {title}
+    </h4>
+  );
+};
+
+export const MovieCardTitle: FC<Props> = ({ title, vote, release_date }) => {
   const getRatingComponent = () => {
     if (vote > 8) return <Rank5on5 />;
     if (vote > 7 && vote <= 8) return <Rank4on5 />;
@@ -26,9 +39,7 @@ export const MovieTitle: FC<Props> = ({ title, vote, release_date }) => {
   return (
     <div className="flex justify-between items-end">
       <div className="max-w-[80%]">
-        <h4 className="font-bold leading-6 text-sm mt-2 text-ellipsis overflow-hidden">
-          {title}
-        </h4>
+        <MovieTitle title={title} />
         <p className="font-light leading-6 text-sm">
           {format(new Date(release_date), "EEE, MMM dd")}
         </p>

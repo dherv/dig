@@ -1,15 +1,20 @@
 import { Suggestion as ISuggestion } from "@/services/supabase/types.app";
 import { FC } from "react";
-import { Suggestion } from "./Suggestion";
+import { SuggestionCard } from "./SuggestionCard";
 
 type Props = {
   suggestions: ISuggestion[];
 };
 export const UserSuggestions: FC<Props> = ({ suggestions }) => {
   return suggestions ? (
-    <ul>
+    <ul className="grid grid-cols-2">
       {suggestions.map((suggestion) => (
-        <Suggestion suggestion={suggestion} key={suggestion.id} />
+        <SuggestionCard
+          key={suggestion.id}
+          movie={suggestion.show}
+          mediaType={suggestion.show.media_type}
+          suggestion={suggestion}
+        />
       ))}
     </ul>
   ) : null;

@@ -1,20 +1,38 @@
-import { Spacer } from "@/layout/Spacer";
 import { Suggestion as ISuggestion } from "@/services/supabase/types.app";
 import { FC } from "react";
-import { Suggestion } from "./Suggestion";
+import { SuggestionCard } from "./SuggestionCard";
+import { SuggestionListItem } from "./SuggestionListItem";
 
 type Props = {
   suggestions: ISuggestion[];
 };
 export const FriendsSuggestions: FC<Props> = ({ suggestions }) => {
   return suggestions ? (
-    <ul>
-      {suggestions.map((suggestion) => (
-        <>
-          <Suggestion suggestion={suggestion} key={suggestion.id} />
-          <Spacer size={6} />
-        </>
-      ))}
-    </ul>
+    <>
+      <ul className="max-w-[840px] mx-auto flex">
+        {[...suggestions.slice(0, 1)].map((suggestion) => (
+          <>
+            <SuggestionCard
+              key={suggestion.id}
+              movie={suggestion.show}
+              mediaType={suggestion.show.media_type}
+              suggestion={suggestion}
+            />
+          </>
+        ))}
+      </ul>
+      <ul className="max-w-[840px] mx-auto">
+        {[...suggestions.slice(1)].map((suggestion) => (
+          <>
+            <SuggestionListItem
+              key={suggestion.id}
+              movie={suggestion.show}
+              mediaType={suggestion.show.media_type}
+              suggestion={suggestion}
+            />
+          </>
+        ))}
+      </ul>
+    </>
   ) : null;
 };

@@ -7,6 +7,7 @@ import useSWR from "swr";
 
 const SuggestionsPage = ({ user }: { user: User }) => {
   const [showUserSuggestions, setShowUserSuggestions] = useState(false);
+
   const { data: friendshipData } = useSWR(`/api/friendship`) as {
     data: FriendshipData;
   };
@@ -31,8 +32,8 @@ const SuggestionsPage = ({ user }: { user: User }) => {
   ) as { data: Suggestion[] };
 
   return (
-    <div>
-      <h2>friend suggestions</h2>
+    <div className="mx-auto my-12 w-[1280px]">
+      {/* <h2 className="first-letter:uppercase font-medium">friend suggestions</h2> */}
       <FriendsSuggestions suggestions={friendSuggestions}></FriendsSuggestions>
       <button onClick={() => setShowUserSuggestions((prev) => !prev)}>
         toggle my suggestions

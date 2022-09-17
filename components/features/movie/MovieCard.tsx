@@ -2,7 +2,7 @@ import Image from "next/image";
 import { useRouter } from "next/router";
 import { FC, useRef } from "react";
 import { MediaType, Show } from "services/tmdb/types";
-import { MovieTitle } from "./MovieTitle";
+import { MovieCardTitle } from "./MovieCardTitle";
 
 interface Props {
   movie: Show;
@@ -17,7 +17,7 @@ export const MovieCard: FC<Props> = ({ movie, mediaType }) => {
     router.push(`/shows/${showId}?mediaType=${mediaType}`);
   };
 
-  const backdrop = `https://image.tmdb.org/t/p/w500${movie.poster_path}`;
+  const poster = `https://image.tmdb.org/t/p/w500${movie.poster_path}`;
 
   // TODO: fix the confusion between mediaType and type
   // TODO: make the styles more generic to reuse the card
@@ -29,7 +29,7 @@ export const MovieCard: FC<Props> = ({ movie, mediaType }) => {
     >
       <div className="relative shadow-lg w-[200px] h-[300px]">
         <Image
-          src={backdrop}
+          src={poster}
           alt="backdrop of the movie or serie"
           layout="fill"
           className="rounded"
@@ -37,7 +37,7 @@ export const MovieCard: FC<Props> = ({ movie, mediaType }) => {
       </div>
 
       <>
-        <MovieTitle
+        <MovieCardTitle
           title={movie.original_title}
           vote={movie.vote_average}
           release_date={movie.release_date}

@@ -1,20 +1,38 @@
 import { MovieGroup } from "@/features/movie/MovieGroup";
-import { FilterPill } from "@/layout/FilterPill";
 import { MediaType, Show } from "@/services/tmdb/types";
 import { User, withPageAuth } from "@supabase/auth-helpers-nextjs";
+
 import { add, format, startOfMonth } from "date-fns";
 import type { NextPage } from "next";
+import useSWR from "swr";
+import { FriendshipData, Suggestion } from "../../services/supabase/types.app";
 interface Props {
   user: User;
   data: Show[];
 }
 // TODO: consider using styled components with twin.macro to avoid too many <div> wrappers
 const Movies: NextPage<Props> = ({ user, data }) => {
+  const { data: friendshipData } = useSWR(`/api/friendship`) as {
+    data: FriendshipData;
+  };
+
+  const { data: friendSuggestions } = useSWR(
+    friendshipData
+      ? [
+          `/api/suggestions/received`,
+          {
+            method: "POST",
+            body: JSON.stringify({
+              friendIds: friendshipData.friends?.map((friend) => friend.id),
+              friendshipIds: friendshipData.friendships,
+            }),
+          },
+        ]
+      : null
+  ) as { data: Suggestion[] };
+
   return (
-    <div>
-      <div className="my-6">
-        <FilterPill />
-      </div>
+    <div className="mx-auto w-[1280px] overflow-hidden">
       <h2 className="font-bold text-lg">Movies</h2>
       <div className="my-6 w-full">
         <MovieGroup movies={data} mediaType={MediaType.Movie} />

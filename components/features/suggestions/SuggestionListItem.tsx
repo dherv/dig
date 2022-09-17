@@ -4,6 +4,7 @@ import { useRouter } from "next/router";
 import { FC } from "react";
 import { MediaType, Show } from "services/tmdb/types";
 import { Avatar } from "../../layout/Avatar";
+import { MovieTitle } from "../movie/MovieCardTitle";
 
 interface Props {
   suggestion: Suggestion;
@@ -11,38 +12,45 @@ interface Props {
   mediaType: MediaType;
 }
 
-export const SuggestionCard: FC<Props> = ({ suggestion, movie, mediaType }) => {
+export const SuggestionListItem: FC<Props> = ({
+  suggestion,
+  movie,
+  mediaType,
+}) => {
   const router = useRouter();
 
   const handleClickShow = (showId: number, mediaType: MediaType) => {
     router.push(`/shows/${showId}?mediaType=${mediaType}`);
   };
 
-  const poster = `https://image.tmdb.org/t/p/w1280${movie.backdrop_path}`;
+  const poster = `https://image.tmdb.org/t/p/w1280${movie.poster_path}`;
 
   return (
-    <li className="relative mr-2 rounded-md w-full shadow-lg">
+    <li className="mr-2 rounded-md w-full my-4 p-2 shadow-md">
       <div
-        className=" cursor-pointer rounded-md"
+        className="relative flex w-full cursor-pointer rounded-md "
         onClick={() => handleClickShow(movie.id, mediaType)}
       >
-        <div className="relative">
+        <div className="relative shadow-lg w-[130px] h-[195px]">
           <Image
             src={poster}
             alt="backdrop of the movie or serie"
-            layout="responsive"
-            width={960}
-            height={540}
-            objectPosition={"top 0 left 0"}
-            className="rounded-md"
+            layout="fill"
+            className="rounded"
           />
         </div>
-        <div className="absolute bottom-0 right-0 p-1 border-r-0 border-4 border-white bg-gray-700 bg-opacity-90 z-10 rounded-br-md rounded-l-full">
+        <div className="flex flex-col justify-center ml-4">
+          <MovieTitle title={movie.title}></MovieTitle>
+          <p className="font-thin">{movie.release_date}</p>
+        </div>
+        <div className="absolute top-0 right-0">
           <Avatar
             src={suggestion.user?.avatar_url}
-            className={"w-[16px] h-[16px]"}
+            username={suggestion.user?.username}
+            className="w-[20px] h-[20px]"
           />
         </div>
+        {/* TODO: add AvatarGroup */}
       </div>
     </li>
   );

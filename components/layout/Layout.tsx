@@ -15,18 +15,19 @@ export const Layout: FC<{ children: ReactElement }> = ({ children }) => {
         />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-
-      <header>
-        <Nav />
-      </header>
-      <main className="py-2 ">
-        <div className="flex">
-          <section className=" overflow-hidden w-full">{children}</section>
-          {/* <aside>
+      <div>
+        <header>
+          <Nav />
+        </header>
+        <main className="py-2 ">
+          <div className="flex">
+            <section className=" overflow-hidden w-full">{children}</section>
+            {/* <aside>
             <Sidebar />
           </aside> */}
-        </div>
-      </main>
+          </div>
+        </main>
+      </div>
       <Footer />
     </>
   );
