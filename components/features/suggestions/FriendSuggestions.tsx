@@ -22,7 +22,14 @@ export const FriendsSuggestions: FC<Props> = ({ suggestions }) => {
         ))}
       </ul>
       <ul className="max-w-[840px] mx-auto">
-        {[...suggestions.slice(1)].map((suggestion) => (
+        {[
+          ...suggestions.slice(0, 2),
+          ...suggestions.slice(0, 2),
+          ...suggestions.slice(0, 2),
+          ...suggestions.slice(0, 2),
+          ...suggestions.slice(0, 2),
+          ...suggestions.slice(0, 2),
+        ].map((suggestion) => (
           <>
             <SuggestionListItem
               key={suggestion.id}

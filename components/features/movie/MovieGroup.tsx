@@ -14,7 +14,7 @@ export const MovieGroup: FC<Props> = ({ movies, mediaType }) => {
   const ref = useRef<HTMLUListElement | null>(null);
 
   useEffect(() => {
-    maxSlides.current = Math.floor(movies.length / 4);
+    maxSlides.current = Math.floor(movies.length / 5);
   }, [movies]);
 
   const handleNext = () => {
@@ -42,7 +42,7 @@ export const MovieGroup: FC<Props> = ({ movies, mediaType }) => {
       if (currentRow > 0 && currentRow < maxSlides.current) {
         console.log("here");
 
-        const child = Array.from(ref.current.children)[4 * currentRow];
+        const child = Array.from(ref.current.children)[5 * currentRow];
         console.log(child);
         ref.current.scrollTo({
           top: 0,
@@ -67,7 +67,7 @@ export const MovieGroup: FC<Props> = ({ movies, mediaType }) => {
     <div className="relative pr-[6%]">
       <ul
         ref={ref}
-        className={`pt-2 mb-10 pr-3 whitespace-nowrap w-full overflow-hidden`}
+        className={`mb-10 py-4 pl-1 whitespace-nowrap w-full overflow-hidden`}
       >
         {movies.map((movie) => (
           <MovieCard movie={movie} key={movie.id} mediaType={mediaType} />

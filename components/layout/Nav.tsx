@@ -2,11 +2,11 @@ import { Search } from "@/features/search/Search";
 import { BrandTitle } from "@/layout/BrandTitle";
 import { supabaseClient } from "@supabase/auth-helpers-nextjs";
 import { useUser } from "@supabase/auth-helpers-react";
-import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { FC, useEffect, useState } from "react";
 import useSWR, { useSWRConfig } from "swr";
+import { Avatar } from "./Avatar";
 
 export const Nav: FC = () => {
   const { cache } = useSWRConfig();
@@ -60,7 +60,7 @@ export const Nav: FC = () => {
   }, [user]);
 
   return (
-    <nav className="flex justify-between items-center p-4 shadow-md">
+    <nav className="flex justify-between items-center p-4 ">
       <div className="flex items-center">
         <BrandTitle />
         <div className="ml-6">
@@ -82,11 +82,7 @@ export const Nav: FC = () => {
       <Search />
       <div className="flex">
         <p>{username}</p>
-        {avatarUrl ? (
-          <Image alt="personal avatar" src={avatarUrl} width={30} height={30} />
-        ) : (
-          <></>
-        )}
+        {avatarUrl ? <Avatar src={avatarUrl} size={40} /> : <></>}
         <button onClick={handleSignOut}>sign out</button>
       </div>
     </nav>

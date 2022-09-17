@@ -15,7 +15,7 @@ export const Avatar: FC<Props> = ({ src, username, size = 16, className }) => {
       <Image
         src={src}
         alt="Avatar"
-        className="avatar image"
+        className="rounded-full"
         height={size}
         width={size}
       />
