@@ -1,5 +1,5 @@
+import { Avatar } from "@nextui-org/react";
 import { supabaseClient } from "@supabase/auth-helpers-nextjs";
-import Image from "next/image";
 import { ChangeEvent, FC, useEffect, useState } from "react";
 import { ErrorService } from "../../services/error";
 
@@ -26,14 +26,14 @@ export const ProfileAvatar: FC<Props> = ({
     try {
       const { data, error } = await supabaseClient.storage
         .from("avatars")
-        .download(path);
+        .createSignedUrl(path, 60);
 
       if (error) {
         throw error;
       }
       if (data) {
-        const url = URL.createObjectURL(data);
-        setAvatarUrl(url);
+        // const url = URL.createObjectURL(data);
+        setAvatarUrl(data.signedURL);
       }
     } catch (error) {
       ErrorService.catchError(error);
@@ -74,35 +74,22 @@ export const ProfileAvatar: FC<Props> = ({
 
   return (
     <div>
-      {avatarUrl ? (
-        <Image
-          src={avatarUrl}
-          alt="Avatar"
-          className="avatar image"
-          height={size}
-          width={size}
-        />
-      ) : (
-        <div
-          className="avatar no-image bg-gray-100"
-          style={{ height: size, width: size }}
-        />
-      )}
       <div style={{ width: size }}>
-        <label className="button primary block" htmlFor="single">
-          {uploading ? "Uploading ..." : "Upload"}
+        <label className="hover:cursor-pointer" htmlFor="single">
+          <Avatar src={avatarUrl} text="?" css={{ size: "$40", zIndex: 0 }} />
+          <input
+            className="hover:cursor-pointer"
+            style={{
+              visibility: "hidden",
+              position: "absolute",
+            }}
+            type="file"
+            id="single"
+            accept="image/*"
+            onChange={uploadAvatar}
+            disabled={uploading}
+          />
         </label>
-        <input
-          style={{
-            visibility: "hidden",
-            position: "absolute",
-          }}
-          type="file"
-          id="single"
-          accept="image/*"
-          onChange={uploadAvatar}
-          disabled={uploading}
-        />
       </div>
     </div>
   );

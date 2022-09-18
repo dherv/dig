@@ -76,11 +76,11 @@ export const MovieGroup: FC<Props> = ({ movies, mediaType }) => {
 
       <div className="absolute top-1/3 right-10 flex items-center bg-black bg-opacity-70">
         {currentRow > 0 ? (
-          <button className={` w-10 h-10`} onClick={handlePrev}>
+          <button className={`w-10 h-10`} onClick={handlePrev}>
             <ChevronLeftIcon className=" text-white opacity-100" />
           </button>
         ) : null}
-        <button className={` w-10 h-10`} onClick={handleNext}>
+        <button className={`w-10 h-10`} onClick={handleNext}>
           <ChevronRightIcon className=" text-white opacity-100" />
         </button>
       </div>

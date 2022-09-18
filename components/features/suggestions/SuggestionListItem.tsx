@@ -3,7 +3,7 @@ import Image from "next/image";
 import { useRouter } from "next/router";
 import { FC } from "react";
 import { MediaType, Show } from "services/tmdb/types";
-import { Avatar } from "../../layout/Avatar";
+import { User } from "../../layout/User";
 import { MovieTitle } from "../movie/MovieCardTitle";
 
 interface Props {
@@ -31,7 +31,7 @@ export const SuggestionListItem: FC<Props> = ({
         className="relative flex w-full cursor-pointer rounded-md "
         onClick={() => handleClickShow(movie.id, mediaType)}
       >
-        <div className="relative shadow-lg w-[130px] h-[195px]">
+        <div className="relative shadow-lg md:w-[130px] md:h-[195px] w-10 h-14">
           <Image
             src={poster}
             alt="backdrop of the movie or serie"
@@ -44,10 +44,14 @@ export const SuggestionListItem: FC<Props> = ({
           <p className="font-thin">{movie.release_date}</p>
         </div>
         <div className="absolute top-0 right-0">
-          <Avatar
+          <User
             src={suggestion.user?.avatar_url}
             username={suggestion.user?.username}
-            className="w-[20px] h-[20px]"
+            size={"lg"}
+            avatarType="avatar"
+
+            // username={suggestion.user?.username}
+            // className="w-[20px] h-[20px]"
           />
         </div>
         {/* TODO: add AvatarGroup */}

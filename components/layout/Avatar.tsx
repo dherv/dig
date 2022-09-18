@@ -8,16 +8,18 @@ type Props = {
   className?: string;
 };
 
-export const Avatar: FC<Props> = ({ src, username, size = 16, className }) => {
-  console.log({ size });
+export const Avatar: FC<Props> = ({ src, username, size = 16 }) => {
+  console.log({ src });
+
+  const className = `w-[${size}px] h-[${size}px]`;
   if (src) {
     return (
       <Image
         src={src}
         alt="Avatar"
         className="rounded-full"
-        height={size}
-        width={size}
+        height={`${size}px`}
+        width={`${size}px`}
       />
     );
   }

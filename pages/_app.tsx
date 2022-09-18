@@ -1,3 +1,4 @@
+import { NextUIProvider } from "@nextui-org/react";
 import { supabaseClient } from "@supabase/auth-helpers-nextjs";
 import { UserProvider } from "@supabase/auth-helpers-react";
 import type { AppProps } from "next/app";
@@ -23,9 +24,11 @@ function App({ Component, pageProps, ...appProps }: AppProps) {
         }}
       >
         <UserProvider supabaseClient={supabaseClient}>
-          <LayoutComponent>
-            <Component {...pageProps} />
-          </LayoutComponent>
+          <NextUIProvider disableBaseline={true}>
+            <LayoutComponent>
+              <Component {...pageProps} />
+            </LayoutComponent>
+          </NextUIProvider>
         </UserProvider>
       </SWRConfig>
     </>

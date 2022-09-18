@@ -3,7 +3,7 @@ import Image from "next/image";
 import { useRouter } from "next/router";
 import { FC } from "react";
 import { MediaType, Show } from "services/tmdb/types";
-import { Avatar } from "../../layout/Avatar";
+import { User } from "../../layout/User";
 
 interface Props {
   suggestion: Suggestion;
@@ -38,9 +38,10 @@ export const SuggestionCard: FC<Props> = ({ suggestion, movie, mediaType }) => {
           />
         </div>
         <div className="absolute bottom-0 right-0 p-1 border-r-0 border-4 border-white bg-gray-700 bg-opacity-90 z-10 rounded-br-md rounded-l-full">
-          <Avatar
+          <User
             src={suggestion.user?.avatar_url}
             className={"w-[16px] h-[16px]"}
+            avatarType="avatar"
           />
         </div>
       </div>

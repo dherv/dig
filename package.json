@@ -9,7 +9,9 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@dherv-co/barbarian-with-style": "^1.0.5",
     "@heroicons/react": "^1.0.6",
+    "@nextui-org/react": "^1.0.0-beta.10",
     "@react-hooks-library/core": "^0.3.6",
     "@supabase/auth-helpers-nextjs": "^0.2.7",
     "@supabase/auth-helpers-react": "^0.2.3",

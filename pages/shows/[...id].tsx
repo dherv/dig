@@ -77,7 +77,7 @@ const MoviePage: NextPage<Props> = ({ user, data, type }) => {
       </div>
 
       <div className="flex my-4">
-        <div className="relative w-3/4 h-[540px] max-h-[540px] ">
+        <div className="relative md:w-3/4 md:h-[540px] max-h-[540px] w-[300px] h-[200px]">
           <Image
             src={TMDB.posterPath(data.backdrop_path, { size: "w1280" })}
             alt="backdrop of the movie or serie"
@@ -96,9 +96,9 @@ const MoviePage: NextPage<Props> = ({ user, data, type }) => {
         />
       </div> */}
         </div>
-        <div className="w-1/4 h-[540px] max-h-[540px] bg-gray-700 "></div>
+        <div className="w-1/4 md:h-[540px] max-h-[540px] bg-gray-700 "></div>
       </div>
-      <div className="relative flex my-6 justify-between">
+      <div className="relative md:flex my-6 justify-between">
         {/* <div className="mr-1 w-1/4 relative">
           <Image
             src={TMDB.posterPath(data.poster_path, { size: "w780" })}
@@ -108,7 +108,7 @@ const MoviePage: NextPage<Props> = ({ user, data, type }) => {
             layout="responsive"
           />
         </div> */}
-        <div className="">
+        <div className="p-2">
           <div>
             <div className="">
               {data.genres.map((genre) => (
@@ -123,17 +123,17 @@ const MoviePage: NextPage<Props> = ({ user, data, type }) => {
             </div>
           </div>
         </div>
-        <div>
+        <div className="flex items-center justify-around md:block">
           <button
             onClick={handleSuggest}
-            className="block w-48 mb-2 px-12 py-3 text-sm font-medium text-white bg-gray-600 border border-gray-600 rounded active:text-gray-500 hover:bg-transparent hover:text-gray-600 focus:outline-none focus:ring"
+            className="block md:w-48 sm:mr-1 md:b-2 px-12 py-3 text-sm font-medium text-white bg-gray-600 border border-gray-600 rounded active:text-gray-500 hover:bg-transparent hover:text-gray-600 focus:outline-none focus:ring"
           >
             watch trailer
           </button>
           <button
             onClick={handleSuggest}
             disabled={isAlreadySuggested}
-            className="block w-48 px-12 py-3 text-sm font-medium text-white bg-pink-600 border border-pink-600 rounded active:text-pink-500 hover:bg-transparent hover:text-pink-600 focus:outline-none focus:ring"
+            className="block md:w-48 sm:ml-1 px-12 py-3 text-sm font-medium text-white bg-pink-600 border border-pink-600 rounded active:text-pink-500 hover:bg-transparent hover:text-pink-600 focus:outline-none focus:ring"
           >
             {isAlreadySuggested ? "already did it!" : "suggest it!"}
           </button>

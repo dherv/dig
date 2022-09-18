@@ -1,6 +1,5 @@
 import { Suggestion as ISuggestion } from "@/services/supabase/types.app";
 import { FC } from "react";
-import { SuggestionCard } from "./SuggestionCard";
 import { SuggestionListItem } from "./SuggestionListItem";
 
 type Props = {
@@ -9,7 +8,7 @@ type Props = {
 export const FriendsSuggestions: FC<Props> = ({ suggestions }) => {
   return suggestions ? (
     <>
-      <ul className="max-w-[840px] mx-auto flex">
+      {/* <ul className="max-w-[840px] mx-auto flex">
         {[...suggestions.slice(0, 1)].map((suggestion) => (
           <>
             <SuggestionCard
@@ -20,7 +19,7 @@ export const FriendsSuggestions: FC<Props> = ({ suggestions }) => {
             />
           </>
         ))}
-      </ul>
+      </ul> */}
       <ul className="max-w-[840px] mx-auto">
         {[
           ...suggestions.slice(0, 2),
