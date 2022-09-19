@@ -57,7 +57,7 @@ const MoviePage: NextPage<Props> = ({ user, data, type }) => {
   const rank = data.vote_average.toFixed(1);
   return data ? (
     <article className="relative my-4 mx-auto max-w-[1280px]">
-      <div className="flex py-4">
+      <div className="flex py-4 mx-2">
         <div>
           <h2 className="font-medium text-3xl">
             {type === MediaType.Movie
@@ -119,21 +119,21 @@ const MoviePage: NextPage<Props> = ({ user, data, type }) => {
                   {genre.name}
                 </strong>
               ))}
-              <p className="max-w-[600px] my-4">{data.overview}</p>
+              <p className="max-w-[600px] my-4 mx-1 md:mx-0">{data.overview}</p>
             </div>
           </div>
         </div>
-        <div className="flex items-center justify-around md:block">
+        <div className="flex items-center justify-around md:block mx-2 md:mx-0">
           <button
             onClick={handleSuggest}
-            className="block md:w-48 sm:mr-1 md:b-2 px-12 py-3 text-sm font-medium text-white bg-gray-600 border border-gray-600 rounded active:text-gray-500 hover:bg-transparent hover:text-gray-600 focus:outline-none focus:ring"
+            className="md:block w-48 mr-1 md:mr-0 md:mb-2 px-12 py-3 text-sm font-medium text-white bg-gray-600 border border-gray-600 rounded active:text-gray-500 hover:bg-transparent hover:text-gray-600 focus:outline-none focus:ring"
           >
             watch trailer
           </button>
           <button
             onClick={handleSuggest}
             disabled={isAlreadySuggested}
-            className="block md:w-48 sm:ml-1 px-12 py-3 text-sm font-medium text-white bg-pink-600 border border-pink-600 rounded active:text-pink-500 hover:bg-transparent hover:text-pink-600 focus:outline-none focus:ring"
+            className="md:block w-48 ml-1 md:ml-0 md:b-2 px-10 py-3 text-sm font-medium text-white bg-pink-600 border border-pink-600 rounded active:text-pink-500 hover:bg-transparent hover:text-pink-600 focus:outline-none focus:ring"
           >
             {isAlreadySuggested ? "already did it!" : "suggest it!"}
           </button>

@@ -31,11 +31,13 @@ export const SuggestionListItem: FC<Props> = ({
         className="relative flex w-full cursor-pointer rounded-md "
         onClick={() => handleClickShow(movie.id, mediaType)}
       >
-        <div className="relative shadow-lg md:w-[130px] md:h-[195px] w-10 h-14">
+        <div className="relative shadow-lg md:w-[90px] md:h-[130px] w-10 h-14">
           <Image
             src={poster}
             alt="backdrop of the movie or serie"
-            layout="fill"
+            layout="responsive"
+            width={200}
+            height={300}
             className="rounded"
           />
         </div>

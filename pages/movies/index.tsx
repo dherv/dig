@@ -32,14 +32,12 @@ const Movies: NextPage<Props> = ({ user, data }) => {
   ) as { data: Suggestion[] };
 
   return (
-    <div className="mx-auto w-[1280px] overflow-hidden">
-      <h2 className="font-bold text-lg">Movies</h2>
-      <div className="my-6 w-full">
-        <MovieGroup movies={data} mediaType={MediaType.Movie} />
+    <div className="mx-auto w-full p-4 md:w-[768px] lg:w-[1028px] overflow-hidden">
+      <div className=" w-full">
+        <MovieGroup movies={data} mediaType={MediaType.Movie} title="Movies" />
       </div>
-      <h2 className="font-bold text-lg">Series</h2>
-      <div className="my-6 w-full">
-        <MovieGroup movies={data} mediaType={MediaType.Movie} />
+      <div className=" w-full">
+        <MovieGroup movies={data} mediaType={MediaType.Movie} title="Series" />
       </div>
     </div>
   );

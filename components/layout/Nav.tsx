@@ -41,26 +41,25 @@ export const Nav: FC = () => {
         <BrandTitle />
         <div className="ml-6">
           <Link href="/">
-            <a className="font-light text-sm text-gray-600">
-              <span className="hidden md:block">suggestions</span>
-              <span>
-                <StarIcon className="w-5 h-5" />
-              </span>
+            <a className="flex font-light text-sm text-gray-600">
+              <StarIcon className="w-5 h-5" />
+              <span className="hidden md:inline md:ml-2">suggestions</span>
             </a>
           </Link>
         </div>
         <div className="ml-6">
           <Link href="/movies">
-            <a className="font-light text-sm text-gray-600">
-              <span className="hidden md:block">browse</span>
-              <span>
-                <FilmIcon className="w-5 h-5" />
-              </span>
+            <a className="flex font-light text-sm text-gray-600">
+              <FilmIcon className="w-5 h-5" />
+              <span className="hidden md:inline md:ml-2">browse</span>
             </a>
           </Link>
         </div>
       </div>
-      <Search />
+      <div className="ml-auto mr-4 md:ml-0 md:mr-0">
+        <Search />
+      </div>
+
       <div className="relative">
         <Popover>
           <Popover.Trigger>
@@ -74,7 +73,7 @@ export const Nav: FC = () => {
             </button>
           </Popover.Trigger>
           <Popover.Content>
-            <div className="bg-gray-50 ">
+            <div className="bg-gray-50">
               <div className="px-3 py-2">
                 <Link href="/profile">
                   <a className="block w-[150px] font-light text-sm text-gray-600">

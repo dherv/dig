@@ -32,7 +32,7 @@ const SuggestionsPage = ({ user }: { user: User }) => {
   ) as { data: Suggestion[] };
 
   return (
-    <div className="mx-auto my-12 md:w-[1280px]">
+    <div className="mx-auto my-2">
       {/* <h2 className="first-letter:uppercase font-medium">friend suggestions</h2> */}
       <FriendsSuggestions suggestions={friendSuggestions}></FriendsSuggestions>
       <button onClick={() => setShowUserSuggestions((prev) => !prev)}>

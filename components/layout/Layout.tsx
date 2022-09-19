@@ -19,7 +19,7 @@ export const Layout: FC<{ children: ReactElement }> = ({ children }) => {
         <header className="fixed w-full z-50 bg-gray-50 shadow-sm">
           <Nav />
         </header>
-        <main className="py-24">
+        <main className="py-16 md:py-24">
           <div className="flex">
             <section className=" overflow-hidden w-full">{children}</section>
             {/* <aside>

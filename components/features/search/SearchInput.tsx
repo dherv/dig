@@ -27,7 +27,7 @@ export const SearchInput: FC<Props> = ({
 
   return (
     <>
-      <div className="visible md:invisible">
+      <div className=" md:hidden">
         <SearchIcon className="h-5 w-5" onClick={openMobileSearch} />
         <label
           className={`flex ${status} md:hidden absolute top-0 bottom-0 left-0 right-0 bg-gray-700 z-20`}
@@ -35,7 +35,7 @@ export const SearchInput: FC<Props> = ({
           <input
             ref={ref}
             type="text"
-            className="h-full w-full px-2 text-white bg-gray-700"
+            className="h-full w-full px-2 text-white bg-gray-700  focus:outline-none outline-none"
             value={value}
             onChange={onChange}
           />

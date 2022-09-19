@@ -17,7 +17,7 @@ export const MovieTitle: FC<{ title: string; className?: string }> = ({
 }) => {
   return (
     <h4
-      className={`${className} font-bold leading-6 mt-2 break-words whitespace-pre-wrap overflow-hidden`}
+      className={`${className} text-xs md:text-sm font-bold leading-6 mt-2 break-words whitespace-pre-wrap overflow-hidden`}
     >
       {title}
     </h4>
@@ -40,7 +40,7 @@ export const MovieCardTitle: FC<Props> = ({ title, vote, release_date }) => {
     <div className="flex justify-between items-end max-w-[200px]">
       <div className="max-w-[60%]">
         <MovieTitle title={title} />
-        <p className="font-light leading-6 text-sm">
+        <p className="font-light leading-6 text-xs sm:text:sm">
           {format(new Date(release_date), "EEE, MMM dd")}
         </p>
       </div>

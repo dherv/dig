@@ -6,9 +6,10 @@ import { FC, useEffect, useRef, useState } from "react";
 interface Props {
   movies: Show[];
   mediaType: MediaType;
+  title: string;
 }
 
-export const MovieGroup: FC<Props> = ({ movies, mediaType }) => {
+export const MovieGroup: FC<Props> = ({ movies, mediaType, title }) => {
   const [currentRow, setCurrentRow] = useState<number>(0);
   const maxSlides = useRef<number | null>(null);
   const ref = useRef<HTMLUListElement | null>(null);
@@ -64,26 +65,29 @@ export const MovieGroup: FC<Props> = ({ movies, mediaType }) => {
   }, [currentRow]);
 
   return (
-    <div className="relative pr-[6%]">
+    <div className="relative">
+      <div className="flex justify-between items-center">
+        <h2 className="font-medium text-md leading-10">{title}</h2>
+        <div className="hidden md:flex items-center">
+          {currentRow > 0 ? (
+            <button className={`w-7 h-7 ml-2`} onClick={handlePrev}>
+              <ChevronLeftIcon className=" text-gray-400 border-gray-400 hover:text-gray-700 hover:border-gray-700 transition-all border rounded-full" />
+            </button>
+          ) : null}
+          <button className={`w-7 h-7 ml-2`} onClick={handleNext}>
+            <ChevronRightIcon className=" text-gray-400 border-gray-400 hover:text-gray-700 hover:border-gray-700 transition-all border rounded-full" />
+          </button>
+        </div>
+      </div>
+
       <ul
         ref={ref}
-        className={`mb-10 py-4 pl-1 whitespace-nowrap w-full overflow-hidden`}
+        className={`mb-10 py-4  whitespace-nowrap w-full overflow-x-scroll overflow-y-hidden md:overflow-x-hidden`}
       >
         {movies.map((movie) => (
           <MovieCard movie={movie} key={movie.id} mediaType={mediaType} />
         ))}
       </ul>
-
-      <div className="absolute top-1/3 right-10 flex items-center bg-black bg-opacity-70">
-        {currentRow > 0 ? (
-          <button className={`w-10 h-10`} onClick={handlePrev}>
-            <ChevronLeftIcon className=" text-white opacity-100" />
-          </button>
-        ) : null}
-        <button className={`w-10 h-10`} onClick={handleNext}>
-          <ChevronRightIcon className=" text-white opacity-100" />
-        </button>
-      </div>
     </div>
   );
 };

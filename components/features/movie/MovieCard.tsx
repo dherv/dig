@@ -2,7 +2,6 @@ import Image from "next/image";
 import { useRouter } from "next/router";
 import { FC, useRef } from "react";
 import { MediaType, Show } from "services/tmdb/types";
-import { MovieCardTitle } from "./MovieCardTitle";
 
 interface Props {
   movie: Show;
@@ -24,25 +23,25 @@ export const MovieCard: FC<Props> = ({ movie, mediaType }) => {
   return (
     <li
       ref={ref}
-      className="inline-block cursor-pointer hover:scale-105 transition-transform mr-5 overflow-visible"
+      className="inline-block w-[calc(33%_-_24px)] sm:w-[calc(25%_-_24px)] md:w-[calc(25%_-_24px)] lg:w-[calc(20%_-_24px)] cursor-pointer hover:scale-105 transition-transform mr-4 md:mr-2 overflow-visible"
       onClick={() => handleClickShow(movie.id, mediaType)}
     >
-      <div className="relative shadow-lg w-[200px] h-[300px]">
+      <div className="relative shadow-lg">
         <Image
           src={poster}
           alt="backdrop of the movie or serie"
-          layout="fill"
-          className="rounded"
+          layout="responsive"
+          width={200}
+          height={300}
+          className="md:rounded"
         />
       </div>
 
-      <>
-        <MovieCardTitle
-          title={movie.original_title}
-          vote={movie.vote_average}
-          release_date={movie.release_date}
-        />
-      </>
+      {/* <MovieCardTitle
+        title={movie.original_title}
+        vote={movie.vote_average}
+        release_date={movie.release_date}
+      /> */}
     </li>
   );
 };
