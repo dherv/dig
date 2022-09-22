@@ -67,8 +67,6 @@ const MoviePage: NextPage<Props> = ({ user, data, type }) => {
     setVisible(true);
   };
 
-  debugger;
-
   return data ? (
     <article className="relative my-4 mx-auto max-w-[1280px]">
       <div className="flex py-4 px-4 xl:px-0">
