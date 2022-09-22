@@ -4,8 +4,9 @@ import { SuggestionListItem } from "./SuggestionListItem";
 
 type Props = {
   suggestions: ISuggestion[];
+  withAvatar: boolean;
 };
-export const FriendsSuggestions: FC<Props> = ({ suggestions }) => {
+export const Suggestions: FC<Props> = ({ suggestions, withAvatar }) => {
   return suggestions ? (
     <>
       {/* <ul className="max-w-[840px] mx-auto flex">
@@ -35,6 +36,7 @@ export const FriendsSuggestions: FC<Props> = ({ suggestions }) => {
               movie={suggestion.show}
               mediaType={suggestion.show.media_type}
               suggestion={suggestion}
+              withAvatar={withAvatar}
             />
           </>
         ))}

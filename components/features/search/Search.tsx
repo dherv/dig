@@ -51,7 +51,7 @@ export const Search: FC = () => {
         isSearchMobileOpen={isSearchMobileOpen}
       />
       {searchQuery && (
-        <ul className="absolute top-16 left-0 z-10 bg-gray-700 text-white  overflow-y-scroll h-[calc(100vh_-_64px)] md:h-[56.5rem] w-full md:w-[32rem] md:left-1/2 md:-translate-x-1/2 shadow-sm">
+        <ul className="absolute top-16 md:top-12 left-0 z-10 bg-gray-700 text-white  overflow-y-scroll h-[calc(100vh_-_64px)] md:h-[56.5rem] w-full md:w-[32rem] md:left-1/2 md:-translate-x-1/2 shadow-sm">
           {shows ? (
             shows?.map((show: Show) => (
               <li
@@ -59,12 +59,15 @@ export const Search: FC = () => {
                 className="p-4 flex border-b border-b-gray-400 cursor-pointer hover:bg-gray-600"
                 onClick={() => handleClickShow(show.media_type, show.id)}
               >
-                <Image
-                  src={TMDB.posterPath(show.poster_path)}
-                  alt="poster of the movie or serie"
-                  width={60}
-                  height={80}
-                />
+                <div className="relative">
+                  <Image
+                    src={TMDB.posterPath(show.poster_path)}
+                    alt="poster of the movie or serie"
+                    width={"55"}
+                    height={"80"}
+                  />
+                </div>
+
                 <h5 className="font-medium ml-2 cusr">
                   {show.media_type === MediaType.TV
                     ? show.original_name

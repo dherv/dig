@@ -1,4 +1,5 @@
-import { supabaseClient } from "@supabase/auth-helpers-nextjs";
+import { Input } from "@nextui-org/react";
+import { supabaseClient, withPageAuth } from "@supabase/auth-helpers-nextjs";
 import { useUser } from "@supabase/auth-helpers-react";
 import { useRouter } from "next/router";
 import { ChangeEvent, MouseEvent, useEffect, useState } from "react";
@@ -28,6 +29,7 @@ const RegisterPage = () => {
   const handleUpdatePassword = async (event: MouseEvent) => {
     event.preventDefault();
     const { password, username } = userData;
+
     if (password && username && user) {
       const { data: passwordData, error: passwordError } =
         await supabaseClient.auth.update({
@@ -44,11 +46,39 @@ const RegisterPage = () => {
     }
   };
   return (
-    <>
+    <div className="relative flex justify-center items-center h-screen p-4 md:mx-auto">
+      {/* <Card css={{ mw: "400px" }}>
+      <Card.Body> */}
+      <h1 className="absolute top-0 left-0 p-4 font-bold text-xl">Dig!</h1>
       {error && <p>{error.message}</p>}
-      <form>
-        <label>update password</label>
-        <input
+      <form className="w-full max-w-[475px]">
+        <h2 className="font-medium mb-4">
+          Add your username and a password to proceed
+        </h2>
+        <div className="w-full">
+          <Input
+            width="100%"
+            required
+            label="username"
+            type="text"
+            name="username"
+            autoComplete="new-password"
+            onChange={handleChange}
+          />
+        </div>
+        <div>
+          <Input
+            width="100%"
+            required
+            autoComplete="new-password"
+            label="password"
+            type="password"
+            name="password"
+            onChange={handleChange}
+          />
+        </div>
+
+        {/* <input
           type="password"
           name="password"
           value={userData.password}
@@ -61,12 +91,20 @@ const RegisterPage = () => {
           name="username"
           value={userData.username}
           onChange={handleChange}
-        ></input>
+        ></input> */}
 
-        <button onClick={handleUpdatePassword}>update</button>
+        <button
+          className="md:block w-48 ml-1 md:ml-0 md:b-2 px-10 py-3 my-8 text-sm font-medium text-white bg-pink-600 border border-pink-600 rounded active:text-pink-500 hover:bg-transparent hover:text-pink-600 focus:outline-none focus:ring"
+          onClick={handleUpdatePassword}
+        >
+          update
+        </button>
       </form>
-    </>
+    </div>
   );
 };
 
+export const getServerSideProps = withPageAuth({
+  redirectTo: "/login",
+});
 export default RegisterPage;

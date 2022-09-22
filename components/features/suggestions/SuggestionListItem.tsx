@@ -10,12 +10,14 @@ interface Props {
   suggestion: Suggestion;
   movie: Show;
   mediaType: MediaType;
+  withAvatar: boolean;
 }
 
 export const SuggestionListItem: FC<Props> = ({
   suggestion,
   movie,
   mediaType,
+  withAvatar,
 }) => {
   const router = useRouter();
 
@@ -45,17 +47,19 @@ export const SuggestionListItem: FC<Props> = ({
           <MovieTitle title={movie.title}></MovieTitle>
           <p className="font-thin">{movie.release_date}</p>
         </div>
-        <div className="absolute top-0 right-0">
-          <User
-            src={suggestion.user?.avatar_url}
-            username={suggestion.user?.username}
-            size={"lg"}
-            avatarType="avatar"
+        {withAvatar ? (
+          <div className="absolute top-0 right-0">
+            <User
+              src={suggestion.user?.avatar_url}
+              username={suggestion.user?.username}
+              size={"md"}
+              avatarType="avatar"
 
-            // username={suggestion.user?.username}
-            // className="w-[20px] h-[20px]"
-          />
-        </div>
+              // username={suggestion.user?.username}
+              // className="w-[20px] h-[20px]"
+            />
+          </div>
+        ) : null}
         {/* TODO: add AvatarGroup */}
       </div>
     </li>

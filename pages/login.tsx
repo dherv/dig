@@ -18,15 +18,15 @@ const LoginPage = () => {
 
   if (!user)
     return (
-      <>
+      <div className="relative flex justify-center items-center h-screen p-4 mx-auto">
+        {/* <Card css={{ mw: "400px" }}>
+          <Card.Body> */}
+        <h1 className="absolute top-0 left-0 p-4 font-bold text-xl">Dig!</h1>
         {error && <p>{error.message}</p>}
-        <Auth
-          supabaseClient={supabaseClient}
-          providers={["google", "github"]}
-          socialLayout="vertical"
-          socialButtonSize="xlarge"
-        />
-      </>
+        <Auth supabaseClient={supabaseClient} view="sign_in" />
+        {/* </Card.Body>
+        </Card> */}
+      </div>
     );
 
   return null;

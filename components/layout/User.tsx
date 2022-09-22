@@ -23,13 +23,14 @@ export const User: FC<Props> = (props) => {
     try {
       const { data, error } = await supabaseClient.storage
         .from("avatars")
-        .createSignedUrl(path, 60);
+        .download(path);
 
       if (error) {
         throw error;
       }
       if (data) {
-        setAvatarUrl(data.signedURL);
+        const url = URL.createObjectURL(data);
+        setAvatarUrl(url);
       }
     } catch (error) {
       ErrorService.catchError(error);
@@ -44,7 +45,7 @@ export const User: FC<Props> = (props) => {
     <Avatar
       src={avatarUrl}
       text={username?.substring(0, 2)}
-      className="z-0"
+      className={`${props.className} z-0`}
       size={size}
     />
   ) : (
