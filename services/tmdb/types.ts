@@ -3,24 +3,57 @@ export enum MediaType {
   Movie = "movie",
 }
 
-export interface Movie {
+interface BaseShow {
+  id: number;
   adult: boolean;
   backdrop_path: string;
-  genre_ids: number[];
-  id: number;
+  overview: string;
   original_language: string;
   original_title: string;
-  overview: string;
   popularity: number;
   poster_path: string;
-  release_date: string;
-  title: string;
-  video: boolean;
   vote_average: number;
   vote_count: number;
+  videos: {
+    results: Video[];
+  };
+}
+export interface Movie extends BaseShow {
+  genre_ids: number[];
+  release_date: string;
+  title: string;
+  runtime: string;
 }
 
-export interface Show extends Movie {
+export interface Serie extends BaseShow {
+  created_by: any[];
+  episode_run_time: string[];
+  first_air_date: string;
+  genres: Genre[];
+  homepage: string;
+  images: any[];
+  in_production: boolean;
+  languages: string[];
+  last_air_date: string;
+  last_episode_to_air: any;
+  media_type: MediaType;
+  name: string;
+  networks: any[];
+  next_episode_to_air: any;
+  number_of_episodes: number;
+  number_of_seasons: number;
+  origin_country: string[];
+
+  production_companies: string[];
+  production_countries: string[];
+  seasons: any[];
+  spoken_languages: string[];
+  status: string;
+  tagline: string;
+  type: string;
+}
+
+export interface Show extends Movie, Serie {
   adult: boolean;
   backdrop_path: string;
   genre_ids: number[];
@@ -37,9 +70,6 @@ export interface Show extends Movie {
   name: string;
   origin_country: string[];
   original_name: string;
-  videos: {
-    results: Video[];
-  };
 }
 
 export interface TV extends Show {}

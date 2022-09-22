@@ -8,10 +8,10 @@ import useSWR from "swr";
 import { FriendshipData, Suggestion } from "../../services/supabase/types.app";
 interface Props {
   user: User;
-  data: Show[];
+  data: { movies: Show[]; series: Show[] };
 }
 // TODO: consider using styled components with twin.macro to avoid too many <div> wrappers
-const Movies: NextPage<Props> = ({ user, data }) => {
+const Movies: NextPage<Props> = ({ user, data: { movies, series } }) => {
   const { data: friendshipData } = useSWR(`/api/friendship`) as {
     data: FriendshipData;
   };
@@ -32,12 +32,16 @@ const Movies: NextPage<Props> = ({ user, data }) => {
   ) as { data: Suggestion[] };
 
   return (
-    <div className="mx-auto w-full p-4 md:w-[768px] lg:w-[1028px] overflow-hidden">
+    <div className="mx-auto w-full p-4 -px-2 lg:w-[1028px] overflow-hidden">
       <div className=" w-full">
-        <MovieGroup movies={data} mediaType={MediaType.Movie} title="Movies" />
+        <MovieGroup
+          movies={movies}
+          mediaType={MediaType.Movie}
+          title="Movies"
+        />
       </div>
       <div className=" w-full">
-        <MovieGroup movies={data} mediaType={MediaType.Movie} title="Series" />
+        <MovieGroup movies={series} mediaType={MediaType.TV} title="Series" />
       </div>
     </div>
   );
@@ -64,25 +68,23 @@ const getMovies = async () => {
   const urlMovie = `https://api.themoviedb.org/3/discover/movie?api_key=${api_key}&region=US&sort_by=popularity.desc&include_adult=false&include_video=false&page=1&${movieDateType}.gte=${date_start}&${movieDateType}.lte=${date_end}&with_release_type=4`;
   const urlSerie = `https://api.themoviedb.org/3/discover/tv?api_key=${api_key}&region=US&sort_by=popularity.desc&include_adult=false&include_video=false&page=1&${tvDateType}.gte=${date_start}&${tvDateType}.lte=${date_end}&with_release_type=4`;
 
-  const url = urlMovie;
-  const res = await fetch(url);
-  const { results } = await res.json();
+  const resMovie = await fetch(urlMovie);
+  const { results: movies } = await resMovie.json();
 
-  let data;
-  if (url === urlSerie) {
-    const getSeasonAirDate = async (serie: any) => {
-      const urlSerieOne = `https://api.themoviedb.org/3/tv/${serie.id}?api_key=${api_key}&language=en-US`;
-      const serieResponse: any = await fetch(urlSerieOne);
-      const serieData: any = await serieResponse.json();
-      const currentSeasonAirDate =
-        serieData.seasons[serieData.seasons.length - 1].air_date;
-      return { ...serie, release_date: currentSeasonAirDate };
-    };
-    const serieMapped = await Promise.all(results.map(getSeasonAirDate));
-    data = serieMapped;
-  } else {
-    data = results;
-  }
+  const getSeasonAirDate = async (serie: any) => {
+    const urlSerieOne = `https://api.themoviedb.org/3/tv/${serie.id}?api_key=${api_key}&language=en-US`;
+    const serieResponse: any = await fetch(urlSerieOne);
+    const serieData: any = await serieResponse.json();
+    const currentSeasonAirDate =
+      serieData.seasons[serieData.seasons.length - 1].air_date;
+    return { ...serie, release_date: currentSeasonAirDate };
+  };
+
+  const resSerie = await fetch(urlSerie);
+  const { results: seriesResults } = await resSerie.json();
+  const series = await Promise.all(seriesResults.map(getSeasonAirDate));
+
+  let data = { movies, series };
   // Pass data to the page via props
   return { props: { data } };
 };

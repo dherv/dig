@@ -58,11 +58,43 @@ const MoviePage: NextPage<Props> = ({ user, data, type }) => {
   );
 
   const rank = data?.vote_average.toFixed(1);
-  const runtime = data.runtime
-    ? `${minutesToHours(data?.runtime)}h${
-        data?.runtime - minutesToHours(data?.runtime) * 60
-      }min`
-    : "";
+
+  const formatRuntime = (runtime: string) => {
+    return runtime
+      ? `${minutesToHours(runtime)}h${
+          runtime - minutesToHours(runtime) * 60
+        }min`
+      : undefined;
+  };
+
+  const getRuntime = (
+    show: Show,
+    mediaType: MediaType,
+    format: typeof formatRuntime
+  ) => {
+    if (mediaType === MediaType.Movie) {
+      return format(show?.runtime);
+    }
+
+    console.log(show);
+
+    // TODO: replace by episode when adding episode feature
+    return format(show.episode_run_time[0]);
+  };
+
+  const getReleaseDate = (show: Show, mediaType: MediaType) => {
+    if (mediaType === MediaType.Movie) {
+      return show.release_date;
+    }
+    // TODO: replace by show.seasons.at() when ready or add polyfill
+    const serieLastSeason = show.seasons[show.seasons.length - 1];
+    const serieLastSeasonAirDate = serieLastSeason.air_date;
+    return serieLastSeasonAirDate;
+  };
+
+  const runtime = getRuntime(data, type, formatRuntime);
+  const releaseDate = getReleaseDate(data, type);
+
   const handleClickTrailer = () => {
     setVisible(true);
   };
@@ -77,11 +109,13 @@ const MoviePage: NextPage<Props> = ({ user, data, type }) => {
               : data.original_name}
           </h2>
           <div className="flex items-end leading-4 my-2 text-sm ">
-            <span className="mr-2 font-thin text-gray-500">
-              {data.release_date}
-            </span>
-            <span className="font-thin text-gray-500">.</span>
-            <span className="ml-2 font-thin text-gray-500">{runtime}</span>
+            <span className="mr-2 font-thin text-gray-500">{releaseDate}</span>
+            {runtime ? (
+              <>
+                <span className="font-thin text-gray-500">.</span>
+                <span className="ml-2 font-thin text-gray-500">{runtime}</span>
+              </>
+            ) : null}
             <div className="flex items-end ml-4">
               <Rank size={20} vote={data.vote_average} />
               <p className="font-bold ml-2">{rank}</p>
@@ -106,9 +140,12 @@ const MoviePage: NextPage<Props> = ({ user, data, type }) => {
  
       </div> */}
         </div>
-        <div className="w-1/4 bg-gray-700 flex justify-center items-center">
-          <span className=" font-medium text-sm md:text-lg inline-block text-center text-white">
+        <div className="w-1/4 bg-gray-700 flex flex-col justify-center items-center">
+          <span className="font-medium text-sm md:text-lg block text-center text-white">
             coming soon!
+          </span>
+          <span className="mt-2 font-medium text-xs md:text-sm  text-center text-white">
+            (...maybe)
           </span>
         </div>
       </div>
@@ -122,19 +159,17 @@ const MoviePage: NextPage<Props> = ({ user, data, type }) => {
             layout="responsive"
           />
         </div> */}
-        <div className="my-2 md:mr-2">
+        <div className="my-1 md:mr-2">
           <div>
-            <div className="">
-              {data.genres.map((genre) => (
-                <strong
-                  key={genre.id}
-                  className="mr-2 border text-gray-500 border-current uppercase px-5 py-1.5 rounded-full text-[10px] tracking-wide"
-                >
-                  {genre.name}
-                </strong>
-              ))}
-              <p className="max-w-[600px] my-4 mx-1 md:mx-0">{data.overview}</p>
-            </div>
+            {data.genres.map((genre) => (
+              <strong
+                key={genre.id}
+                className="inline-block my-1 mr-2 border text-gray-500 border-current uppercase px-5 py-1.5 rounded-full text-[10px] tracking-wide"
+              >
+                {genre.name}
+              </strong>
+            ))}
+            <p className="max-w-[600px] my-4 mx-1 md:mx-0">{data.overview}</p>
           </div>
         </div>
         <div className="md:block md:mx-0">
