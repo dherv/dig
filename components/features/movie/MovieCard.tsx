@@ -23,7 +23,7 @@ export const MovieCard: FC<Props> = ({ movie, mediaType }) => {
   return (
     <li
       ref={ref}
-      className="inline-block w-[calc(33%_-_24px)] sm:w-[calc(25%_-_24px)] md:w-[calc(25%_-_24px)] lg:w-[calc(20%_-_24px)] cursor-pointer hover:scale-105 transition-transform mr-4 md:mr-2 overflow-visible"
+      className="inline-block w-[calc(33%_-_24px)] sm:w-[calc(25%_-_24px)] md:w-[calc(20%_-_24px)] lg:w-[calc(20%_-_24px)] cursor-pointer hover:scale-105 transition-transform mr-4 md:mr-2 overflow-visible"
       onClick={() => handleClickShow(movie.id, mediaType)}
     >
       <div className="relative shadow-lg">
