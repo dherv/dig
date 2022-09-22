@@ -1,16 +1,17 @@
+import { useModal } from "@nextui-org/react";
 import { User, withPageAuth } from "@supabase/auth-helpers-nextjs";
+import { minutesToHours } from "date-fns";
 import type { NextPage } from "next";
-import dynamic from "next/dynamic";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import useSWR from "swr";
 import { Rank } from "../../components/features/movie/Rank";
+import { ShowTrailerModal } from "../../components/features/show/ShowTrailerModal";
 import { ErrorService } from "../../services/error";
 import { Friends, Suggestion } from "../../services/supabase/types.app";
 import * as TMDB from "../../services/tmdb";
 import { MediaType, Show } from "../../services/tmdb/types";
 
-const ReactPlayer = dynamic(() => import("react-player/lazy"), { ssr: false });
 interface Props {
   user: User;
   data: Show | null;
@@ -18,6 +19,8 @@ interface Props {
 }
 // TODO: consider using styled components with twin.macro to avoid too many <div> wrappers
 const MoviePage: NextPage<Props> = ({ user, data, type }) => {
+  const { setVisible, bindings } = useModal();
+
   const { data: friendshipData } = useSWR(`/api/friendship`);
 
   const { data: suggestionsSent } = useSWR(
@@ -54,20 +57,33 @@ const MoviePage: NextPage<Props> = ({ user, data, type }) => {
     (suggestion) => suggestion.show.id === data?.id
   );
 
-  const rank = data.vote_average.toFixed(1);
+  const rank = data?.vote_average.toFixed(1);
+  const runtime = data.runtime
+    ? `${minutesToHours(data?.runtime)}h${
+        data?.runtime - minutesToHours(data?.runtime) * 60
+      }min`
+    : "";
+  const handleClickTrailer = () => {
+    setVisible(true);
+  };
+
+  debugger;
+
   return data ? (
     <article className="relative my-4 mx-auto max-w-[1280px]">
-      <div className="flex py-4 mx-2">
+      <div className="flex py-4 px-4 xl:px-0">
         <div>
           <h2 className="font-medium text-3xl">
             {type === MediaType.Movie
               ? data.original_title
               : data.original_name}
           </h2>
-          <div className="flex items-end leading-4 my-2">
-            <span className="font-thin">{data.release_date}</span>
-            <span className="font-thin">.</span>
-            <span className="font-thin">{data.runtime}</span>
+          <div className="flex items-end leading-4 my-2 text-sm ">
+            <span className="mr-2 font-thin text-gray-500">
+              {data.release_date}
+            </span>
+            <span className="font-thin text-gray-500">.</span>
+            <span className="ml-2 font-thin text-gray-500">{runtime}</span>
             <div className="flex items-end ml-4">
               <Rank size={20} vote={data.vote_average} />
               <p className="font-bold ml-2">{rank}</p>
@@ -77,28 +93,28 @@ const MoviePage: NextPage<Props> = ({ user, data, type }) => {
       </div>
 
       <div className="flex my-4">
-        <div className="relative md:w-3/4 md:h-[540px] max-h-[540px] w-[300px] h-[200px]">
+        <div className="relative w-3/4">
           <Image
             src={TMDB.posterPath(data.backdrop_path, { size: "w1280" })}
             alt="backdrop of the movie or serie"
-            layout="fill"
+            layout="responsive"
+            width={"16%"}
+            height={"9%"}
             objectFit="cover"
             objectPosition={"top 0 left 0"}
           />
 
           {/* <div className="w-full px-[6%] bg-black h-[300px] my-4">
-        <ReactPlayer
-          light={TMDB.posterPath(data.backdrop_path, { size: "w1280" })}
-          width="100%"
-          height="100%"
-          onClickPreview={() => console.log("click preview")}
-          url={`https://www.youtube.com/watch?v=${data.videos.results[0]?.key}`}
-        />
+ 
       </div> */}
         </div>
-        <div className="w-1/4 md:h-[540px] max-h-[540px] bg-gray-700 "></div>
+        <div className="w-1/4 bg-gray-700 flex justify-center items-center">
+          <span className=" font-medium text-sm md:text-lg inline-block text-center text-white">
+            coming soon!
+          </span>
+        </div>
       </div>
-      <div className="relative md:flex my-6 justify-between">
+      <div className="relative md:flex my-6 justify-between px-4 xl:px-0">
         {/* <div className="mr-1 w-1/4 relative">
           <Image
             src={TMDB.posterPath(data.poster_path, { size: "w780" })}
@@ -108,7 +124,7 @@ const MoviePage: NextPage<Props> = ({ user, data, type }) => {
             layout="responsive"
           />
         </div> */}
-        <div className="p-2">
+        <div className="my-2 md:mr-2">
           <div>
             <div className="">
               {data.genres.map((genre) => (
@@ -123,20 +139,29 @@ const MoviePage: NextPage<Props> = ({ user, data, type }) => {
             </div>
           </div>
         </div>
-        <div className="flex items-center justify-around md:block mx-2 md:mx-0">
+        <div className="md:block md:mx-0">
           <button
-            onClick={handleSuggest}
-            className="md:block w-48 mr-1 md:mr-0 md:mb-2 px-12 py-3 text-sm font-medium text-white bg-gray-600 border border-gray-600 rounded active:text-gray-500 hover:bg-transparent hover:text-gray-600 focus:outline-none focus:ring"
+            onClick={handleClickTrailer}
+            className="md:block w-48 mr-1 px-12 py-3 text-sm font-medium text-white bg-gray-600 border border-gray-600 rounded active:text-gray-500 hover:bg-transparent hover:text-gray-600 focus:outline-none focus:ring"
           >
             watch trailer
           </button>
           <button
             onClick={handleSuggest}
             disabled={isAlreadySuggested}
-            className="md:block w-48 ml-1 md:ml-0 md:b-2 px-10 py-3 text-sm font-medium text-white bg-pink-600 border border-pink-600 rounded active:text-pink-500 hover:bg-transparent hover:text-pink-600 focus:outline-none focus:ring"
+            className={`${
+              isAlreadySuggested
+                ? "bg-transparent text-pink-500 hover:text-pink-500 cursor-default"
+                : "bg-pink-600"
+            } cursor-pointer md:block w-48 mt-1 md:ml-0 md:b-2 px-10 py-3 text-sm font-medium text-white  border border-pink-600 rounded active:text-pink-500 hover:bg-transparent hover:text-pink-600 focus:outline-none focus:ring`}
           >
             {isAlreadySuggested ? "already did it!" : "suggest it!"}
           </button>
+          <ShowTrailerModal
+            data={data}
+            onClose={() => setVisible(false)}
+            bindings={bindings}
+          />
         </div>
       </div>
     </article>
