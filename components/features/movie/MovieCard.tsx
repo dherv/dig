@@ -16,17 +16,19 @@ export const MovieCard: FC<Props> = ({ movie, mediaType }) => {
     router.push(`/shows/${showId}?mediaType=${mediaType}`);
   };
 
-  const poster = `https://image.tmdb.org/t/p/w500${movie.poster_path}`;
+  const poster = movie.poster_path
+    ? `https://image.tmdb.org/t/p/w500${movie.poster_path}`
+    : `https://dummyimage.com/200x300/efefef/212121.jpg&text=${movie.title}`;
 
   // TODO: fix the confusion between mediaType and type
   // TODO: make the styles more generic to reuse the card
   return (
     <li
       ref={ref}
-      className="inline-block w-[calc(33%_-_24px)] sm:w-[calc(25%_-_24px)] md:w-[calc(20%_-_24px)] lg:w-[calc(20%_-_24px)] cursor-pointer hover:scale-105 transition-transform mr-4 md:mr-2 overflow-visible"
+      className="inline-block md:rounded h-full w-[calc(33%_-_24px)] sm:w-[calc(25%_-_24px)] md:w-[calc(20%_-_24px)] lg:w-[calc(20%_-_24px)] cursor-pointer hover:scale-105 transition-transform mr-4 md:mr-2 "
       onClick={() => handleClickShow(movie.id, mediaType)}
     >
-      <div className="relative shadow-lg">
+      <div className="relative shadow-lg h-full md:rounded">
         <Image
           src={poster}
           alt="backdrop of the movie or serie"

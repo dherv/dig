@@ -1,5 +1,4 @@
 import { ReactElement } from "react";
-import { Rank0on5 } from "./Rank0on5";
 import { Rank1on5 } from "./Rank1on5";
 import { Rank2on5 } from "./Rank2on5";
 import { Rank3on5 } from "./Rank3on5";
@@ -14,7 +13,7 @@ export const Rank = ({ size = 24, vote }: { size: number; vote: number }) => {
     if (vote > 4 && vote <= 6) return 3;
     if (vote > 2 && vote <= 4) return 2;
     if (vote > 0 && vote <= 2) return 1;
-    return 5;
+    return 0;
   };
 
   const rank = getRatingComponent(vote);
@@ -22,7 +21,6 @@ export const Rank = ({ size = 24, vote }: { size: number; vote: number }) => {
   const mapper: {
     [key: number]: ({ size }: { size: number }) => ReactElement;
   } = {
-    0: Rank0on5,
     1: Rank1on5,
     2: Rank2on5,
     3: Rank3on5,
@@ -30,7 +28,7 @@ export const Rank = ({ size = 24, vote }: { size: number; vote: number }) => {
     5: Rank5on5,
   };
 
-  if (rank >= 0 && rank <= 5) {
+  if (rank > 0 && rank <= 5) {
     const Component = mapper[rank];
     return <Component size={size} />;
   }

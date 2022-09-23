@@ -1,5 +1,5 @@
 export const Rank0on5 = ({ size = 24 }) => {
-  const color = "#f87171";
+  const color = "transparent";
   return (
     <svg
       width={size}
@@ -14,7 +14,7 @@ export const Rank0on5 = ({ size = 24 }) => {
         y="94.5"
         width="14"
         height="19"
-        fill="#212121"
+        fill={color}
         stroke={color}
       />
       <rect

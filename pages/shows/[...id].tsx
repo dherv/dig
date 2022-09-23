@@ -99,14 +99,17 @@ const MoviePage: NextPage<Props> = ({ user, data, type }) => {
     setVisible(true);
   };
 
+  const imageSrc = data?.backdrop_path
+    ? TMDB.posterPath(data.backdrop_path, { size: "w1280" })
+    : `https://dummyimage.com/16:9x1280/efefef/212121.jpg&text=${data.title}`;
+
+  console.log(data);
   return data ? (
     <article className="relative my-4 mx-auto max-w-[1280px]">
       <div className="flex py-4 px-4 xl:px-0">
         <div>
           <h2 className="font-medium text-3xl">
-            {type === MediaType.Movie
-              ? data.original_title
-              : data.original_name}
+            {type === MediaType.Movie ? data.title : data.name}
           </h2>
           <div className="flex items-end leading-4 my-2 text-sm ">
             <span className="mr-2 font-thin text-gray-500">{releaseDate}</span>
@@ -118,7 +121,9 @@ const MoviePage: NextPage<Props> = ({ user, data, type }) => {
             ) : null}
             <div className="flex items-end ml-4">
               <Rank size={20} vote={data.vote_average} />
-              <p className="font-bold ml-2">{rank}</p>
+              {data.vote_average > 0 ? (
+                <p className="font-bold ml-2">{rank}</p>
+              ) : null}
             </div>
           </div>
         </div>
@@ -127,7 +132,7 @@ const MoviePage: NextPage<Props> = ({ user, data, type }) => {
       <div className="flex my-4">
         <div className="relative w-3/4">
           <Image
-            src={TMDB.posterPath(data.backdrop_path, { size: "w1280" })}
+            src={imageSrc}
             alt="backdrop of the movie or serie"
             layout="responsive"
             width={"16%"}
@@ -174,10 +179,15 @@ const MoviePage: NextPage<Props> = ({ user, data, type }) => {
         </div>
         <div className="md:block md:mx-0">
           <button
+            disabled={data.videos.results.length === 0}
             onClick={handleClickTrailer}
-            className="md:block w-48 mr-1 px-12 py-3 text-sm font-medium text-white bg-gray-600 border border-gray-600 rounded active:text-gray-500 hover:bg-transparent hover:text-gray-600 focus:outline-none focus:ring"
+            className={`${
+              data.videos.results.length === 0
+                ? "bg-transparent text-gray-500 hover:text-gray-500 cursor-default"
+                : "bg-gray-600"
+            } md:block w-48 mr-1 px-12 py-3 text-sm font-medium text-white bg-gray-600 border border-gray-600 rounded active:text-gray-500 hover:bg-transparent hover:text-gray-600 focus:outline-none focus:ring`}
           >
-            watch trailer
+            {data.videos.results.length === 0 ? "no trailer" : "watch trailer"}
           </button>
           <button
             onClick={handleSuggest}
