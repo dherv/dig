@@ -1,11 +1,11 @@
 import { Suggestion } from "@/services/supabase/types.app";
+import * as TMDB from "@/services/tmdb";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import { FC } from "react";
 import { MediaType, Show } from "services/tmdb/types";
 import { User } from "../../layout/User";
 import { MovieTitle } from "../movie/MovieCardTitle";
-
 interface Props {
   suggestion: Suggestion;
   movie: Show;
@@ -27,6 +27,9 @@ export const SuggestionListItem: FC<Props> = ({
 
   const poster = `https://image.tmdb.org/t/p/w1280${movie.poster_path}`;
 
+  const runtime = TMDB.getRuntime(movie, mediaType, TMDB.formatRuntime);
+  const releaseDate = TMDB.getReleaseDate(movie, mediaType);
+
   return (
     <li className="mr-2 rounded-md w-full my-4 p-2 shadow-md">
       <div
@@ -44,8 +47,19 @@ export const SuggestionListItem: FC<Props> = ({
           />
         </div>
         <div className="flex flex-col justify-center ml-4">
-          <MovieTitle title={movie.title}></MovieTitle>
-          <p className="font-thin">{movie.release_date}</p>
+          <MovieTitle
+            title={mediaType === MediaType.Movie ? movie.title : movie.name}
+          ></MovieTitle>
+          <p className="font-thin">
+            {mediaType === MediaType.Movie ? (
+              releaseDate
+            ) : (
+              <>
+                <div className="text-sm text-gray-500">most recent season</div>{" "}
+                <div> {releaseDate}</div>
+              </>
+            )}
+          </p>
         </div>
         {withAvatar ? (
           <div className="absolute top-0 right-0">

@@ -1,6 +1,5 @@
 import { useModal } from "@nextui-org/react";
 import { User, withPageAuth } from "@supabase/auth-helpers-nextjs";
-import { minutesToHours } from "date-fns";
 import type { NextPage } from "next";
 import Image from "next/image";
 import { useEffect, useState } from "react";
@@ -59,41 +58,8 @@ const MoviePage: NextPage<Props> = ({ user, data, type }) => {
 
   const rank = data?.vote_average.toFixed(1);
 
-  const formatRuntime = (runtime: string) => {
-    return runtime
-      ? `${minutesToHours(runtime)}h${
-          runtime - minutesToHours(runtime) * 60
-        }min`
-      : undefined;
-  };
-
-  const getRuntime = (
-    show: Show,
-    mediaType: MediaType,
-    format: typeof formatRuntime
-  ) => {
-    if (mediaType === MediaType.Movie) {
-      return format(show?.runtime);
-    }
-
-    console.log(show);
-
-    // TODO: replace by episode when adding episode feature
-    return format(show.episode_run_time[0]);
-  };
-
-  const getReleaseDate = (show: Show, mediaType: MediaType) => {
-    if (mediaType === MediaType.Movie) {
-      return show.release_date;
-    }
-    // TODO: replace by show.seasons.at() when ready or add polyfill
-    const serieLastSeason = show.seasons[show.seasons.length - 1];
-    const serieLastSeasonAirDate = serieLastSeason.air_date;
-    return serieLastSeasonAirDate;
-  };
-
-  const runtime = getRuntime(data, type, formatRuntime);
-  const releaseDate = getReleaseDate(data, type);
+  const runtime = TMDB.getRuntime(data, type, TMDB.formatRuntime);
+  const releaseDate = TMDB.getReleaseDate(data, type);
 
   const handleClickTrailer = () => {
     setVisible(true);

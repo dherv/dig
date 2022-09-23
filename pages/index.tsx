@@ -45,11 +45,16 @@ const SuggestionsPage = ({ user }: { user: User }) => {
       {/* <h2 className="first-letter:uppercase font-medium">friend suggestions</h2> */}
 
       {showUserSuggestions ? (
-        <Suggestions suggestions={userSuggestions} withAvatar={false} />
+        <Suggestions
+          suggestions={userSuggestions}
+          withAvatar={false}
+          type="user"
+        />
       ) : (
         <Suggestions
           suggestions={friendSuggestions}
           withAvatar={true}
+          type="friends"
         ></Suggestions>
       )}
     </div>

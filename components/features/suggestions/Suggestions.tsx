@@ -5,42 +5,28 @@ import { SuggestionListItem } from "./SuggestionListItem";
 type Props = {
   suggestions: ISuggestion[];
   withAvatar: boolean;
+  type: "friends" | "user";
 };
-export const Suggestions: FC<Props> = ({ suggestions, withAvatar }) => {
+export const Suggestions: FC<Props> = ({ suggestions, withAvatar, type }) => {
   return suggestions ? (
-    <>
-      {/* <ul className="max-w-[840px] mx-auto flex">
-        {[...suggestions.slice(0, 1)].map((suggestion) => (
-          <>
-            <SuggestionCard
-              key={suggestion.id}
-              movie={suggestion.show}
-              mediaType={suggestion.show.media_type}
-              suggestion={suggestion}
-            />
-          </>
-        ))}
-      </ul> */}
-      <ul className="max-w-[840px] mx-auto">
-        {[
-          ...suggestions.slice(0, 2),
-          ...suggestions.slice(0, 2),
-          ...suggestions.slice(0, 2),
-          ...suggestions.slice(0, 2),
-          ...suggestions.slice(0, 2),
-          ...suggestions.slice(0, 2),
-        ].map((suggestion) => (
-          <>
-            <SuggestionListItem
-              key={suggestion.id}
-              movie={suggestion.show}
-              mediaType={suggestion.show.media_type}
-              suggestion={suggestion}
-              withAvatar={withAvatar}
-            />
-          </>
-        ))}
-      </ul>
-    </>
-  ) : null;
+    <ul className="max-w-[840px] mx-auto">
+      {suggestions.map((suggestion) => (
+        <>
+          <SuggestionListItem
+            key={suggestion.id}
+            movie={suggestion.show}
+            mediaType={suggestion.show.media_type}
+            suggestion={suggestion}
+            withAvatar={withAvatar}
+          />
+        </>
+      ))}
+    </ul>
+  ) : (
+    <div className="flex justify-center items-center mt-8">
+      <span className="text-gray-500">
+        your {type === "friends" ? type : ""} suggestion list is empty
+      </span>
+    </div>
+  );
 };
