@@ -1,4 +1,4 @@
-import { Input } from "@nextui-org/react";
+import { FormElement, Input } from "@nextui-org/react";
 import { supabaseClient, withPageAuth } from "@supabase/auth-helpers-nextjs";
 import { useUser } from "@supabase/auth-helpers-react";
 import { useRouter } from "next/router";
@@ -19,7 +19,7 @@ const RegisterPage = () => {
     }
   }, [user]);
 
-  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (event: ChangeEvent<FormElement>) => {
     setUserData((prev) => ({
       ...prev,
       [event.target.name]: event.target.value,

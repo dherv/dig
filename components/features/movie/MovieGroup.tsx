@@ -43,8 +43,10 @@ export const MovieGroup: FC<Props> = ({ movies, mediaType, title }) => {
       if (currentRow > 0 && currentRow < maxSlides.current) {
         console.log("here");
 
-        const child = Array.from(ref.current.children)[5 * currentRow];
-        console.log(child);
+        const child = Array.from(ref.current.children)[
+          5 * currentRow
+        ] as HTMLElement;
+
         ref.current.scrollTo({
           top: 0,
           // offset of the first element of next group + section padding (16px) + wrapper padding (8px)

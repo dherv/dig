@@ -1,7 +1,6 @@
+import { Avatar, User as UserUI } from "@nextui-org/react";
 import { supabaseClient } from "@supabase/auth-helpers-nextjs";
 import { FC, useEffect, useState } from "react";
-// import { Avatar } from "./Avatar";
-import { Avatar, User as UserUI } from "@nextui-org/react";
 import { ErrorService } from "../../services/error";
 
 type Props = {
@@ -46,7 +45,6 @@ export const User: FC<Props> = (props) => {
       src={avatarUrl}
       text={username?.substring(0, 2)}
       className={`${props.className} z-0`}
-      size={size}
     />
   ) : (
     <UserUI src={avatarUrl} name={username} size={size} className="[&>*]:z-0" />

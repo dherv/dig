@@ -13,11 +13,11 @@ import { MediaType, Show } from "../../services/tmdb/types";
 
 interface Props {
   user: User;
-  data: Show | null;
+  show: Show | null;
   type: MediaType;
 }
 // TODO: consider using styled components with twin.macro to avoid too many <div> wrappers
-const MoviePage: NextPage<Props> = ({ user, data, type }) => {
+const MoviePage: NextPage<Props> = ({ user, show, type }) => {
   const { setVisible, bindings } = useModal();
 
   const { data: friendshipData } = useSWR(`/api/friendship`);
@@ -34,13 +34,17 @@ const MoviePage: NextPage<Props> = ({ user, data, type }) => {
     }
   }, [friendshipData]);
 
+  if (!show) {
+    return <div>this show has not been found</div>;
+  }
+
   const handleSuggest = async () => {
     try {
       const res = await fetch(`/api/suggestions`, {
         method: "POST",
         body: JSON.stringify({
           userId: user.id,
-          showId: data?.id,
+          showId: show.id,
           showMediaType: type,
         }),
       });
@@ -53,29 +57,29 @@ const MoviePage: NextPage<Props> = ({ user, data, type }) => {
 
   // TODO: move to api to check suggestion - especially after pagination of suggestions
   const isAlreadySuggested = suggestionsSent?.some(
-    (suggestion) => suggestion.show.id === data?.id
+    (suggestion) => suggestion.show.id === show.id
   );
 
-  const rank = data?.vote_average.toFixed(1);
+  const rank = show.vote_average.toFixed(1);
 
-  const runtime = TMDB.getRuntime(data, type, TMDB.formatRuntime);
-  const releaseDate = TMDB.getReleaseDate(data, type);
+  const runtime = TMDB.getRuntime(show, type, TMDB.formatRuntime);
+  const releaseDate = TMDB.getReleaseDate(show, type);
 
   const handleClickTrailer = () => {
     setVisible(true);
   };
 
-  const imageSrc = data?.backdrop_path
-    ? TMDB.posterPath(data.backdrop_path, { size: "w1280" })
-    : `https://dummyimage.com/16:9x1280/efefef/212121.jpg&text=${data.title}`;
+  const imageSrc = show.backdrop_path
+    ? TMDB.posterPath(show.backdrop_path, { size: "w1280" })
+    : `https://dummyimage.com/16:9x1280/efefef/212121.jpg&text=${show.title}`;
 
-  console.log(data);
-  return data ? (
+  console.log(show);
+  return show ? (
     <article className="relative my-4 mx-auto max-w-[1280px]">
       <div className="flex py-4 px-4 xl:px-0">
         <div>
           <h2 className="font-medium text-3xl">
-            {type === MediaType.Movie ? data.title : data.name}
+            {type === MediaType.Movie ? show.title : show.name}
           </h2>
           <div className="flex items-end leading-4 my-2 text-sm ">
             <span className="mr-2 font-thin text-gray-500">{releaseDate}</span>
@@ -86,8 +90,8 @@ const MoviePage: NextPage<Props> = ({ user, data, type }) => {
               </>
             ) : null}
             <div className="flex items-end ml-4">
-              <Rank size={20} vote={data.vote_average} />
-              {data.vote_average > 0 ? (
+              <Rank size={20} vote={show.vote_average} />
+              {show.vote_average > 0 ? (
                 <p className="font-bold ml-2">{rank}</p>
               ) : null}
             </div>
@@ -132,7 +136,7 @@ const MoviePage: NextPage<Props> = ({ user, data, type }) => {
         </div> */}
         <div className="my-1 md:mr-2">
           <div>
-            {data.genres.map((genre) => (
+            {show.genres.map((genre) => (
               <strong
                 key={genre.id}
                 className="inline-block my-1 mr-2 border text-gray-500 border-current uppercase px-5 py-1.5 rounded-full text-[10px] tracking-wide"
@@ -140,20 +144,20 @@ const MoviePage: NextPage<Props> = ({ user, data, type }) => {
                 {genre.name}
               </strong>
             ))}
-            <p className="max-w-[600px] my-4 mx-1 md:mx-0">{data.overview}</p>
+            <p className="max-w-[600px] my-4 mx-1 md:mx-0">{show.overview}</p>
           </div>
         </div>
         <div className="md:block md:mx-0">
           <button
-            disabled={data.videos.results.length === 0}
+            disabled={show.videos.results.length === 0}
             onClick={handleClickTrailer}
             className={`${
-              data.videos.results.length === 0
+              show.videos.results.length === 0
                 ? "bg-transparent text-gray-500 hover:text-gray-500 cursor-default"
                 : "bg-gray-600"
             } md:block w-48 mr-1 px-12 py-3 text-sm font-medium text-white bg-gray-600 border border-gray-600 rounded active:text-gray-500 hover:bg-transparent hover:text-gray-600 focus:outline-none focus:ring`}
           >
-            {data.videos.results.length === 0 ? "no trailer" : "watch trailer"}
+            {show.videos.results.length === 0 ? "no trailer" : "watch trailer"}
           </button>
           <button
             onClick={handleSuggest}
@@ -167,7 +171,7 @@ const MoviePage: NextPage<Props> = ({ user, data, type }) => {
             {isAlreadySuggested ? "already did it!" : "suggest it!"}
           </button>
           <ShowTrailerModal
-            data={data}
+            data={show}
             onClose={() => setVisible(false)}
             bindings={bindings}
           />
@@ -187,7 +191,7 @@ export const getServerSideProps = withPageAuth({
         ctx.params.id
       ) {
         const data = await TMDB.getShow(ctx.query.mediaType, ctx.params.id[0]);
-        return { props: { data, type: ctx.query.mediaType } };
+        return { props: { show: data, type: ctx.query.mediaType } };
       } else {
         throw new Error("error with show page query params");
       }
