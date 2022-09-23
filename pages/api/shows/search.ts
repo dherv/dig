@@ -1,4 +1,5 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
+import { withApiAuth } from "@supabase/auth-helpers-nextjs";
 import type { NextApiRequest, NextApiResponse } from "next";
 import { ErrorService } from "../../../services/error";
 import * as TMDB from "../../../services/tmdb";
@@ -6,7 +7,7 @@ type Data = {
   name: string;
 };
 
-export default async function handler(
+export default withApiAuth(async function handler(
   req: NextApiRequest,
   res: NextApiResponse<Data>
 ) {
@@ -21,4 +22,4 @@ export default async function handler(
   } catch (error) {
     return ErrorService.apiError(error, res);
   }
-}
+});

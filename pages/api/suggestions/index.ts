@@ -1,9 +1,10 @@
 import { ErrorService } from "@/services/error";
 import { supabaseServer } from "@/services/supabase/supabase";
 import { ShowMediaType } from "@/services/supabase/types.app";
+import { withApiAuth } from "@supabase/auth-helpers-nextjs";
 import { NextApiRequest, NextApiResponse } from "next";
 
-export default async function handler(
+export default withApiAuth(async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
@@ -29,4 +30,4 @@ export default async function handler(
       return ErrorService.apiError(error, res);
     }
   }
-}
+});

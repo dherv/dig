@@ -6,12 +6,13 @@ import {
 } from "@/services/supabase/types.app";
 import { definitions } from "@/services/supabase/types.database";
 import * as TMDB from "@/services/tmdb";
+import { withApiAuth } from "@supabase/auth-helpers-nextjs";
 import { PostgrestError } from "@supabase/supabase-js";
 import { NextApiRequest, NextApiResponse } from "next";
 
 // TODO: 1 - recevied and sent are pretty similar - see if can combine
 // TODO: 2 - need to group by movie to get suggestion list of friends
-export default async function handler(
+export default withApiAuth(async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
@@ -53,4 +54,4 @@ export default async function handler(
   } catch (error) {
     return ErrorService.apiError(error, res);
   }
-}
+});

@@ -1,4 +1,8 @@
-import { getUser, supabaseServerClient } from "@supabase/auth-helpers-nextjs";
+import {
+  getUser,
+  supabaseServerClient,
+  withApiAuth,
+} from "@supabase/auth-helpers-nextjs";
 import { NextApiRequest, NextApiResponse } from "next";
 import { ErrorService } from "../../../services/error";
 import { supabaseServer } from "../../../services/supabase/supabase";
@@ -22,7 +26,7 @@ export const getProfile = async (userId: string | string[]) => {
   }
 };
 
-export default async function Profile(
+export default withApiAuth(async function Profile(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
@@ -39,4 +43,4 @@ export default async function Profile(
   } catch (error) {
     return ErrorService.apiError(error, res);
   }
-}
+});
