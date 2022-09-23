@@ -19,8 +19,9 @@ function App({ Component, pageProps, ...appProps }: AppProps) {
     <>
       <SWRConfig
         value={{
-          refreshInterval: 10000,
           fetcher: SWR.fetcher,
+          revalidateOnMount: true,
+          revalidateOnReconnect: true,
         }}
       >
         <UserProvider supabaseClient={supabaseClient}>
