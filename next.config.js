@@ -1,5 +1,13 @@
 /** @type {import('next').NextConfig} */
-const nextConfig = {
+const nextPWA = require("next-pwa");
+const runtimeCaching = require("next-pwa/cache");
+
+const withPWA = nextPWA({
+  dest: "public",
+  runtimeCaching,
+});
+
+const nextConfig = withPWA({
   reactStrictMode: true,
   images: {
     domains: [
@@ -8,6 +16,6 @@ const nextConfig = {
       "dummyimage.com",
     ],
   },
-};
+});
 
 module.exports = nextConfig;
