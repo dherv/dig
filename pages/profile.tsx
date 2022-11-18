@@ -11,6 +11,7 @@ import {
 import { useState } from "react";
 import { useSWRConfig } from "swr";
 import { User } from "../components/layout/User";
+
 export default function Profile({
   user,
   profile,
@@ -36,8 +37,8 @@ export default function Profile({
     try {
       setLoading(true);
 
-      // TODO: remove previous avatar
-      const previousAvatar = profile.avatar_url;
+      // TODO: remove previous avatar if exist
+      // const previousAvatar = profile?.avatar_url;
 
       const updates = {
         id: user.id,
@@ -93,7 +94,10 @@ export default function Profile({
         </div>
 
         <button
-          onClick={() => updateProfile({ username, avatar_url })}
+          onClick={(event) => {
+            event.preventDefault();
+            updateProfile({ username, avatar_url });
+          }}
           className="mt-4 block md:w-44  sm:ml-1 px-8 py-2 text-sm font-medium text-white bg-pink-600 border border-pink-600 rounded active:text-pink-500 hover:bg-transparent hover:text-pink-600 focus:outline-none focus:ring"
         >
           Submit

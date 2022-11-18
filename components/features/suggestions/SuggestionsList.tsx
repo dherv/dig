@@ -7,19 +7,22 @@ type Props = {
   withAvatar: boolean;
   type: "friends" | "user";
 };
-export const Suggestions: FC<Props> = ({ suggestions, withAvatar, type }) => {
+export const SuggestionsList: FC<Props> = ({
+  suggestions,
+  withAvatar,
+  type,
+}) => {
+  console.log({ suggestions });
   return suggestions ? (
     <ul className="max-w-[840px] mx-auto">
       {suggestions.map((suggestion) => (
-        <>
-          <SuggestionListItem
-            key={suggestion.id}
-            movie={suggestion.show}
-            mediaType={suggestion.show.media_type}
-            suggestion={suggestion}
-            withAvatar={withAvatar}
-          />
-        </>
+        <SuggestionListItem
+          key={suggestion.id}
+          movie={suggestion.show}
+          mediaType={suggestion.show.media_type}
+          suggestion={suggestion}
+          withAvatar={withAvatar}
+        />
       ))}
     </ul>
   ) : (

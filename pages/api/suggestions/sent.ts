@@ -20,6 +20,7 @@ export default withApiAuth(async function handler(
         .select(`id, show_id, show_media_type(type)`)
         .match({ user_id: user.id });
 
+      console.log({ suggestions });
       const suggestionMapper = async (
         suggestion: SuggestionSchemaWithRelations
       ): Promise<Suggestion> => ({
@@ -34,7 +35,8 @@ export default withApiAuth(async function handler(
         const data = await Promise.all(suggestions.map(suggestionMapper));
         return res.status(200).json(data);
       } else {
-        return res.status(200).json({ data: [] });
+        // TODO: add unit/int test since need to pass empty array !!
+        return res.status(200).json([]);
       }
     }
   } catch (error) {

@@ -13,15 +13,18 @@ export default withApiAuth(async function Accepted(
 
     if (user) {
       // TODO: see if we can find a query to select depending on user_1 = user.id or user_2 = user.id instead of 2 queries
-      const { data: friendshipFromColUser1 } = await supabaseServer
-        .from<definitions["friendships"]>("friendships")
-        .select(`id, user_1(id, username)`)
-        .eq(`user_2`, user.id);
+      const { data: friendshipFromColUser1 } =
+        (await supabaseServer
+          .from<definitions["friendships"]>("friendships")
+          .select(`id, user_1(id, username)`)
+          .eq(`user_2`, user.id)) ?? [];
 
-      const { data: friendshipFromColUser2 } = await supabaseServer
-        .from<definitions["friendships"]>("friendships")
-        .select(`id, user_2(id, username)`)
-        .eq(`user_1`, user.id);
+      // TODO: add unit test to check we always get an array. if null we can not map
+      const { data: friendshipFromColUser2 } =
+        (await supabaseServer
+          .from<definitions["friendships"]>("friendships")
+          .select(`id, user_2(id, username)`)
+          .eq(`user_1`, user.id)) ?? [];
 
       const data = {
         friendships: [

@@ -49,7 +49,8 @@ export default withApiAuth(async function handler(
       const data = await Promise.all(suggestions.map(suggestionMapper));
       return res.status(200).json(data);
     } else {
-      return res.status(200).json({ data: [] });
+      // TODO: add unit/int test - need to pass empty array when suggestions is empty !!!
+      return res.status(200).json([]);
     }
   } catch (error) {
     return ErrorService.apiError(error, res);

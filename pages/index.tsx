@@ -1,4 +1,4 @@
-import { Suggestions } from "@/components/features/suggestions/Suggestions";
+import { SuggestionsList } from "@/components/features/suggestions/SuggestionsList";
 import { FriendshipData, Suggestion } from "@/services/supabase/types.app";
 import { User, withPageAuth } from "@supabase/auth-helpers-nextjs";
 import { ChangeEvent, useState } from "react";
@@ -37,6 +37,7 @@ const SuggestionsPage = ({ user }: { user: User }) => {
     }
     return setShowUserSuggestions(false);
   };
+  console.log({ userSuggestions, friendSuggestions });
   return (
     <div className="mx-auto my-2">
       <div className="mx-auto w-fit">
@@ -45,17 +46,17 @@ const SuggestionsPage = ({ user }: { user: User }) => {
       {/* <h2 className="first-letter:uppercase font-medium">friend suggestions</h2> */}
 
       {showUserSuggestions ? (
-        <Suggestions
+        <SuggestionsList
           suggestions={userSuggestions}
           withAvatar={false}
           type="user"
         />
       ) : (
-        <Suggestions
+        <SuggestionsList
           suggestions={friendSuggestions}
           withAvatar={true}
           type="friends"
-        ></Suggestions>
+        ></SuggestionsList>
       )}
     </div>
   );
