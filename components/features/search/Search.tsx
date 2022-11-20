@@ -7,6 +7,7 @@ import { useRouter } from "next/router";
 import { ChangeEvent, FC, useRef, useState } from "react";
 import useSWR from "swr";
 import { SearchInput } from "./SearchInput";
+
 export const Search: FC = () => {
   const router = useRouter();
   const [searchQuery, setSearchQuery] = useState<string>();
@@ -44,7 +45,7 @@ export const Search: FC = () => {
   return (
     <div className="md:relative" ref={ref}>
       <SearchInput
-        value={searchQuery}
+        value={searchQuery ?? ""}
         onChange={handleChange}
         openMobileSearch={openMobileSearch}
         closeSearch={closeSearch}

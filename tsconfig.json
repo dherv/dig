@@ -14,9 +14,11 @@
     "isolatedModules": true,
     "jsx": "preserve",
     "incremental": true,
+    "types": ["cypress", "@testing-library/cypress"],
     "baseUrl": ".",
     "paths": {
       "@/components/*": ["components/*"],
+      "@/pages/*": ["pages/*"],
       "@/layout/*": ["components/layout/*"],
       "@/features/*": ["components/features/*"],
       "@/api/*": ["pages/api/*"],

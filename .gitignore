@@ -43,3 +43,8 @@ yarn-error.log*
 public/sw.*
 public/worker*
 public/workbox*
+
+# cypress
+cypress/videos
+cypress/screenshots
+public/fallback-@cypress/*
