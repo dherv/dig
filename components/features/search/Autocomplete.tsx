@@ -1,15 +1,27 @@
-import * as TMDB from "@/services/tmdb";
 import { MediaType, Show } from "@/services/tmdb/types";
 import { Loading } from "@nextui-org/react";
 import { useClickOutside, useDebounce } from "@react-hooks-library/core";
-import Image from "next/image";
-import { useRouter } from "next/router";
-import { ChangeEvent, FC, useRef, useState } from "react";
+import { ChangeEvent, FC, ReactElement, useRef, useState } from "react";
 import useSWR from "swr";
+import { AutocompleteResultItem } from "./AutocompleteResultItem";
 import { SearchInput } from "./SearchInput";
 
-export const Search: FC = () => {
-  const router = useRouter();
+type Props = {
+  resultCount: number;
+  onChange?: () => void;
+  onInput?: () => void;
+  onFocus?: () => void;
+  onBlur?: () => void;
+  onSelect: (mediaType: MediaType, showId: number) => void;
+  render?: (data: unknown) => void;
+  renderResultItem?: (show: Show) => ReactElement;
+};
+
+export const Autocomplete: FC<Props> = ({
+  resultCount,
+  onSelect,
+  renderResultItem,
+}) => {
   const [searchQuery, setSearchQuery] = useState<string>();
   const [isSearchMobileOpen, setSearchMobileOpen] = useState(false);
 
@@ -35,7 +47,7 @@ export const Search: FC = () => {
 
   const handleClickShow = (mediaType: MediaType, showId: number) => {
     closeSearch();
-    router.push(`/shows/${showId}?mediaType=${mediaType}`);
+    onSelect(mediaType, showId);
   };
 
   const openMobileSearch = () => {
@@ -55,26 +67,12 @@ export const Search: FC = () => {
         <ul className="absolute top-16 md:top-12 left-0 z-10 bg-gray-700 text-white  overflow-y-scroll h-[calc(100vh_-_64px)] md:h-[56.5rem] w-full md:w-[32rem] md:left-1/2 md:-translate-x-1/2 shadow-sm">
           {shows ? (
             shows?.map((show: Show) => (
-              <li
+              <AutocompleteResultItem
                 key={show.id}
-                className="p-4 flex border-b border-b-gray-400 cursor-pointer hover:bg-gray-600"
-                onClick={() => handleClickShow(show.media_type, show.id)}
-              >
-                <div className="relative">
-                  <Image
-                    src={TMDB.posterPath(show.poster_path)}
-                    alt="poster of the movie or serie"
-                    width={"55"}
-                    height={"80"}
-                  />
-                </div>
-
-                <h5 className="font-medium ml-2 cusr">
-                  {show.media_type === MediaType.TV
-                    ? show.original_name
-                    : show.original_title}
-                </h5>
-              </li>
+                show={show}
+                renderResultItem={renderResultItem}
+                onSelect={handleClickShow}
+              />
             ))
           ) : (
             <div className="flex justify-center p-4 border-b h-[80px]">

@@ -1,4 +1,3 @@
-import { Search } from "@/features/search/Search";
 import { BrandTitle } from "@/layout/BrandTitle";
 import { FilmIcon, StarIcon } from "@heroicons/react/outline";
 import { Popover } from "@nextui-org/react";
@@ -9,6 +8,8 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { FC, MouseEvent, useEffect } from "react";
 import useSWR, { useSWRConfig } from "swr";
+import { MediaType } from "../../services/tmdb/types";
+import { Autocomplete } from "../features/search/Autocomplete";
 import { User } from "./User";
 
 export const Nav: FC = () => {
@@ -34,7 +35,9 @@ export const Nav: FC = () => {
       supabaseClient.auth.refreshSession();
     }
   }, [user]);
-
+  const handleSelect = (mediaType: MediaType, showId: number) => {
+    router.push(`/shows/${showId}?mediaType=${mediaType}`);
+  };
   return (
     <nav className="relative flex justify-between items-center p-3 h-16">
       <div className="flex items-center">
@@ -57,7 +60,7 @@ export const Nav: FC = () => {
         </div>
       </div>
       <div className="ml-auto mr-4 md:ml-0 md:mr-0 md:absolute md:top-1/2 md:left-1/2 md:transform md:-translate-x-1/2 md:-translate-y-1/2">
-        <Search />
+        <Autocomplete onSelect={handleSelect} resultCount={20} />
       </div>
 
       <div className="relative">
