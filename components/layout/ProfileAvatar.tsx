@@ -1,4 +1,4 @@
-import { Avatar } from "@nextui-org/react";
+import { Avatar } from "@mui/joy";
 import { supabaseClient } from "@supabase/auth-helpers-nextjs";
 import { ChangeEvent, FC, useEffect, useState } from "react";
 import { ErrorService } from "../../services/error";
@@ -76,7 +76,8 @@ export const ProfileAvatar: FC<Props> = ({
     <div>
       <div style={{ width: size }}>
         <label className="hover:cursor-pointer" htmlFor="single">
-          <Avatar src={avatarUrl} text="?" css={{ size: "$40", zIndex: 0 }} />
+          {/* <Avatar src={avatarUrl} text="?" css={{ size: "$40", zIndex: 0 }} /> */}
+          <Avatar src={avatarUrl} size="lg"></Avatar>
           <input
             className="hover:cursor-pointer"
             style={{

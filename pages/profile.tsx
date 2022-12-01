@@ -1,7 +1,8 @@
 import { getProfile } from "@/api/profile/[...id]";
 import { ProfileAvatar } from "@/components/layout/ProfileAvatar";
 import { ErrorService } from "@/services/error";
-import { Input } from "@nextui-org/react";
+import PersonRoundedIcon from "@mui/icons-material/PersonRounded";
+import { TextField } from "@mui/joy";
 import {
   supabaseClient,
   supabaseServerClient,
@@ -77,12 +78,26 @@ export default function Profile({
     <div className="max-w-[fit-content] mx-auto my-8">
       <h2 className="font-medium mb-4">Update</h2>
       <form className="my-8">
-        <Input
+        {/* <Input
           label="username"
           placeholder="my name"
           id="username"
           value={username}
           onChange={(event) => setUsername(event?.target.value)}
+        /> */}
+
+        <TextField
+          label="username"
+          placeholder="my name"
+          id="username"
+          value={username}
+          onChange={(event) => setUsername(event?.target.value)}
+          startDecorator={<PersonRoundedIcon />}
+          // endDecorator={
+          //   <Chip size="sm" variant="soft">
+          //     New stuff
+          //   </Chip>
+          // }
         />
         <div className="mt-4">
           <ProfileAvatar
@@ -106,6 +121,7 @@ export default function Profile({
 
       <div className="mt-12 relative">
         <h2 className="font-medium mb-4">Preview</h2>
+        {/* <Avatar alt={username} src={avatar_url}></Avatar> */}
         <User avatarType="user" src={avatar_url} username={username} />
       </div>
     </div>

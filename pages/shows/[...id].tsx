@@ -1,4 +1,3 @@
-import { useModal } from "@nextui-org/react";
 import { User, withPageAuth } from "@supabase/auth-helpers-nextjs";
 import type { NextPage } from "next";
 import Image from "next/image";
@@ -18,7 +17,7 @@ interface Props {
 }
 // TODO: consider using styled components with twin.macro to avoid too many <div> wrappers
 const MoviePage: NextPage<Props> = ({ user, show, type }) => {
-  const { setVisible, bindings } = useModal();
+  const [isVisible, setVisible] = useState<boolean>(false);
 
   const { data: friendshipData } = useSWR(`/api/friendship`);
 
@@ -172,8 +171,8 @@ const MoviePage: NextPage<Props> = ({ user, show, type }) => {
           </button>
           <ShowTrailerModal
             data={show}
+            isOpen={isVisible}
             onClose={() => setVisible(false)}
-            bindings={bindings}
           />
         </div>
       </div>

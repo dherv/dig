@@ -10,8 +10,13 @@
     "cypress:open": "cypress open"
   },
   "dependencies": {
+    "@emotion/react": "^11.10.5",
+    "@emotion/styled": "^11.10.5",
+    "@fontsource/public-sans": "^4.5.11",
     "@heroicons/react": "^1.0.6",
-    "@nextui-org/react": "^1.0.0-beta.10",
+    "@mui/icons-material": "^5.10.16",
+    "@mui/joy": "^5.0.0-alpha.56",
+    "@mui/material": "^5.10.16",
     "@react-hooks-library/core": "^0.3.6",
     "@supabase/auth-helpers-nextjs": "^0.2.7",
     "@supabase/auth-helpers-react": "^0.2.3",

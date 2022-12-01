@@ -1,16 +1,14 @@
 import { BrandTitle } from "@/layout/BrandTitle";
 import { FilmIcon, StarIcon } from "@heroicons/react/outline";
-import { Popover } from "@nextui-org/react";
+import Avatar from "@mui/joy/Avatar";
 import { supabaseClient } from "@supabase/auth-helpers-nextjs";
 import { useUser } from "@supabase/auth-helpers-react";
-import { IconPower } from "@supabase/ui";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { FC, MouseEvent, useEffect } from "react";
 import useSWR, { useSWRConfig } from "swr";
 import { MediaType } from "../../services/tmdb/types";
 import { Autocomplete } from "../features/search/Autocomplete";
-import { User } from "./User";
 
 export const Nav: FC = () => {
   const { cache } = useSWRConfig();
@@ -64,9 +62,15 @@ export const Nav: FC = () => {
       </div>
 
       <div className="relative">
-        <Popover>
+        <Avatar
+          color="primary"
+          variant="soft"
+          alt={data?.username.toUpperCase()}
+          src="/broken-image.jpg"
+        ></Avatar>
+
+        {/* <Popover>
           <Popover.Trigger>
-            {/* library expect only one child: https://github.com/nextui-org/nextui/blob/main/packages/react/src/popover/popover-trigger.tsx */}
             <button>
               <User
                 src={data?.avatar_url}
@@ -94,7 +98,7 @@ export const Nav: FC = () => {
               </div>
             </div>
           </Popover.Content>
-        </Popover>
+        </Popover> */}
       </div>
     </nav>
   );

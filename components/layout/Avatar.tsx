@@ -9,8 +9,6 @@ type Props = {
 };
 
 export const Avatar: FC<Props> = ({ src, username, size = 16 }) => {
-  console.log({ src });
-
   const className = `w-[${size}px] h-[${size}px]`;
   if (src) {
     return (
