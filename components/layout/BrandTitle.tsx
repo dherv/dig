@@ -1,5 +1,9 @@
-import { FC } from 'react';
-
+import { Typography } from "@mui/joy";
+import { FC } from "react";
 export const BrandTitle: FC = () => {
-  return <h1 className="font-bold text-xl">Dig!</h1>;
+  return (
+    <Typography level="h2" variant="soft">
+      Dig!
+    </Typography>
+  );
 };

@@ -2,7 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-@layer base {
+/* @layer base {
   html,
   body {
     @apply text-gray-800 bg-gray-50;
@@ -13,4 +13,4 @@
   .icon {
     @apply h-6 w-6　text-gray-700;
   }
-}
+} */

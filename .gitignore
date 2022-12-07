@@ -48,3 +48,4 @@ public/workbox*
 cypress/videos
 cypress/screenshots
 public/fallback-@cypress/*
+public/fallback-development*

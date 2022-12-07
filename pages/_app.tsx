@@ -1,4 +1,6 @@
-import { CssBaseline, NextUIProvider } from "@nextui-org/react";
+import "@fontsource/public-sans";
+import CssBaseline from "@mui/joy/CssBaseline";
+import { CssVarsProvider, getInitColorSchemeScript } from "@mui/joy/styles";
 import { supabaseClient } from "@supabase/auth-helpers-nextjs";
 import { UserProvider } from "@supabase/auth-helpers-react";
 import type { AppProps } from "next/app";
@@ -6,6 +8,7 @@ import Head from "next/head";
 import React from "react";
 import { SWRConfig } from "swr";
 import { Layout } from "../components/layout/Layout";
+import { theme } from "../services/material/material.themes";
 import * as SWR from "../services/swr";
 import "../styles/globals.css";
 
@@ -26,7 +29,8 @@ function App({ Component, pageProps, ...appProps }: AppProps) {
         }}
       >
         <UserProvider supabaseClient={supabaseClient}>
-          <NextUIProvider disableBaseline={true}>
+          <CssVarsProvider theme={theme}>
+            <CssBaseline />
             <Head>
               <meta charSet="utf-8" />
               <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
@@ -53,12 +57,13 @@ function App({ Component, pageProps, ...appProps }: AppProps) {
               />
               <link rel="apple-touch-icon" href="/apple-icon.png"></link>
               <meta name="theme-color" content="#317EFB" />
-              {CssBaseline.flush()}
             </Head>
+
+            {getInitColorSchemeScript()}
             <LayoutComponent>
               <Component {...pageProps} />
             </LayoutComponent>
-          </NextUIProvider>
+          </CssVarsProvider>
         </UserProvider>
       </SWRConfig>
     </>

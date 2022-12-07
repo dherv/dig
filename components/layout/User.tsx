@@ -1,4 +1,5 @@
-import { Avatar, User as UserUI } from "@nextui-org/react";
+import { Avatar, Stack } from "@mui/joy";
+import { Typography } from "@mui/material";
 import { supabaseClient } from "@supabase/auth-helpers-nextjs";
 import { FC, useEffect, useState } from "react";
 import { ErrorService } from "../../services/error";
@@ -41,12 +42,11 @@ export const User: FC<Props> = (props) => {
   }, [src]);
 
   return avatarType === "avatar" ? (
-    <Avatar
-      src={avatarUrl}
-      text={username?.substring(0, 2)}
-      className={`${props.className} z-0`}
-    />
+    <Avatar src={avatarUrl} alt={username} />
   ) : (
-    <UserUI src={avatarUrl} name={username} size={size} className="[&>*]:z-0" />
+    <Stack direction={"row"} alignItems="center" gap={2}>
+      <Avatar src={avatarUrl} alt={username} />
+      <Typography>{username}</Typography>
+    </Stack>
   );
 };

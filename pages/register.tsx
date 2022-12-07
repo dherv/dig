@@ -1,9 +1,13 @@
-import { FormElement, Input } from "@nextui-org/react";
+import LockIcon from "@mui/icons-material/Lock";
+import PersonRoundedIcon from "@mui/icons-material/PersonRounded";
+import { Button } from "@mui/joy";
+
+import Stack from "@mui/joy/Stack";
+import TextField from "@mui/joy/TextField";
 import { supabaseClient, withPageAuth } from "@supabase/auth-helpers-nextjs";
 import { useUser } from "@supabase/auth-helpers-react";
 import { useRouter } from "next/router";
 import { ChangeEvent, MouseEvent, useEffect, useState } from "react";
-
 const RegisterPage = () => {
   const { user, error } = useUser();
   const [data, setData] = useState();
@@ -19,7 +23,7 @@ const RegisterPage = () => {
     }
   }, [user]);
 
-  const handleChange = (event: ChangeEvent<FormElement>) => {
+  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     setUserData((prev) => ({
       ...prev,
       [event.target.name]: event.target.value,
@@ -55,7 +59,35 @@ const RegisterPage = () => {
         <h2 className="font-medium mb-4">
           Add your username and a password to proceed
         </h2>
-        <div className="w-full">
+        <Stack direction="column" spacing={2}>
+          <TextField
+            onChange={handleChange}
+            label="username"
+            name="username"
+            value={userData.username}
+            placeholder="Type in here…"
+            startDecorator={<PersonRoundedIcon />}
+            // endDecorator={
+            //   <Chip size="sm" variant="soft">
+            //     New stuff
+            //   </Chip>
+            // }
+          />
+          <TextField
+            label="password"
+            name="password"
+            value={userData.password}
+            onChange={handleChange}
+            placeholder="...password"
+            startDecorator={<LockIcon />}
+            // endDecorator={<CheckIcon />}
+          />
+          <Button variant="soft" onClick={handleUpdatePassword}>
+            update
+          </Button>
+        </Stack>
+
+        {/* <div className="w-full">
           <Input
             width="100%"
             required
@@ -76,8 +108,7 @@ const RegisterPage = () => {
             name="password"
             onChange={handleChange}
           />
-        </div>
-
+        </div> */}
         {/* <input
           type="password"
           name="password"
@@ -92,13 +123,12 @@ const RegisterPage = () => {
           value={userData.username}
           onChange={handleChange}
         ></input> */}
-
-        <button
+        {/* <button
           className="md:block w-48 ml-1 md:ml-0 md:b-2 px-10 py-3 my-8 text-sm font-medium text-white bg-pink-600 border border-pink-600 rounded active:text-pink-500 hover:bg-transparent hover:text-pink-600 focus:outline-none focus:ring"
           onClick={handleUpdatePassword}
         >
           update
-        </button>
+        </button> */}
       </form>
     </div>
   );

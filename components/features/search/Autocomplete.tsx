@@ -1,5 +1,4 @@
 import { MediaType, Show } from "@/services/tmdb/types";
-import { Loading } from "@nextui-org/react";
 import { useClickOutside, useDebounce } from "@react-hooks-library/core";
 import { ChangeEvent, FC, ReactElement, useRef, useState } from "react";
 import useSWR from "swr";
@@ -76,7 +75,8 @@ export const Autocomplete: FC<Props> = ({
             ))
           ) : (
             <div className="flex justify-center p-4 border-b h-[80px]">
-              <Loading type="points" color="currentColor" />
+              {/* TODO: add loader */}
+              {/* <Loading type="points" color="currentColor" /> */}
             </div>
           )}
         </ul>

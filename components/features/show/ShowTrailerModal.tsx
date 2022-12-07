@@ -1,26 +1,25 @@
-import { Modal } from "@nextui-org/react";
+import Modal from "@mui/joy/Modal";
+import ModalClose from "@mui/joy/ModalClose";
+import ModalDialog from "@mui/joy/ModalDialog";
 import dynamic from "next/dynamic";
 import { FC } from "react";
 import { Show } from "../../../services/tmdb/types";
+
 const ReactPlayer = dynamic(() => import("react-player/lazy"), { ssr: false });
 type Props = {
   data: Show | null;
-  bindings: any;
+  isOpen: boolean;
   onClose: () => void;
 };
-export const ShowTrailerModal: FC<Props> = ({ bindings, onClose, data }) => {
+export const ShowTrailerModal: FC<Props> = ({ isOpen, onClose, data }) => {
   return (
-    <Modal
-      scroll
-      closeButton
-      aria-labelledby="modal-title"
-      aria-describedby="modal-description"
-      className="bg-black text-white rounded-none"
-      fullScreen
-      noPadding
-      {...bindings}
-    >
-      <Modal.Body>
+    <Modal open={isOpen} onClose={onClose}>
+      <ModalDialog
+        aria-labelledby="layout-modal-title"
+        aria-describedby="layout-modal-description"
+        layout={"fullscreen"}
+      >
+        <ModalClose />
         <div className="w-full h-full flex justify-center items-center">
           <ReactPlayer
             playing={true}
@@ -31,7 +30,7 @@ export const ShowTrailerModal: FC<Props> = ({ bindings, onClose, data }) => {
             url={`https://www.youtube.com/watch?v=${data?.videos.results[0]?.key}`}
           />
         </div>
-      </Modal.Body>
+      </ModalDialog>
     </Modal>
   );
 };
