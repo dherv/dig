@@ -2,6 +2,7 @@ import { MediaType, Show } from "@/services/tmdb/types";
 import { useClickOutside, useDebounce } from "@react-hooks-library/core";
 import { ChangeEvent, FC, ReactElement, useRef, useState } from "react";
 import useSWR from "swr";
+import { AutocompleteDropdown } from "./AutocompleteDropdown";
 import { AutocompleteResultItem } from "./AutocompleteResultItem";
 import { SearchInput } from "./SearchInput";
 
@@ -24,7 +25,7 @@ export const Autocomplete: FC<Props> = ({
   const [searchQuery, setSearchQuery] = useState<string>();
   const [isSearchMobileOpen, setSearchMobileOpen] = useState(false);
 
-  const debouncedSearch = useDebounce(searchQuery, 1000);
+  const debouncedSearch = useDebounce(searchQuery, 800);
   const ref = useRef(null);
 
   const closeSearch = () => {
@@ -54,7 +55,7 @@ export const Autocomplete: FC<Props> = ({
   };
 
   return (
-    <div className="md:relative" ref={ref}>
+    <div className="md:relative w-96" ref={ref}>
       <SearchInput
         value={searchQuery ?? ""}
         onChange={handleChange}
@@ -62,25 +63,18 @@ export const Autocomplete: FC<Props> = ({
         closeSearch={closeSearch}
         isSearchMobileOpen={isSearchMobileOpen}
       />
-      {searchQuery && (
-        <ul className="absolute top-16 md:top-12 left-0 z-10 bg-gray-700 text-white  overflow-y-scroll h-[calc(100vh_-_64px)] md:h-[56.5rem] w-full md:w-[32rem] md:left-1/2 md:-translate-x-1/2 shadow-sm">
-          {shows ? (
-            shows?.map((show: Show) => (
-              <AutocompleteResultItem
-                key={show.id}
-                show={show}
-                renderResultItem={renderResultItem}
-                onSelect={handleClickShow}
-              />
-            ))
-          ) : (
-            <div className="flex justify-center p-4 border-b h-[80px]">
-              {/* TODO: add loader */}
-              {/* <Loading type="points" color="currentColor" /> */}
-            </div>
-          )}
-        </ul>
-      )}
+      {/* {searchQuery && ( */}
+      <AutocompleteDropdown searchQuery={searchQuery}>
+        {shows?.map((show: Show) => (
+          <AutocompleteResultItem
+            key={show.id}
+            show={show}
+            renderResultItem={renderResultItem}
+            onSelect={handleClickShow}
+          />
+        ))}
+      </AutocompleteDropdown>
+      {/* )} */}
     </div>
   );
 };

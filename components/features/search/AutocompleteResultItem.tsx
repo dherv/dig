@@ -11,29 +11,38 @@ export const AutocompleteResultItem: FC<{
   const { renderResultItem, ...rest } = props;
   const { show, onSelect } = rest;
 
+  console.log({ show });
   return (
     <li
       key={show.id}
-      className="p-4 flex border-b border-b-gray-400 cursor-pointer hover:bg-gray-600"
+      className="p-2 flex border-b border-b-slate-600 cursor-pointer hover:bg-gray-600"
       onClick={() => onSelect(show.media_type, show.id)}
     >
       {renderResultItem ? (
         renderResultItem(show)
       ) : (
         <>
-          <div className="relative">
+          <div className="relative w-1/6">
             <Image
               src={TMDB.posterPath(show.poster_path)}
               alt="poster of the movie or serie"
-              width={"55"}
-              height={"80"}
+              layout="responsive"
+              width={500}
+              height={719}
             />
           </div>
-          <h5 className="font-medium ml-2 cusr">
-            {show.media_type === MediaType.TV
-              ? show.original_name
-              : show.original_title}
-          </h5>{" "}
+          <div className="ml-2">
+            <h5 className="font-bold text-sm">
+              {show.media_type === MediaType.TV
+                ? show.original_name
+                : show.original_title}
+            </h5>
+            <p className="text-gray-500 text-xs font-medium">
+              {show.media_type === MediaType.Movie
+                ? show.release_date
+                : show.last_air_date ?? show.first_air_date}
+            </p>
+          </div>
         </>
       )}
     </li>

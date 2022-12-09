@@ -59,6 +59,7 @@ export const SearchInput: FC<Props> = ({
           placeholder="search"
           value={value}
           onChange={onChange}
+          autoComplete="off"
           className="px-3 py-2 w-full hidden md:block bg-gray-700 text-sm rounded placeholder-gray-400 placeholder-sm focus:outline-none outline-none shadow-md"
         />
       </label>
