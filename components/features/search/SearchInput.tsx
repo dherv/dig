@@ -37,7 +37,7 @@ export const SearchInput: FC<Props> = ({
             id="autocomplete-mobile"
             ref={ref}
             type="text"
-            className="h-full w-full px-2 text-white bg-gray-700  focus:outline-none outline-none"
+            className="h-full w-full px-2 text-white bg-gray-700 focus:outline-none outline-none"
             value={value}
             onChange={onChange}
           />
@@ -50,17 +50,18 @@ export const SearchInput: FC<Props> = ({
         </label>
       </div>
 
-      <label htmlFor="autocomplete-desktop" className="hidden">
-        search
+      <label htmlFor="autocomplete-desktop" className="relative ">
+        <SearchIcon className="h-5 w-5 absolute top-2 right-3" />
+
+        <input
+          id="autocomplete-desktop"
+          type="text"
+          placeholder="search"
+          value={value}
+          onChange={onChange}
+          className="px-3 py-2 w-full hidden md:block bg-gray-700 text-sm rounded placeholder-gray-400 placeholder-sm focus:outline-none outline-none shadow-md"
+        />
       </label>
-      <input
-        id="autocomplete-desktop"
-        type="text"
-        placeholder="search"
-        value={value}
-        onChange={onChange}
-        className="hidden md:block bg-transparent border text-sm border-gray-400 placeholder-gray-400 placeholder-sm py-1 px-4 rounded-full"
-      />
     </>
   );
 };
