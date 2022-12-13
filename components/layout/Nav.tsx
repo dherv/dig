@@ -1,15 +1,14 @@
 import { BrandTitle } from "@/layout/BrandTitle";
-import Avatar from "@mui/joy/Avatar";
 import { useSupabaseClient, useUser } from "@supabase/auth-helpers-react";
 import { useRouter } from "next/router";
-import { FC, MouseEvent, useEffect } from "react";
-import useSWR, { useSWRConfig } from "swr";
+import { FC, useEffect } from "react";
+import useSWR from "swr";
 import { MediaType } from "../../services/tmdb/types";
 import { Autocomplete } from "../features/search/Autocomplete";
 import ActiveLink from "./ActiveLink";
+import { AvatarMenu } from "./AvatarMenu";
 
 export const Nav: FC = () => {
-  const { cache } = useSWRConfig();
   const router = useRouter();
   const supabaseClient = useSupabaseClient();
 
@@ -18,13 +17,6 @@ export const Nav: FC = () => {
   const { data, error: errorProfile } = useSWR(
     user?.id ? `/api/profile/${user?.id}` : null
   );
-  // TODO: find a way to handle logout differently. redirect not working properly with helpers
-  const handleSignOut = async (event: MouseEvent<HTMLAnchorElement>) => {
-    event.preventDefault();
-    await supabaseClient.auth.signOut();
-    cache.clear();
-    router.push("/login");
-  };
 
   // TODO: check how to properly set a refresh token in react app
   useEffect(() => {
@@ -76,17 +68,9 @@ export const Nav: FC = () => {
           <Autocomplete onSelect={handleSelect} resultCount={20} />
         </div>
 
-        <div className="relative">
-          <Avatar
-            color="neutral"
-            variant="soft"
-            size="sm"
-            alt={data?.username.toUpperCase()}
-            src="/broken-image.jpg"
-            onMouseOver={handleMouseOver}
-          ></Avatar>
+        <AvatarMenu data={data} />
 
-          {/* <Popover>
+        {/* <Popover>
           <Popover.Trigger>
             <button>
               <User
@@ -116,7 +100,6 @@ export const Nav: FC = () => {
             </div>
           </Popover.Content>
         </Popover> */}
-        </div>
       </nav>
     </>
   );
