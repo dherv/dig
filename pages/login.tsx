@@ -1,11 +1,9 @@
-import { supabaseClient } from "@supabase/auth-helpers-nextjs";
 import { useUser } from "@supabase/auth-helpers-react";
-import { Auth } from "@supabase/ui";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
 const LoginPage = () => {
-  const { user, error } = useUser();
+  const user = useUser();
   const [data, setData] = useState();
   const router = useRouter();
 
@@ -22,8 +20,8 @@ const LoginPage = () => {
         {/* <Card css={{ mw: "400px" }}>
           <Card.Body> */}
         <h1 className="absolute top-0 left-0 p-4 font-bold text-xl">Dig!</h1>
-        {error && <p>{error.message}</p>}
-        <Auth supabaseClient={supabaseClient} view="sign_in" />
+
+        {/* <Auth supabaseClient={supabaseClient} view="sign_in" /> */}
         {/* </Card.Body>
         </Card> */}
       </div>
