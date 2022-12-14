@@ -1,8 +1,4 @@
-import {
-  getUser,
-  supabaseServerClient,
-  withApiAuth,
-} from "@supabase/auth-helpers-nextjs";
+import { createServerSupabaseClient } from "@supabase/auth-helpers-nextjs";
 import { NextApiRequest, NextApiResponse } from "next";
 import { ErrorService } from "../../../services/error";
 import { supabaseServer } from "../../../services/supabase/supabase";
@@ -26,21 +22,32 @@ export const getProfile = async (userId: string | string[]) => {
   }
 };
 
-export default withApiAuth(async function Profile(
+export default async function Profile(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
   // refresh the token
   // TODO: add to middleware? - move to page middleware
-  const { accessToken } = await getUser({ req, res });
   try {
-    // TODO - add refresh token in middleware
-    if (accessToken) {
-      supabaseServerClient({ req, res }).auth.setAuth(accessToken);
-      const data = await getProfile(req.query.id);
-      return res.status(200).json(data);
+    // Create authenticated Supabase Client
+    const supabase = createServerSupabaseClient({ req, res });
+    // Check if we have a session
+    const {
+      data: { session },
+    } = await supabase.auth.getSession();
+
+    if (!session) {
+      return {
+        redirect: {
+          destination: "/login",
+          permanent: false,
+        },
+      };
     }
+
+    const data = await getProfile(req.query.id);
+    return res.status(200).json(data);
   } catch (error) {
     return ErrorService.apiError(error, res);
   }
-});
+}

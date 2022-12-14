@@ -1,11 +1,12 @@
 import "@fontsource/public-sans";
 import CssBaseline from "@mui/joy/CssBaseline";
 import { CssVarsProvider, getInitColorSchemeScript } from "@mui/joy/styles";
-import { supabaseClient } from "@supabase/auth-helpers-nextjs";
-import { UserProvider } from "@supabase/auth-helpers-react";
+import { createBrowserSupabaseClient } from "@supabase/auth-helpers-nextjs";
+import { SessionContextProvider } from "@supabase/auth-helpers-react";
+
 import type { AppProps } from "next/app";
 import Head from "next/head";
-import React from "react";
+import React, { useState } from "react";
 import { SWRConfig } from "swr";
 import { Layout } from "../components/layout/Layout";
 import { theme } from "../services/material/material.themes";
@@ -19,6 +20,9 @@ function App({ Component, pageProps, ...appProps }: AppProps) {
   );
   const LayoutComponent = isLayoutNeeded ? Layout : React.Fragment;
 
+  // Create a new supabase browser client on every first render.
+  const [supabaseClient] = useState(() => createBrowserSupabaseClient());
+
   return (
     <>
       <SWRConfig
@@ -28,7 +32,10 @@ function App({ Component, pageProps, ...appProps }: AppProps) {
           revalidateOnReconnect: true,
         }}
       >
-        <UserProvider supabaseClient={supabaseClient}>
+        <SessionContextProvider
+          supabaseClient={supabaseClient}
+          initialSession={pageProps.initialSession}
+        >
           <CssVarsProvider theme={theme}>
             <CssBaseline />
             <Head>
@@ -64,7 +71,7 @@ function App({ Component, pageProps, ...appProps }: AppProps) {
               <Component {...pageProps} />
             </LayoutComponent>
           </CssVarsProvider>
-        </UserProvider>
+        </SessionContextProvider>
       </SWRConfig>
     </>
   );

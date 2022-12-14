@@ -4,12 +4,17 @@ import { Button } from "@mui/joy";
 
 import Stack from "@mui/joy/Stack";
 import TextField from "@mui/joy/TextField";
-import { supabaseClient, withPageAuth } from "@supabase/auth-helpers-nextjs";
-import { useUser } from "@supabase/auth-helpers-react";
+import { createServerSupabaseClient } from "@supabase/auth-helpers-nextjs";
+
+import { useSupabaseClient, useUser } from "@supabase/auth-helpers-react";
+import { NextApiRequest, NextApiResponse } from "next";
 import { useRouter } from "next/router";
 import { ChangeEvent, MouseEvent, useEffect, useState } from "react";
+import { ErrorService } from "../services/error";
 const RegisterPage = () => {
-  const { user, error } = useUser();
+  const supabaseClient = useSupabaseClient();
+
+  const user = useUser();
   const [data, setData] = useState();
   const router = useRouter();
   const [userData, setUserData] = useState<{
@@ -36,7 +41,7 @@ const RegisterPage = () => {
 
     if (password && username && user) {
       const { data: passwordData, error: passwordError } =
-        await supabaseClient.auth.update({
+        await supabaseClient.auth.updateUser({
           password: password,
         });
 
@@ -54,7 +59,7 @@ const RegisterPage = () => {
       {/* <Card css={{ mw: "400px" }}>
       <Card.Body> */}
       <h1 className="absolute top-0 left-0 p-4 font-bold text-xl">Dig!</h1>
-      {error && <p>{error.message}</p>}
+      {/* {error && <p>{error.message}</p>} */}
       <form className="w-full max-w-[475px]">
         <h2 className="font-medium mb-4">
           Add your username and a password to proceed
@@ -134,7 +139,31 @@ const RegisterPage = () => {
   );
 };
 
-export const getServerSideProps = withPageAuth({
-  redirectTo: "/login",
-});
+export const getServerSideProps = async (
+  req: NextApiRequest,
+  res: NextApiResponse
+) => {
+  try {
+    // Create authenticated Supabase Client
+    const supabase = createServerSupabaseClient({ req, res });
+    // Check if we have a session
+    const {
+      data: { session },
+    } = await supabase.auth.getSession();
+
+    if (!session) {
+      ErrorService.catchError("not_authenticated");
+      // return { props: { profile: null } };
+      // return res.status(401).json({
+      //   error: 'not_authenticated',
+      //   description: 'The user does not have an active session or is not authenticated',
+      // })
+    }
+    return { props: { profile: null } };
+  } catch (error) {
+    ErrorService.catchError(error);
+    return { props: { profile: null } };
+  }
+};
+
 export default RegisterPage;

@@ -1,8 +1,7 @@
 import { BrandTitle } from "@/layout/BrandTitle";
 import { FilmIcon, StarIcon } from "@heroicons/react/outline";
 import Avatar from "@mui/joy/Avatar";
-import { supabaseClient } from "@supabase/auth-helpers-nextjs";
-import { useUser } from "@supabase/auth-helpers-react";
+import { useSupabaseClient, useUser } from "@supabase/auth-helpers-react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { FC, MouseEvent, useEffect } from "react";
@@ -13,8 +12,9 @@ import { Autocomplete } from "../features/search/Autocomplete";
 export const Nav: FC = () => {
   const { cache } = useSWRConfig();
   const router = useRouter();
+  const supabaseClient = useSupabaseClient();
 
-  const { user, error: errorUser } = useUser();
+  const user = useUser();
 
   const { data, error: errorProfile } = useSWR(
     user?.id ? `/api/profile/${user?.id}` : null
@@ -27,12 +27,14 @@ export const Nav: FC = () => {
     router.push("/login");
   };
 
+  // TODO: check how to properly set a refresh token in react app
   useEffect(() => {
-    const session = supabaseClient.auth.session();
-    if (!session?.user) {
+    const session = supabaseClient.auth.getSession();
+    if (!session) {
       supabaseClient.auth.refreshSession();
     }
-  }, [user]);
+  }, [supabaseClient.auth]);
+
   const handleSelect = (mediaType: MediaType, showId: number) => {
     router.push(`/shows/${showId}?mediaType=${mediaType}`);
   };

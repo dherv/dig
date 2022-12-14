@@ -4,11 +4,11 @@ import { ErrorService } from "@/services/error";
 import PersonRoundedIcon from "@mui/icons-material/PersonRounded";
 import { TextField } from "@mui/joy";
 import {
-  supabaseClient,
-  supabaseServerClient,
+  createServerSupabaseClient,
   User as IUser,
-  withPageAuth,
 } from "@supabase/auth-helpers-nextjs";
+import { useSupabaseClient } from "@supabase/auth-helpers-react";
+import { NextApiRequest, NextApiResponse } from "next";
 import { useState } from "react";
 import { useSWRConfig } from "swr";
 import { User } from "../components/layout/User";
@@ -21,6 +21,7 @@ export default function Profile({
   profile: { avatar_url: string; username: string };
 }) {
   const { mutate } = useSWRConfig();
+  const supabaseClient = useSupabaseClient();
 
   const [username, setUsername] = useState<string>(profile?.username);
   const [avatar_url, setAvatarUrl] = useState<string>(profile?.avatar_url);
@@ -128,27 +129,38 @@ export default function Profile({
   );
 }
 
-export const getServerSideProps = withPageAuth({
-  redirectTo: "/login",
-  async getServerSideProps(ctx) {
-    try {
-      const { user, error } = await supabaseServerClient(
-        ctx
-      ).auth.api.getUserByCookie(ctx.req);
+export const getServerSideProps = async (
+  req: NextApiRequest,
+  res: NextApiResponse
+) => {
+  try {
+    // const { user, error } = await supabaseServerClient(
+    //   ctx
+    // ).auth.api.getUserByCookie(ctx.req);
 
-      if (error) {
-        ErrorService.catchError(error);
-        return { props: { profile: null } };
-      }
+    // Create authenticated Supabase Client
+    const supabase = createServerSupabaseClient({ req, res });
+    // Check if we have a session
+    const {
+      data: { session },
+    } = await supabase.auth.getSession();
 
-      if (user) {
-        const profile = await getProfile(user?.id);
-        return { props: { profile } };
-      }
+    if (!session) {
+      ErrorService.catchError("not_authenticated");
       return { props: { profile: null } };
-    } catch (error) {
-      ErrorService.catchError(error);
-      return { props: { profile: null } };
+      // return res.status(401).json({
+      //   error: 'not_authenticated',
+      //   description: 'The user does not have an active session or is not authenticated',
+      // })
     }
-  },
-});
+
+    if (session.user) {
+      const profile = await getProfile(session.user?.id);
+      return { props: { profile } };
+    }
+    return { props: { profile: null } };
+  } catch (error) {
+    ErrorService.catchError(error);
+    return { props: { profile: null } };
+  }
+};
