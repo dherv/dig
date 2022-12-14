@@ -5,9 +5,9 @@ import { Avatar, Link } from "@mui/joy";
 import MenuItem from "@mui/joy/MenuItem";
 import MenuList from "@mui/joy/MenuList";
 import { styled } from "@mui/joy/styles";
-import { supabaseClient } from "@supabase/auth-helpers-nextjs";
+import { useSupabaseClient } from "@supabase/auth-helpers-react";
 import router from "next/router";
-import { FC, useState } from "react";
+import { FC, KeyboardEvent, MouseEvent, useState } from "react";
 
 import { useSWRConfig } from "swr";
 
@@ -17,28 +17,31 @@ const Popup = styled(PopperUnstyled)({
 
 // TODO: this is a temporary menu
 export const AvatarMenu: FC<{ data: any }> = ({ data }) => {
-  const [anchorEl, setAnchorEl] = useState(null);
+  const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
   const { cache } = useSWRConfig();
+  const supabaseClient = useSupabaseClient();
 
   const open = Boolean(anchorEl);
-  const handleClick = (event) => {
+  const handleClick = (event: MouseEvent<HTMLDivElement>) => {
     setAnchorEl(event.currentTarget);
   };
   const handleClose = () => {
     setAnchorEl(null);
   };
 
-  const handleListKeyDown = (event) => {
+  const handleListKeyDown = (event: KeyboardEvent<HTMLUListElement>) => {
     if (event.key === "Tab") {
       setAnchorEl(null);
     } else if (event.key === "Escape") {
-      anchorEl.focus();
-      setAnchorEl(null);
+      if (anchorEl) {
+        anchorEl.focus();
+        setAnchorEl(null);
+      }
     }
   };
 
   // TODO: find a way to handle logout differently. redirect not working properly with helpers
-  const handleSignOut = async (event: MouseEvent<HTMLAnchorElement>) => {
+  const handleSignOut = async (event: MouseEvent<HTMLDivElement>) => {
     event.preventDefault();
     await supabaseClient.auth.signOut();
     cache.clear();

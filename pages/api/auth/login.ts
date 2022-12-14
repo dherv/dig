@@ -1,12 +1,14 @@
+import { createServerSupabaseClient } from "@supabase/auth-helpers-nextjs";
 import { NextApiRequest, NextApiResponse } from "next";
 import { ErrorService } from "../../../services/error";
-import { supabaseServer } from "../../../services/supabase/supabase";
 
 export default async function Login(req: NextApiRequest, res: NextApiResponse) {
   try {
-    const { data, error } = await supabaseServer.auth.signInWithPassword({
-      email: req.body.email,
-      password: req.body.password,
+    const body = JSON.parse(req.body);
+    const supabase = createServerSupabaseClient({ req, res });
+    const { data, error } = await supabase.auth.signInWithPassword({
+      email: body.email,
+      password: body.password,
     });
 
     if (error) {

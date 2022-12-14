@@ -1,4 +1,7 @@
-import { withApiAuth } from "@supabase/auth-helpers-nextjs";
+import {
+  createServerSupabaseClient,
+  withApiAuth,
+} from "@supabase/auth-helpers-nextjs";
 import { NextApiRequest, NextApiResponse } from "next";
 import { ErrorService } from "../../../services/error";
 import { supabaseServer } from "../../../services/supabase/supabase";
@@ -9,9 +12,13 @@ export default withApiAuth(async function Accepted(
   res: NextApiResponse
 ) {
   try {
-    const { token, user } = await supabaseServer.auth.api.getUserByCookie(req);
+    // const { token, user } = await supabaseServer.auth.api.getUserByCookie(req);
 
-    if (user) {
+    const supabase = createServerSupabaseClient({ req, res });
+    const {
+      data: { session },
+    } = await supabase.auth.getSession();
+    if (session?.user) {
       // TODO: see if we can find a query to select depending on user_1 = user.id or user_2 = user.id instead of 2 queries
       const { data: friendshipFromColUser1 } =
         (await supabaseServer

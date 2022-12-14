@@ -1,7 +1,8 @@
 import { useUser } from "@supabase/auth-helpers-react";
 import { useRouter } from "next/router";
-import { ChangeEvent, useEffect, useState } from "react";
+import { ChangeEvent, MouseEvent, useEffect, useState } from "react";
 import { Input } from "../components/features/search/Input";
+import { fetcher } from "../services/swr/fetcher";
 
 const LoginPage = () => {
   const user = useUser();
@@ -21,14 +22,28 @@ const LoginPage = () => {
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) =>
     setForm((prev) => ({ ...prev, [event.target.name]: event.target.value }));
-  const handleLogin = async () => {};
 
+  const handleLogin = async (event: MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
+    fetcher(`/api/auth/login`, {
+      method: "POST",
+      body: JSON.stringify({
+        email: form.email,
+        password: form.password,
+      }),
+    })
+      .then(() => {
+        console.log("should push");
+        router.push("/movies");
+      })
+      .catch((error) => console.log({ error }));
+  };
+
+  console.log("user", user);
   if (!user)
     return (
       <>
         <div className="relative flex justify-center items-center h-screen p-4 mx-auto">
-          {/* <Card css={{ mw: "400px" }}>
-          <Card.Body> */}
           <h1 className="absolute top-0 left-0 p-4 font-bold text-4xl">Dig!</h1>
           <form className="bg-slate-800 min-w-[300px] w-[600px] h-96 px-4 py-8  shadow-slate-900  rounded-lg">
             <h4 className="mb-6 text-2xl font-bold capitalize underline underline-offset-4">
@@ -73,10 +88,6 @@ const LoginPage = () => {
               login
             </button>
           </form>
-
-          {/* <Auth supabaseClient={supabaseClient} view="sign_in" /> */}
-          {/* </Card.Body>
-        </Card> */}
         </div>
       </>
     );

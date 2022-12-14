@@ -5,15 +5,19 @@ import {
   SuggestionSchemaWithRelations,
 } from "@/services/supabase/types.app";
 import * as TMDB from "@/services/tmdb";
-import { withApiAuth } from "@supabase/auth-helpers-nextjs";
+import { createServerSupabaseClient } from "@supabase/auth-helpers-nextjs";
 import { NextApiRequest, NextApiResponse } from "next";
 
-export default withApiAuth(async function handler(
+export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
   try {
-    const { user } = await supabaseServer.auth.api.getUserByCookie(req);
+    const supabase = createServerSupabaseClient({ req, res });
+    const {
+      data: { session },
+    } = await supabase.auth.getSession();
+    const user = session?.user;
     if (user) {
       const { data: suggestions, error } = await supabaseServer
         .from("suggestions")
@@ -42,4 +46,4 @@ export default withApiAuth(async function handler(
   } catch (error) {
     return ErrorService.apiError(error, res);
   }
-});
+}
