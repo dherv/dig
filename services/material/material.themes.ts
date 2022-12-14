@@ -1,10 +1,10 @@
-import colors from '@mui/joy/colors'
-import { extendTheme as extendJoyTheme } from '@mui/joy/styles'
-import { experimental_extendTheme as extendMuiTheme } from '@mui/material/styles'
-import { deepmerge } from '@mui/utils'
+import colors from "@mui/joy/colors";
+import { extendTheme as extendJoyTheme } from "@mui/joy/styles";
+import { experimental_extendTheme as extendMuiTheme } from "@mui/material/styles";
+import { deepmerge } from "@mui/utils";
 export const muiTheme = extendMuiTheme({
   // This is required to point to `var(--joy-*)` because we are using `CssVarsProvider` from Joy UI.
-  cssVarPrefix: 'joy',
+  cssVarPrefix: "joy",
   colorSchemes: {
     light: {
       palette: {
@@ -25,8 +25,8 @@ export const muiTheme = extendMuiTheme({
           main: colors.yellow[200],
         },
         common: {
-          white: '#FFF',
-          black: '#09090D',
+          white: "#FFF",
+          black: "#09090D",
         },
         divider: colors.grey[200],
         text: {
@@ -54,8 +54,8 @@ export const muiTheme = extendMuiTheme({
           main: colors.yellow[300],
         },
         common: {
-          white: '#FFF',
-          black: '#09090D',
+          white: "#FFF",
+          black: "#09090D",
         },
         divider: colors.grey[800],
         text: {
@@ -65,10 +65,10 @@ export const muiTheme = extendMuiTheme({
       },
     },
   },
-})
+});
 
-export const joyTheme = extendJoyTheme()
+export const joyTheme = extendJoyTheme();
 
 // You can use your own `deepmerge` function.
 // joyTheme will deeply merge to muiTheme.
-export const theme = deepmerge(muiTheme, joyTheme)
+export const theme = deepmerge(muiTheme, joyTheme);

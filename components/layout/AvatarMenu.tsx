@@ -1,11 +1,11 @@
 import ClickAwayListener from "@mui/base/ClickAwayListener";
 import PopperUnstyled from "@mui/base/PopperUnstyled";
+import PowerSettingsNewIcon from "@mui/icons-material/PowerSettingsNew";
 import { Avatar, Link } from "@mui/joy";
 import MenuItem from "@mui/joy/MenuItem";
 import MenuList from "@mui/joy/MenuList";
 import { styled } from "@mui/joy/styles";
 import { supabaseClient } from "@supabase/auth-helpers-nextjs";
-import { IconPower } from "@supabase/ui";
 import router from "next/router";
 import { FC, useState } from "react";
 
@@ -99,13 +99,8 @@ export const AvatarMenu: FC<{ data: any }> = ({ data }) => {
                 </a>
               </Link>
             </MenuItem>
-            <MenuItem onClick={handleClose}>
-              <a
-                className=" block w-[150px] font-light text-sm text-gray-600"
-                onClick={handleSignOut}
-              >
-                <IconPower />
-              </a>
+            <MenuItem onClick={handleSignOut}>
+              <PowerSettingsNewIcon />
             </MenuItem>
           </MenuList>
         </ClickAwayListener>

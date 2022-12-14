@@ -1,5 +1,6 @@
 import { SearchIcon, XIcon } from "@heroicons/react/outline";
 import { ChangeEvent, FC, useEffect, useRef } from "react";
+import { Input } from "./Input";
 
 type Props = {
   value: string;
@@ -53,7 +54,7 @@ export const SearchInput: FC<Props> = ({
       <label htmlFor="autocomplete-desktop" className="relative ">
         <SearchIcon className="h-5 w-5 absolute top-2 right-3" />
 
-        <input
+        {/* <input
           id="autocomplete-desktop"
           type="text"
           placeholder="search"
@@ -61,6 +62,14 @@ export const SearchInput: FC<Props> = ({
           onChange={onChange}
           autoComplete="off"
           className="px-3 py-2 w-full hidden md:block bg-gray-700 text-sm rounded placeholder-gray-400 placeholder-sm focus:outline-none outline-none shadow-md"
+        /> */}
+        <Input
+          id="autocomplete-desktop"
+          type="text"
+          name="autocomplete-desktop"
+          placeholder="search"
+          value={value}
+          onChange={onChange}
         />
       </label>
     </>

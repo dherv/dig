@@ -5,7 +5,8 @@
 @layer base {
   html,
   body {
-    @apply text-gray-50 bg-slate-800;
+    /* use important to override MUI styles */
+    @apply text-gray-50 bg-slate-800 !important;
   }
 }
 
