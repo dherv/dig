@@ -8,7 +8,7 @@ export const AutocompleteDropdown: FC<{
   const opacity = searchQuery ? "opacity-1" : "opacity-0";
   return (
     <ul
-      className={`transition-all ${opacity}	absolute top-16 md:top-10 left-0 z-10 rounded-sm bg-gray-700 text-white overflow-y-scroll h-[calc(100vh_-_64px)] ${height} w-full shadow-sm`}
+      className={`transition-all ${opacity}	absolute top-16 md:top-10 left-0 z-10 rounded-md bg-slate-900 shadow-lg text-white overflow-y-scroll ${height} w-full shadow-sm`}
     >
       {children}
     </ul>

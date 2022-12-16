@@ -15,6 +15,7 @@ const LoginPage = () => {
 
   // TODO: see if it can be handled with the Auth component. right now redirectTo is not working
   useEffect(() => {
+    console.log({ user, router });
     if (user) {
       router.push("/");
     }
@@ -34,7 +35,7 @@ const LoginPage = () => {
     })
       .then(() => {
         console.log("should push");
-        router.push("/movies");
+        router.push("/");
       })
       .catch((error) => console.log({ error }));
   };

@@ -43,9 +43,14 @@ export const AvatarMenu: FC<{ data: any }> = ({ data }) => {
   // TODO: find a way to handle logout differently. redirect not working properly with helpers
   const handleSignOut = async (event: MouseEvent<HTMLDivElement>) => {
     event.preventDefault();
-    await supabaseClient.auth.signOut();
-    cache.clear();
-    router.push("/login");
+    try {
+      // await fetch("/api/auth/logout");
+      await supabaseClient.auth.signOut();
+      cache.clear();
+      router.push("/login");
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (
@@ -70,7 +75,7 @@ export const AvatarMenu: FC<{ data: any }> = ({ data }) => {
         color="neutral"
         variant="soft"
         size="sm"
-        alt={data?.username.toUpperCase()}
+        alt={data?.username?.toUpperCase()}
         src="/broken-image.jpg"
         onClick={handleClick}
       ></Avatar>

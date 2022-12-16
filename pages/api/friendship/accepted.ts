@@ -1,7 +1,6 @@
 import {
-  supabaseServerClient,
+  createServerSupabaseClient,
   User,
-  withApiAuth,
 } from "@supabase/auth-helpers-nextjs";
 import { NextApiRequest, NextApiResponse } from "next";
 import { ErrorService } from "../../../services/error";
@@ -25,21 +24,33 @@ const handleCreateFriendship = async (newUser: User) => {
   }
 };
 
-export default withApiAuth(async function Accepted(
+export default async function Accepted(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
   try {
-    const { token, user: newUser } = await supabaseServerClient({
-      req,
-      res,
-    }).auth.api.getUserByCookie(req);
+    // Create authenticated Supabase Client
+    const supabase = createServerSupabaseClient({ req, res });
+    // Check if we have a session
+    const {
+      data: { session },
+    } = await supabase.auth.getSession();
 
-    if (newUser) {
-      handleCreateFriendship(newUser);
+    if (!session) {
+      return {
+        redirect: {
+          destination: "/login",
+          permanent: false,
+        },
+      };
+    } else {
+      const user = session.user;
+      if (user) {
+        handleCreateFriendship(user);
+      }
+      return res.status(200).json({ data: { message: "sign out successful" } });
     }
-    return res.status(200).json({ data: { message: "sign out successful" } });
   } catch (error) {
     ErrorService.apiError(error, res);
   }
-});
+}

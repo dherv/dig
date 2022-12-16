@@ -18,7 +18,7 @@ export default withApiAuth(async function handler(
 ) {
   try {
     const { friendshipIds, friendIds } = JSON.parse(req.body);
-
+    console.log({ friendshipIds, friendIds });
     // TODO: see if types for relations can be handled differently
     const { data: suggestions, error } = (await supabaseServer
       .from<definitions["suggestions"]>("suggestions")

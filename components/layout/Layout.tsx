@@ -16,11 +16,11 @@ export const Layout: FC<{ children: ReactElement }> = ({ children }) => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <div>
-        <header className="fixed w-full z-50  shadow-sm">
+        <header className="fixed w-full z-50 shadow-sm">
           <Nav />
         </header>
 
-        <main className="py-16 md:py-24">
+        <main className="py-16 mx-2 md:py-24">
           <div className="flex">
             <section className=" overflow-hidden w-full">{children}</section>
             {/* <aside>

@@ -17,7 +17,7 @@ export const MovieTitle: FC<{ title: string; className?: string }> = ({
 }) => {
   return (
     <h4
-      className={`${className} text-xs md:text-sm font-bold leading-6 mt-2 break-words whitespace-pre-wrap overflow-hidden`}
+      className={`${className} text-sm font-bold break-words whitespace-pre-wrap overflow-hidden`}
     >
       {title}
     </h4>

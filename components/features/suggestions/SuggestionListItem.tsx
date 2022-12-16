@@ -31,49 +31,55 @@ export const SuggestionListItem: FC<Props> = ({
   const releaseDate = TMDB.getReleaseDate(movie, mediaType);
 
   return (
-    <li className="mr-2 rounded-md w-full my-4 p-2 shadow-md">
+    <li className="mr-2 rounded-md w-full my-4 bg-slate-700 shadow-md">
       <div
-        className="relative flex w-full cursor-pointer rounded-md "
+        className="flex w-full cursor-pointer rounded-md"
         onClick={() => handleClickShow(movie.id, mediaType)}
       >
-        <div className="relative shadow-lg md:w-[90px] md:h-[130px] w-10 h-14">
+        <div className="relative shadow-lg min-w-[40px] h-auto">
           <Image
             src={poster}
             alt="backdrop of the movie or serie"
             layout="responsive"
             width={200}
             height={300}
-            className="rounded"
+            className="rounded-l"
           />
         </div>
-        <div className="flex flex-col justify-center ml-4">
-          <MovieTitle
-            title={mediaType === MediaType.Movie ? movie.title : movie.name}
-          ></MovieTitle>
-          <p className="font-thin">
-            {mediaType === MediaType.Movie ? (
-              releaseDate
-            ) : (
-              <>
-                <div className="text-sm text-gray-500">most recent season</div>{" "}
-                <div> {releaseDate}</div>
-              </>
-            )}
-          </p>
-        </div>
-        {withAvatar ? (
-          <div className="absolute top-0 right-0">
-            <User
-              src={suggestion.user?.avatar_url}
-              username={suggestion.user?.username}
-              size={"md"}
-              avatarType="avatar"
-
-              // username={suggestion.user?.username}
-              // className="w-[20px] h-[20px]"
-            />
+        <div className="relative flex px-4 py-1 w-full items-center justify-between">
+          <div>
+            <MovieTitle
+              title={mediaType === MediaType.Movie ? movie.title : movie.name}
+            ></MovieTitle>
+            <div className="font-thin text-xs">
+              {mediaType === MediaType.Movie ? (
+                releaseDate
+              ) : (
+                <>
+                  <span className="block text-gray-500">
+                    most recent season
+                  </span>{" "}
+                  <span className="block"> {releaseDate}</span>
+                </>
+              )}
+            </div>
           </div>
-        ) : null}
+
+          {withAvatar ? (
+            <div className="">
+              <User
+                src={suggestion.user?.avatar_url}
+                username={suggestion.user?.username}
+                size={"sm"}
+                avatarType="avatar"
+
+                // username={suggestion.user?.username}
+                // className="w-[20px] h-[20px]"
+              />
+            </div>
+          ) : null}
+        </div>
+
         {/* TODO: add AvatarGroup */}
       </div>
     </li>

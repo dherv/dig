@@ -13,8 +13,8 @@ export const SuggestionsList: FC<Props> = ({
   type,
 }) => {
   console.log({ suggestions });
-  return suggestions ? (
-    <ul className="max-w-[840px] mx-auto">
+  return suggestions && suggestions.length ? (
+    <ul className="">
       {suggestions.map((suggestion) => (
         <SuggestionListItem
           key={suggestion.id}
@@ -28,7 +28,7 @@ export const SuggestionsList: FC<Props> = ({
   ) : (
     <div className="flex justify-center items-center mt-8">
       <span className="text-gray-500">
-        your {type === "friends" ? type : ""} suggestion list is empty
+        {type === "friends" ? "the" : "your"} suggestion list is empty
       </span>
     </div>
   );
