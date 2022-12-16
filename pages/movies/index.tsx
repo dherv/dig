@@ -65,9 +65,13 @@ const getMovies = async () => {
   const disneyPlusCode = "337";
   const countryCode = "US";
 
+  // const urlMovie = (page: number = 1) =>
+  //   `https://api.themoviedb.org/3/discover/movie?api_key=${api_key}&region=US&sort_by=popularity.desc&include_adult=false&include_video=false&page=${page}&${movieDateType}.gte=${date_start}&${movieDateType}.lte=${date_end}&with_release_type=1`;
+  // const urlSerie = `https://api.themoviedb.org/3/discover/tv?api_key=${api_key}&region=US&sort_by=popularity.desc&include_adult=false&include_video=false&page=1&${tvDateType}.gte=${date_start}&${tvDateType}.lte=${date_end}&with_release_type=1`;
+
   const urlMovie = (page: number = 1) =>
-    `https://api.themoviedb.org/3/discover/movie?api_key=${api_key}&region=US&sort_by=popularity.desc&include_adult=false&include_video=false&page=${page}&${movieDateType}.gte=${date_start}&${movieDateType}.lte=${date_end}&with_release_type=1`;
-  const urlSerie = `https://api.themoviedb.org/3/discover/tv?api_key=${api_key}&region=US&sort_by=popularity.desc&include_adult=false&include_video=false&page=1&${tvDateType}.gte=${date_start}&${tvDateType}.lte=${date_end}&with_release_type=1`;
+    `https://api.themoviedb.org/3/discover/movie?api_key=${api_key}&sort_by=popularity.desc&include_adult=false&include_video=false&page=${page}&vote_count.gte=100`;
+  const urlSerie = `https://api.themoviedb.org/3/discover/tv?api_key=${api_key}&sort_by=popularity.desc&include_adult=false&include_video=false&page=1&vote_count.gte=100`;
 
   const resMovie = await fetch(urlMovie());
   const { results: movies } = await resMovie.json();
