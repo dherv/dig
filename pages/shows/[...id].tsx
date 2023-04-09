@@ -1,20 +1,70 @@
+import PlayCircleFilledWhiteOutlinedIcon from "@mui/icons-material/PlayCircleFilledWhiteOutlined";
+import VerifiedIcon from "@mui/icons-material/Verified";
+import { IconButton } from "@mui/joy";
 import { User, withPageAuth } from "@supabase/auth-helpers-nextjs";
 import type { NextPage } from "next";
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import useSWR from "swr";
 import { Rank } from "../../components/features/movie/Rank";
 import { ShowTrailerModal } from "../../components/features/show/ShowTrailerModal";
 import { ErrorService } from "../../services/error";
 import { Friends, Suggestion } from "../../services/supabase/types.app";
 import * as TMDB from "../../services/tmdb";
-import { MediaType, Show } from "../../services/tmdb/types";
-
+import { Genre, MediaType, Show } from "../../services/tmdb/types";
 interface Props {
   user: User;
   show: Show | null;
   type: MediaType;
 }
+
+export const Genres: FC<{ genres: Genre[] }> = ({ genres }) => {
+  return (
+    <div>
+      {genres.map((genre) => (
+        <strong
+          key={genre.id}
+          className="inline-block my-1 mr-2 border text-gray-500 border-current uppercase px-5 py-1.5 rounded-full text-[10px] tracking-wide"
+        >
+          {genre.name}
+        </strong>
+      ))}
+    </div>
+  );
+};
+
+const ArticleHeader: FC<{
+  show: Show;
+  releaseDate: string;
+  type: MediaType;
+  rank: string;
+  runtime?: string;
+}> = ({ show, releaseDate, type, rank, runtime }) => {
+  return (
+    <div className="flex py-4 px-4 xl:px-0">
+      <div className="">
+        <h2 className="font-medium text-3xl">
+          {type === MediaType.Movie ? show.title : show.name}
+        </h2>
+        <div className="flex items-end leading-4 my-2 text-sm ">
+          <span className="mr-2 font-thin text-gray-500">{releaseDate}</span>
+          {runtime ? (
+            <>
+              <span className="font-thin text-gray-500">.</span>
+              <span className="ml-2 font-thin text-gray-500">{runtime}</span>
+            </>
+          ) : null}
+          <div className="flex items-end ml-4">
+            <Rank size={20} vote={show.vote_average} />
+            {show.vote_average > 0 ? (
+              <p className="font-bold ml-2">{rank}</p>
+            ) : null}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
 // TODO: consider using styled components with twin.macro to avoid too many <div> wrappers
 const MoviePage: NextPage<Props> = ({ user, show, type }) => {
   const [isVisible, setVisible] = useState<boolean>(false);
@@ -65,6 +115,7 @@ const MoviePage: NextPage<Props> = ({ user, show, type }) => {
   const releaseDate = TMDB.getReleaseDate(show, type);
 
   const handleClickTrailer = () => {
+    console.log("TRAILER");
     setVisible(true);
   };
 
@@ -75,31 +126,16 @@ const MoviePage: NextPage<Props> = ({ user, show, type }) => {
   console.log(show);
   return show ? (
     <article className="relative my-4 mx-auto max-w-[1280px]">
-      <div className="flex py-4 px-4 xl:px-0">
-        <div>
-          <h2 className="font-medium text-3xl">
-            {type === MediaType.Movie ? show.title : show.name}
-          </h2>
-          <div className="flex items-end leading-4 my-2 text-sm ">
-            <span className="mr-2 font-thin text-gray-500">{releaseDate}</span>
-            {runtime ? (
-              <>
-                <span className="font-thin text-gray-500">.</span>
-                <span className="ml-2 font-thin text-gray-500">{runtime}</span>
-              </>
-            ) : null}
-            <div className="flex items-end ml-4">
-              <Rank size={20} vote={show.vote_average} />
-              {show.vote_average > 0 ? (
-                <p className="font-bold ml-2">{rank}</p>
-              ) : null}
-            </div>
-          </div>
-        </div>
-      </div>
+      {/* <ArticleHeader
+        show={show}
+        releaseDate={releaseDate}
+        rank={rank}
+        type={type}
+        runtime={runtime}
+      /> */}
 
-      <div className="flex my-4">
-        <div className="relative w-3/4">
+      <div className="flex my-4 shadow-md rounded">
+        <div className="relative w-3/4 mr-2">
           <Image
             src={imageSrc}
             alt="backdrop of the movie or serie"
@@ -114,13 +150,32 @@ const MoviePage: NextPage<Props> = ({ user, show, type }) => {
  
       </div> */}
         </div>
-        <div className="w-1/4 bg-gray-700 flex flex-col justify-center items-center">
-          <span className="font-medium text-sm md:text-lg block text-center text-white">
-            coming soon!
-          </span>
-          <span className="mt-2 font-medium text-xs md:text-sm  text-center text-white">
-            (...maybe)
-          </span>
+        <div className="flex flex-col justify-between w-1/4 bg-slate-900 px-6 py-4">
+          <div>
+            <h2 className="font-black text-3xl">
+              {type === MediaType.Movie ? show.title : show.name}
+            </h2>
+            <p className="my-6 text-sm text-slate-100">{show.overview}</p>
+          </div>
+
+          <div className="mt-2 font-medium text-xs md:text-sm  text-center text-white">
+            <IconButton
+              color="neutral"
+              disabled={isAlreadySuggested}
+              onClick={handleSuggest}
+              className="mx-2"
+            >
+              <VerifiedIcon className="w-6 h-6" />
+            </IconButton>
+            <IconButton
+              color="neutral"
+              disabled={show.videos.results.length === 0}
+              onClick={handleClickTrailer}
+              className="mx-2"
+            >
+              <PlayCircleFilledWhiteOutlinedIcon className="w-6 h-6" />
+            </IconButton>
+          </div>
         </div>
       </div>
       <div className="relative md:flex my-6 justify-between px-4 xl:px-0">
@@ -134,19 +189,11 @@ const MoviePage: NextPage<Props> = ({ user, show, type }) => {
           />
         </div> */}
         <div className="my-1 md:mr-2">
-          <div>
-            {show.genres.map((genre) => (
-              <strong
-                key={genre.id}
-                className="inline-block my-1 mr-2 border text-gray-500 border-current uppercase px-5 py-1.5 rounded-full text-[10px] tracking-wide"
-              >
-                {genre.name}
-              </strong>
-            ))}
-            <p className="max-w-[600px] my-4 mx-1 md:mx-0">{show.overview}</p>
-          </div>
+          <Genres genres={show.genres} />
+          {/* <p className="max-w-[600px] my-4 mx-1 md:mx-0">{show.overview}</p> */}
         </div>
-        <div className="md:block md:mx-0">
+
+        {/* <div className="md:block md:mx-0">
           <button
             disabled={show.videos.results.length === 0}
             onClick={handleClickTrailer}
@@ -169,12 +216,12 @@ const MoviePage: NextPage<Props> = ({ user, show, type }) => {
           >
             {isAlreadySuggested ? "already did it!" : "suggest it!"}
           </button>
-          <ShowTrailerModal
-            data={show}
-            isOpen={isVisible}
-            onClose={() => setVisible(false)}
-          />
-        </div>
+        </div> */}
+        <ShowTrailerModal
+          data={show}
+          isOpen={isVisible}
+          onClose={() => setVisible(false)}
+        />
       </div>
     </article>
   ) : null;

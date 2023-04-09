@@ -36,7 +36,7 @@ function App({ Component, pageProps, ...appProps }: AppProps) {
           supabaseClient={supabaseClient}
           initialSession={pageProps.initialSession}
         >
-          <CssVarsProvider theme={theme}>
+          <CssVarsProvider theme={theme} defaultMode={"dark"}>
             <CssBaseline />
             <Head>
               <meta charSet="utf-8" />
