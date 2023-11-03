@@ -1,8 +1,8 @@
 import { SuggestionsList } from "@/components/features/suggestions/SuggestionsList";
 import { FriendshipData, Suggestion } from "@/services/supabase/types.app";
 import {
-  createServerSupabaseClient,
   User,
+  createServerSupabaseClient,
 } from "@supabase/auth-helpers-nextjs";
 import { GetServerSidePropsContext } from "next";
 import { ChangeEvent, useState } from "react";
@@ -16,6 +16,7 @@ const SuggestionsPage = ({ user }: { user: User }) => {
     data: FriendshipData;
   };
 
+  console.log({ friendshipData });
   const { data: friendSuggestions } = useSWR(
     friendshipData
       ? [

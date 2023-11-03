@@ -2,8 +2,8 @@ import LockIcon from "@mui/icons-material/Lock";
 import PersonRoundedIcon from "@mui/icons-material/PersonRounded";
 import { Button } from "@mui/joy";
 
+import Input from "@mui/joy/Input";
 import Stack from "@mui/joy/Stack";
-import TextField from "@mui/joy/TextField";
 import { createServerSupabaseClient } from "@supabase/auth-helpers-nextjs";
 
 import { useSupabaseClient, useUser } from "@supabase/auth-helpers-react";
@@ -39,6 +39,7 @@ const RegisterPage = () => {
     event.preventDefault();
     const { password, username } = userData;
 
+    console.log({ userData });
     if (password && username && user) {
       const { data: passwordData, error: passwordError } =
         await supabaseClient.auth.updateUser({
@@ -65,9 +66,9 @@ const RegisterPage = () => {
           Add your username and a password to proceed
         </h2>
         <Stack direction="column" spacing={2}>
-          <TextField
+          <Input
             onChange={handleChange}
-            label="username"
+            // label="username"
             name="username"
             value={userData.username}
             placeholder="Type in here…"
@@ -78,8 +79,8 @@ const RegisterPage = () => {
             //   </Chip>
             // }
           />
-          <TextField
-            label="password"
+          <Input
+            // label="password"
             name="password"
             value={userData.password}
             onChange={handleChange}

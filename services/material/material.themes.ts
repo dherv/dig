@@ -15,9 +15,9 @@ export const muiTheme = extendMuiTheme({
         error: {
           main: colors.red[500],
         },
-        info: {
-          main: colors.purple[500],
-        },
+        // info: {
+        //   main: colors.purple[500],
+        // },
         success: {
           main: colors.green[500],
         },
@@ -44,9 +44,9 @@ export const muiTheme = extendMuiTheme({
         error: {
           main: colors.red[600],
         },
-        info: {
-          main: colors.purple[600],
-        },
+        // info: {
+        //   main: colors.purple[600],
+        // },
         success: {
           main: colors.green[600],
         },

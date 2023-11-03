@@ -2,7 +2,7 @@ import { getProfile } from "@/api/profile/[...id]";
 import { ProfileAvatar } from "@/components/layout/ProfileAvatar";
 import { ErrorService } from "@/services/error";
 import PersonRoundedIcon from "@mui/icons-material/PersonRounded";
-import { TextField } from "@mui/joy";
+import { Input } from "@mui/joy";
 import {
   createServerSupabaseClient,
   User as IUser,
@@ -87,8 +87,8 @@ export default function Profile({
           onChange={(event) => setUsername(event?.target.value)}
         /> */}
 
-        <TextField
-          label="username"
+        <Input
+          // label="username"
           placeholder="my name"
           id="username"
           value={username}
