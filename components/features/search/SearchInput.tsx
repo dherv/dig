@@ -1,4 +1,4 @@
-import { SearchIcon, XIcon } from "@heroicons/react/outline";
+import { SearchIcon } from "@heroicons/react/outline";
 import { ChangeEvent, FC, useEffect, useRef } from "react";
 import { Input } from "./Input";
 
@@ -28,7 +28,7 @@ export const SearchInput: FC<Props> = ({
 
   return (
     <>
-      <div className=" md:hidden">
+      {/* <div className=" md:hidden">
         <SearchIcon className="h-5 w-5" onClick={openMobileSearch} />
         <label
           htmlFor="autocomplete-mobile"
@@ -49,7 +49,7 @@ export const SearchInput: FC<Props> = ({
             <XIcon className="h-5 w-5 text-white" />
           </div>
         </label>
-      </div>
+      </div> */}
 
       <label htmlFor="autocomplete-desktop" className="relative ">
         <SearchIcon className="h-5 w-5 absolute top-2 right-3" />

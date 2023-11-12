@@ -134,8 +134,8 @@ const MoviePage: NextPage<Props> = ({ user, show, type }) => {
         runtime={runtime}
       /> */}
 
-      <div className="flex my-4 shadow-md rounded">
-        <div className="relative w-3/4 mr-2">
+      <div className="flex my-4 shadow-md rounded flex-wrap w-full">
+        <div className="relative w-full md:w-3/4 md:mr-2">
           <Image
             src={imageSrc}
             alt="backdrop of the movie or serie"
@@ -150,7 +150,7 @@ const MoviePage: NextPage<Props> = ({ user, show, type }) => {
  
       </div> */}
         </div>
-        <div className="flex flex-col justify-between w-1/4 bg-slate-900 px-6 py-4">
+        <div className="flex flex-col justify-between w-full md:w-1/4 bg-slate-900 px-6 py-4">
           <div>
             <h2 className="font-black text-3xl">
               {type === MediaType.Movie ? show.title : show.name}

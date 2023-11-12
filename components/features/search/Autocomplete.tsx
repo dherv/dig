@@ -55,7 +55,7 @@ export const Autocomplete: FC<Props> = ({
   };
 
   return (
-    <div className="md:relative w-96" ref={ref}>
+    <div className="md:relative md:w-96" ref={ref}>
       <SearchInput
         value={searchQuery ?? ""}
         onChange={handleChange}

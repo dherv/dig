@@ -35,40 +35,42 @@ export const Nav: FC = () => {
   };
   return (
     <>
-      <nav className="relative flex justify-between items-center p-3 h-16">
-        <div className="flex items-center">
-          <BrandTitle />
-          <div className="flex ml-6">
-            <div className="ml-2">
-              <ActiveLink
-                href="/"
-                activeClassName="after:h-[2px] after:block after:w-[50px] after:bg-white after:mt-[4px]"
-                className="block font-thin text-sm text-gray-100 capitalize cursor-pointer"
-              >
-                {/* <StarIcon className="w-5 h-5" /> */}
-                <span className="hidden md:inline ">suggestions</span>
-              </ActiveLink>
-            </div>
-            <div className="ml-2">
-              <ActiveLink
-                href="/movies"
-                activeClassName="after:h-[2px] after:block after:w-[50px] after:bg-white after:mt-[4px]"
-                className="block font-thin text-sm text-gray-100 capitalize cursor-pointer"
-              >
-                {/* <a className="flex font-thin text-sm text-gray-100 capitalize"> */}
-                {/* <FilmIcon className="w-5 h-5" /> */}
-                <span className="hidden md:inline ">New & Popular</span>
-                {/* </a> */}
-              </ActiveLink>
+      <nav className="relative flex justify-between items-center p-3 h-16 flex-wrap max-w-full">
+        <div className="hidden md:flex w-full justify-between">
+          <div className="flex items-center">
+            <BrandTitle />
+
+            <div className=" ml-6 hidden md:flex">
+              <div className="ml-2">
+                <ActiveLink
+                  href="/"
+                  activeClassName="after:h-[2px] after:block after:w-[50px] after:bg-white after:mt-[4px]"
+                  className="block font-thin text-sm text-gray-100 capitalize cursor-pointer"
+                >
+                  {/* <StarIcon className="w-5 h-5" /> */}
+                  <span className="hidden md:inline ">suggestions</span>
+                </ActiveLink>
+              </div>
+              <div className="ml-2">
+                <ActiveLink
+                  href="/movies"
+                  activeClassName="after:h-[2px] after:block after:w-[50px] after:bg-white after:mt-[4px]"
+                  className="block font-thin text-sm text-gray-100 capitalize cursor-pointer"
+                >
+                  {/* <a className="flex font-thin text-sm text-gray-100 capitalize"> */}
+                  {/* <FilmIcon className="w-5 h-5" /> */}
+                  <span className="hidden md:inline ">New & Popular</span>
+                  {/* </a> */}
+                </ActiveLink>
+              </div>
             </div>
           </div>
+          <AvatarMenu data={data} />
         </div>
 
-        <div className="w-96 ml-auto mr-4 md:ml-0 md:mr-0 md:absolute md:top-1/2 md:left-1/2 md:transform md:-translate-x-1/2 md:-translate-y-1/2">
+        <div className="w-full md:w-96 md:ml-0 md:mr-0 md:absolute md:top-1/2 md:left-1/2 md:transform md:-translate-x-1/2 md:-translate-y-1/2">
           <Autocomplete onSelect={handleSelect} resultCount={20} />
         </div>
-
-        <AvatarMenu data={data} />
 
         {/* <Popover>
           <Popover.Trigger>
