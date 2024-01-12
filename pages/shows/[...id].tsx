@@ -134,7 +134,7 @@ const MoviePage: NextPage<Props> = ({ user, show, type }) => {
         runtime={runtime}
       /> */}
 
-      <div className="flex my-4 shadow-md rounded flex-wrap w-full">
+      <div className="flex my-4 shadow-md rounded flex-wrap w-full md:flex-nowrap md:w-auto">
         <div className="relative w-full md:w-3/4 md:mr-2">
           <Image
             src={imageSrc}
